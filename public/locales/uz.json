@@ -1,0 +1,199 @@
+{
+  "search": "Qidirish",
+  "see-all": "Barchasini ko’rish",
+  "product-not-found": "Mahsulot Topilmadi",
+  "header": {
+    "profile": "Profil",
+    "login": "Kirish",
+    "catalog": "Katalog",
+    "nessa": "Nessa",
+    "close": "Yopish",
+    "forget": {
+      "password-recovery": "Parolni Tiklash",
+      "change-password": "Parolni o’zgartirish",
+      "new-password": "Yangi parol",
+      "edit-password": "Parolni yangilash"
+    },
+    "register": {
+      "title": "Ro'yxatdan o'tish",
+      "name": "Ismingiz",
+      "phone": "Telefon raqamingiz",
+      "dateOfBirth": "Tug'ilgan sana",
+      "password": "Parol",
+      "passwordWarning": "Parol 6 ta belgidan kam bo'lmasligi kerak",
+      "male": "Erkak",
+      "female": "Ayol",
+      "forgotPassword": "Parolni unutdingizmi?",
+      "enterPassword": "Parolni kiriting",
+      "titleSms": "Telefon raqamingizga yuborilgan 4 xonali kodni kiriting",
+      "continue": "Davom etish",
+      "confirm": "Tasdiqlash"
+    },
+    "desc": "Profilga kirib qulay, tezroq va moslashtirilgan xariddan foydalaning"
+  },
+  "looks": {
+    "title": "Looklar",
+    "desc": "Galereyamizdan ilhom oling va ijtimoiy tarmoqlarda @feliza va #felizastyle bilan o’z  ko’rinishingizni ulashing.",
+    "see": "Ko'rish:",
+    "all": "Barcha looklar",
+    "message": "Lookga ega bo'ling!",
+    "smillar": "Boshqa looklarni ham ko'ring",
+    "product": "mahsulot",
+    "home": {
+      "title": "Looklarni ko'ring",
+      "btn": "Looklarni ko’ring"
+    }
+  },
+  "favorites": {
+    "title": "Sevimlilar",
+    "empty": "Hozircha sevimli mahsulotlar yo’q.",
+    "desc": "Xarid qilishni boshlang va sizga yoqqan mahsulotlarni Sevimlilar bo’limida saqlang "
+  },
+  "cart": {
+    "title": "Savatcha",
+    "select-all": "Barchasini tanlash",
+    "buy": "Sotib olish",
+    "sum": "so'm",
+    "buy-info": "Xarid qilish uchun savatchadagi mahsulotlarni tanlang!",
+    "color": "Rang",
+    "size": "O’lcham",
+    "quantity": "Soni",
+    "save": "Saqlash",
+    "selected-product": "mahsulot tanlandi",
+    "all-sum": "Jami summa",
+    "pay-info": {
+      "title": "To’lov tartibi",
+      "desc": "To’lov online tarzda PayMe, Uzumbank yoki Click orqali amalga oshiriladi"
+    },
+    "empty-cart-info": {
+      "title": "Hozircha savatchada mahsulotlar yo’q.",
+      "desc": "Katalogdan kerakli mahsulotlarni tanlang va savatga qo’shing"
+    }
+  },
+  "order": {
+    "my": {
+      "active": "Faol Buyurtmalar",
+      "history": "Buyurtmalar tarixi",
+      "status": "Status",
+      "reached": "Yetkazildi",
+      "in-progress": "Jarayonda",
+      "canceled": "Bekor qilindi",
+      "time": "Vaqti",
+      "order-number": "Buyurtma ID",
+      "location": "Manzil",
+      "products": "Mahsulotlar",
+      "name": "Nomi"
+    },
+    "status": {
+      "rejected": "Rad etildi",
+      "pack": "Tayyor",
+      "send": "Yetkazilmoqda",
+      "reached": "Yetkazildi",
+      "new": "Qabul qilindi"
+    },
+    "customer-info": "Xaridor ma’lumotlari:",
+    "shipp-addr": "Yetkazib berish manzili:",
+    "add-addr": "Boshqa manzil qo’shish",
+    "shipp-info": {
+      "1": "Yetkazib berish xizmati 400 000 so’mdan yuqori bo’lgan buyurtmalar uchun bepul.",
+      "2": "400 000 so’mgacha bo’lgan buyurtmalar uchun 28 000 so’m.",
+      "3": "Toshkent shahri bo’ylab 24 soat ichida yetkazib beriladi.",
+      "4": "O’zbekiston bo’ylab 1-3 kun ichida yetkazib beriladi."
+    },
+    "coupons": "Kuponlar:",
+    "pay-type": "To’lov turi:",
+    "pay-info": "To’lov online tarzda PayMe, Uzumbank yoki Click orqali amalga oshiriladi",
+    "products": "Mahsulotlar:",
+    "delivery": "Yetkazib berish:",
+    "coupons-used": "Foydalanilgan kuponlar:",
+    "total-price": "Umumiy narx:"
+  },
+  "profile": {
+    "status": {
+      "ball": "ball",
+      "status": "Status",
+      "title": "Statuslar",
+      "desc": "Biz mijozlarimiz haqida qayg’uramiz va ular uchun eng yaxshi xizmat ko’rsatishni maqsad qilganmiz.Shu saababl, sodiq mijozlar uchun maxsusu sodiqlik dasturini yaratdik. Har bir mijoga Bronza Silver va Gold statuslari beriladi. Har safar statusingiz oshganda, belgilangan miqdorda kupon bilan taqdirlanadi. Har 1 000 so’m 1 ballga teng",
+      "start": {
+        "title": "Start",
+        "desc": "0 balldan 1 499 gacha"
+      },
+      "bronze": {
+        "title": "Bronza",
+        "desc": "Ballaringiz 1 500 dan 2 999 gacha"
+      },
+      "silver": {
+        "title": "Silver",
+        "desc": "Ballaringiz 3 000 dan 5 999 gacha"
+      },
+      "gold": {
+        "title": "Gold",
+        "desc": "Ballaringiz 6 000 va keyingi har 1 000 ball uchun alohida sovg’alar."
+      }
+    },
+    "tabs": {
+      "profile": "Profil ma’lumotlari",
+      "orders": "Buyurtmalarim",
+      "comments": "Sharhlarim",
+      "address": "Manzilim",
+      "notifications": "Xabarnomalar",
+      "status": "Statusim",
+      "coupons": "Kuponlarim"
+    },
+    "modal": {
+      "log-out": "Chiqish",
+      "title": "Profiledan chiqmoqchimisiz?",
+      "yes": "Ha",
+      "no": "Yo'q",
+      "add-comment": {
+        "tab1": "Sharh qoldirilmagan",
+        "tab2": "Sharh qoldirilgan",
+        "title": "Sharh qoldirish",
+        "rating": {
+          "desc": "Baholash uchun yulduzchaga teging",
+          "error": "Iltimos baholang!"
+        },
+        "img": {
+          "title": "Rasm qo’shish",
+          "desc": "Siz olgan mahsulotning rasmlarini bu yerga yuklang"
+        },
+        "content": {
+          "desc": "Mahsulot sizga qanchalik yoqdi fikrlaringizni yozing.",
+          "error": "Iltimos fikrlaringizni yozing."
+        }
+      }
+    },
+    "coupons": {
+      "empty": "Hozircha kuponlar yo’q.",
+      "desc": "Har bir xaridlardan keyin sizga belgilangan kuponlar berib boriladi. Kuponlarni keyingi xaridlar uchun chegirma sifatida ishlatishingiz mumkin"
+    },
+    "comments": {
+      "empty": "Sharh qoldirish uchun mahsulot sotib oling!"
+    },
+    "input": {
+      "messages": {
+        "current-password": "Hozirgi parol",
+        "password-error": "Hozirgi parolingiz noto'g'ri! Iltimos, qayta urinib ko'ring!",
+        "current-password-error": "Iltimos, Hozirgi parolingizni kiriting!",
+        "new-password": "Yangi parol",
+        "new-password-error": "Iltimos, Yangi parolingizni kiriting!",
+        "confirm": "Tasdiqlash",
+        "confirm-error": "Iltimos, Yangi parolingizni tasdiqlang!",
+        "min-6": "Parol 6 ta belgidan kam bo’lmasligi kerak",
+        "not-match": "Siz kiritgan yangi parolga mos emas!"
+      }
+    }
+  },
+  "footer": {
+    "title1": "Biz haqimizda",
+    "title2": "Filiallarimiz",
+    "title3": "Chegirmalar",
+    "title4": "Foydalanish shartlari",
+    "title5": "Kontakt",
+    "title6": "Ko’p so’raladigan savollar",
+    "title7": "Yetkazib berish",
+    "title8": "Qaytarib olish",
+    "title9": "To’lov",
+    "title10": "Karera"
+  }
+}
