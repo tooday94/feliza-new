@@ -18,6 +18,7 @@ const Header = () => {
   const [showBoard, setShowBoard] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [brandName, setBrandName] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   const handleBoard = (name) => {
     setShowSearch(false);
@@ -29,7 +30,7 @@ const Header = () => {
       setBrandName("");
     }
   };
-  const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -39,12 +40,27 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        !e.target.closest(".brand-name") &&
+        !e.target.closest(".header-board")
+      ) {
+        setShowBoard(false);
+        setBrandName("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div>
       <div className="hidden lg:flex items-center justify-between  max-w-[1280px] px-3 mx-auto py-5">
         <div className="hidden md:flex items-center justify-between gap-12">
           <p
-            className="font-tenor font-normal text-xl pb-2 cursor-pointer"
+            className="brand-name font-tenor font-normal text-xl pb-2 cursor-pointer"
             style={{
               borderBottom: brandName == "Kiyimlar" && "1px solid black",
             }}
@@ -53,7 +69,7 @@ const Header = () => {
             {t("header.catalog")}
           </p>
           <p
-            className="font-tenor font-normal text-xl pb-2 cursor-pointer"
+            className="brand-name font-tenor font-normal text-xl pb-2 cursor-pointer"
             style={{ borderBottom: brandName == "Nessa" && "1px solid black" }}
             onClick={() => handleBoard("Nessa")}
           >
@@ -121,11 +137,13 @@ const Header = () => {
       </div>
 
       {showBoard && (
-        <HeaderBoard
-          setShowBoard={setShowBoard}
-          setBrandName={setBrandName}
-          brand={brandName}
-        />
+        <div className="header-board">
+          <HeaderBoard
+            setShowBoard={setShowBoard}
+            setBrandName={setBrandName}
+            brand={brandName}
+          />
+        </div>
       )}
       {showSearch && (
         <HeaderSearch setShowSearch={setShowSearch} brand={brandName} />

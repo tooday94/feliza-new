@@ -9,8 +9,8 @@ import CouponCard from "./coupon-card";
 import { useCreate } from "../../services/mutations/useCreate";
 import { CiCircleInfo } from "react-icons/ci";
 import formatPrice from "../../utils/formatPrice";
-import { IoAddOutline } from "react-icons/io5";
 import AddAddress from "./add-address";
+import { endpoints } from "../../configs/endpoints";
 
 export const OrderCard = ({ sum, cart }) => {
   const userID = Cookies.get("USER-ID");
@@ -21,7 +21,7 @@ export const OrderCard = ({ sum, cart }) => {
   const { i18n, t } = useTranslation();
 
   const { data: userAdresses, isLoading: userAdressesLoading } = useGetById(
-    "/api/address/getAddressesByCustomerId/",
+    endpoints.address.getAddressByCustumerId,
     userID
   );
   const { data: userData, isLoading: userDataLoading } = useGetById(
@@ -32,7 +32,7 @@ export const OrderCard = ({ sum, cart }) => {
     "/api/couponCustomer/getCouponsByCustomerId/" + userID
   );
 
-  const { mutate } = useCreate("/api/order/addOrder");
+  const { mutate, isPending } = useCreate("/api/order/addOrder");
   const deliveryDay = 3;
   const todayObj = new Date();
   const today = todayObj.toISOString().split("T")[0];
@@ -52,7 +52,7 @@ export const OrderCard = ({ sum, cart }) => {
       orderTime: today,
     });
     mutate(
-      {
+      { 
         ...data,
         shippingCost: 0,
         deliveryDays: 3,
@@ -270,6 +270,7 @@ export const OrderCard = ({ sum, cart }) => {
               type="primary"
               htmlType="submit"
               children={t("cart.buy")}
+              loading={isPending}
             />
           </Form.Item>
         </Form>

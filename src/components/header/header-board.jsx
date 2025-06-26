@@ -1,15 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGetList } from "../../services/query/useGetList";
 import { useTranslation } from "react-i18next";
+import { Skeleton } from "antd";
+import { endpoints } from "../../configs/endpoints";
 
 export const HeaderBoard = ({ brand, setShowBoard, setBrandName }) => {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
   const { data, isLoading } = useGetList(
-    "/api/categories/getSubCategoriesByParent/" + brand,
-    {}
+    endpoints.category.getSubCategoriesByParent + brand
   );
-  console.log(data);
 
   const handleNavigate = (id) => {
     setShowBoard(false);
@@ -20,8 +20,19 @@ export const HeaderBoard = ({ brand, setShowBoard, setBrandName }) => {
   return (
     <div className="min-h-[430px] h-fit absolute bg-white w-full">
       {isLoading ? (
-        <div className="flex justify-center items-center h-full font-tenor text-primary font-normal">
-          <h1>Loading...</h1>
+        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-1 h-full overflow-x-auto">
+          {[...Array(8)].map((_, colIndex) => (
+            <div
+              key={colIndex}
+              className="break-inside-avoid p-2 h-full border-r px-10 space-y-3"
+            >
+              {[...Array(5)].map((_, itemIndex) => (
+                <div key={itemIndex} className="">
+                  <Skeleton.Input active size="small" className="!w-full" />
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       ) : (
         <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-1 h-full overflow-x-auto">
