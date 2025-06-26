@@ -12,6 +12,7 @@ import { useGetById } from "../../services/query/useGetById";
 import { useUpdateById } from "../../services/mutations/useUpdateById";
 import { OrderCard } from "../../components/cart/order-card";
 import formatPrice from "../../utils/formatPrice";
+import { useDeleteGroup } from "../../services/mutations/useDeleteGroup";
 const Cart = () => {
   const [deletingId, setdeletingId] = useState(null);
   const [isBuying, setisBuying] = useState(false);
@@ -88,6 +89,15 @@ const Cart = () => {
   );
 
   const handleEdit = () => {
+    console.log({
+      id: selectedEditCartId,
+      data: {
+        customerId: userID,
+        productSizeVariantId: selectedEditProductSize,
+        quantity: quantityEdit,
+      },
+    });
+
     updateCart(
       {
         id: selectedEditCartId,
@@ -107,6 +117,15 @@ const Cart = () => {
       }
     );
   };
+  console.log(sum);
+  console.log(cart);
+
+  const { mutate: deleteCartGroup, isPending: deleteGroupLoading } =
+    useDeleteGroup(
+      "/api/cartItem/deleteCartItemGroup",
+      "/api/cartItem/byCustomerId/"
+    );
+  console.log(data);
 
   return (
     <>
@@ -132,7 +151,7 @@ const Cart = () => {
       ) : (
         <div className="flex relative">
           <div className="bg-background w-full p-3 lg:p-10 lg:pl-28">
-            <div className="flex flex-col lg:flex-row items-center gap-3 justify-between pb-8 ">
+            <div className="flex flex-col items-center gap-3 justify-between pb-8">
               <div className=""></div>
               <div className="flex gap-2.5">
                 <h1 className="font-tenor font-normal  text-2xl">
@@ -142,23 +161,42 @@ const Cart = () => {
                   ({data?.length})
                 </span>
               </div>
-              <div className="flex gap-2.5 items-center">
-                <Checkbox
-                  style={{
-                    width: "24px",
-                    height: "24px",
-                    transform: "scale(1.5)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                  checked={checkAll}
-                  onChange={handleCheckAll}
-                  className="!font-tenor"
-                />
-                <span className="font-tenor font-normal text-base text-primary">
-                  {t("cart.select-all")}
-                </span>
+              <div className="w-full flex gap-2.5 items-center justify-between">
+                <div className="">
+                  {cart.length > 0 && (
+                    <div
+                      className="flex  items-center gap-2.5 cursor-pointer"
+                      onClick={() => deleteCartGroup({ cartIds: cart })}
+                    >
+                      <RiDeleteBin6Line size={24} />
+                      <button
+                        className="font-tenor cursor-pointer"
+                        children={
+                          i18n.language == "uz" ? "o'chirish" : "удалить"
+                        }
+                        loading={deleteGroupLoading}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Checkbox
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                      transform: "scale(1.5)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    checked={checkAll}
+                    onChange={handleCheckAll}
+                    className="!font-tenor"
+                  />
+                  <span className="font-tenor font-normal text-base text-primary">
+                    {t("cart.select-all")}
+                  </span>
+                </div>
               </div>
             </div>
             {data?.map((item) => (
@@ -216,8 +254,8 @@ const Cart = () => {
                     </p>
                   </div>
 
-                  <div className="flex justify-between items-center flex-wrap lg:gap-3">
-                    <div className="flex flex-col lg:flex-row gap-0 lg:gap-8">
+                  <div className="flex justify-between items-center flex-wrap gap-3">
+                    <div className="flex flex-col lg:flex-row gap-0 lg:gap-3">
                       <h1 className="font-tenor font-normal text-sm text-accent leading-[150%]">
                         {t("cart.color")}:{" "}
                         {i18n.language == "uz"
@@ -227,12 +265,82 @@ const Cart = () => {
                       <h1 className="font-tenor font-normal text-sm text-accent leading-[150%]">
                         {t("cart.size")}: {item.productSizeVariant.size}
                       </h1>
-                      <h1 className="font-tenor font-normal text-sm text-accent leading-[150%]">
+                      {/* <h1 className="font-tenor font-normal text-sm text-accent leading-[150%]">
                         {t("cart.quantity")}: {item?.quantity}
-                      </h1>
+                      </h1> */}
                     </div>
 
                     <div className="flex gap-10 w-full lg:w-fit justify-end">
+                      <div className="flex gap-5 items-center">
+                        <Button
+                          loading={updateCartLoading}
+                          icon={
+                            <PiMinus
+                              color={
+                                item?.quantity <= 1 ? "#5b5b5b" : "#0d0d0d"
+                              }
+                            />
+                          }
+                          disabled={item?.quantity <= 1}
+                          onClick={() => {
+                            const newQuantity = item?.quantity - 1;
+
+                            updateCart(
+                              {
+                                id: item?.cartItemId,
+                                data: {
+                                  customerId: userID,
+                                  productSizeVariantId:
+                                    item?.productSizeVariant?.id,
+                                  quantity: newQuantity,
+                                },
+                              },
+                              {
+                                onSuccess: () => {
+                                  setIsModalOpen(false);
+                                },
+                                onError: (error) => {
+                                  console.log(error);
+                                },
+                              }
+                            );
+                          }}
+                        />
+                        <p className="font-tenor font-normal text-xl text-primary">
+                          {item.quantity}
+                        </p>
+                        <Button
+                          loading={updateCartLoading}
+                          disabled={
+                            item.productSizeVariant.quantity == item?.quantity
+                          }
+                          icon={<PiPlus color="#0d0d0d" />}
+                          onClick={() => {
+                            const newQuantity = item?.quantity + 1;
+
+                            updateCart(
+                              {
+                                id: item?.cartItemId,
+                                data: {
+                                  customerId: userID,
+                                  productSizeVariantId:
+                                    item?.productSizeVariant?.id,
+                                  quantity: newQuantity,
+                                },
+                              },
+                              {
+                                onSuccess: () => {
+                                  setIsModalOpen(false);
+                                },
+                                onError: (error) => {
+                                  console.log(error);
+                                },
+                              }
+                            );
+                          }}
+                        />
+                      </div>
+
                       <MdOutlineEdit
                         className="cursor-pointer"
                         onClick={() => (
@@ -401,20 +509,6 @@ const Cart = () => {
                     <h1 className="font-tenor font-normal text-xl text-primary leading-[150%]">
                       {i18n.language == "uz" ? item.nameUZB : item.nameRUS}
                     </h1>
-                    {/* <Checkbox
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                        transform: "scale(1.5)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                      checked={cart.includes(item.cartItemId)}
-                      onChange={(e) =>
-                        handleCheck(item.cartItemId, e.target.checked)
-                      }
-                    /> */}
                   </div>
                   <p className="font-tenor font-normal text-base text-primary">
                     {item.salePrice
@@ -430,20 +524,6 @@ const Cart = () => {
                     {item.salePrice && formatPrice(item.sellPrice)}
                   </p>
                 </div>
-
-                {/* <div className="flex justify-between items-center">
-                  <div className="flex gap-8">
-                    <h1 className="font-tenor font-normal text-sm text-accent leading-[150%]">
-                      {t("cart.color")}:{" "}
-                      {i18n.language == "uz"
-                        ? item.colorNameUZB
-                        : item.colorNameRUS}
-                    </h1>
-                    <h1 className="font-tenor font-normal text-sm text-accent leading-[150%]">
-                      {t("cart.size")}: {item.productSizeVariant.size}
-                    </h1>
-                  </div>
-                </div> */}
               </div>
             </div>
           ))}
@@ -549,7 +629,7 @@ const Cart = () => {
         open={isDrawerOpen}
         maskClosable={false}
       >
-        <OrderCard />
+        <OrderCard sum={sum} cart={cart} />
       </Drawer>
     </>
   );
