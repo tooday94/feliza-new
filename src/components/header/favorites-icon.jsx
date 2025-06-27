@@ -25,9 +25,9 @@ const FavoritesIcon = () => {
       onClick={() => navigate("/favorites")}
     >
       {location.pathname == "/favorites" ? (
-        <FaHeart size={21} />
+        <FaHeart size={24} />
       ) : (
-        <FaRegHeart size={21} />
+        <FaRegHeart size={24} />
       )}
     </Badge>
   );

@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { useGetById } from "../../services/query/useGetById";
-import { Button, Modal } from "antd";
+import { Button, Grid, Modal } from "antd";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -30,6 +30,7 @@ export const DesktopProfileCard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab");
   const userID = Cookies.get("USER-ID");
+  const width = Grid.useBreakpoint();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { data: userData } = useGetById(
@@ -101,12 +102,10 @@ export const DesktopProfileCard = () => {
   );
 
   useEffect(() => {
-    return () => {
-      if (!userID) {
-        return navigate("/");
-      }
-    };
-  }, []);
+    if (width.lg && !userID) {
+      navigate("/");
+    }
+  }, [userID, width.lg]);
 
   return (
     <div className="max-w-[1280px] mx-auto relative">

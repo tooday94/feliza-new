@@ -34,26 +34,29 @@ export const MobileBottomTab = () => {
     },
     {
       path: "/profile",
-      icon: <UserAuth />,
+      // icon: <UserAuth />,
+      icon: <ProfileIcon />,
     },
   ];
   return (
     <div className="bg-white overflow-hidden !z-50 p-2 py-6 lg:hidden">
       <div className="flex justify-between items-center px-3">
         {menuList.map((item) => (
-          <Button
+          <button
             onClick={() => (
               navigate(item.path),
               window.scrollTo({ top: 0, behavior: "smooth" })
             )}
             key={item.path}
-            className={`!border-none ${
+            className={`size-7 !pb-0 ${
               location.pathname == item.path
                 ? "!text-primary"
                 : "!text-secondary"
             }`}
-            icon={item.icon}
-          />
+            // icon={item.icon}
+          >
+            {item.icon}
+          </button>
         ))}
       </div>
     </div>
