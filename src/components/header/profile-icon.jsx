@@ -38,9 +38,9 @@ const ProfileIcon = () => {
 
       <div>
         {location.pathname == "/profile" ? (
-          <FaUser cursor={"pointer"} size={21} />
+          <FaUser cursor={"pointer"} size={24} />
         ) : (
-          <FaRegUser cursor={"pointer"} size={21} />
+          <FaRegUser cursor={"pointer"} size={24} />
         )}
       </div>
     </div>

@@ -2,6 +2,7 @@ import Header from "./header";
 import { Outlet } from "react-router-dom";
 import Footer from "./footer";
 import { MobileBottomTab } from "../components/header/mobile-bottom-tab";
+import OrderStatusModal from "../components/order/order-status-modal";
 
 const MainLayout = () => {
   return (
@@ -18,6 +19,7 @@ const MainLayout = () => {
           <MobileBottomTab />
         </div>
       </footer>
+      <OrderStatusModal/>
     </div>
   );
 };

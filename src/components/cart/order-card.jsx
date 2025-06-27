@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Radio } from "antd";
+import { Button, Flex, Form, Input, Radio, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
 import { useGetById } from "../../services/query/useGetById";
 import Cookies from "js-cookie";
@@ -52,7 +52,7 @@ export const OrderCard = ({ sum, cart }) => {
       orderTime: today,
     });
     mutate(
-      { 
+      {
         ...data,
         shippingCost: 0,
         deliveryDays: 3,
@@ -68,6 +68,7 @@ export const OrderCard = ({ sum, cart }) => {
           if (res.success) {
             window.location.href = res.object;
           }
+          Cookies.set("lastOrderId", res?.id);
         },
         onError: (err) => {
           console.log(err);
@@ -85,14 +86,16 @@ export const OrderCard = ({ sum, cart }) => {
     }
   }, [valueCoupon, userCoupon]);
 
-  if (userAdressesLoading) {
-    return <>loading</>;
-  }
   return (
     <div className="w-full lg:p-10">
-      {userDataLoading || userAdressesLoading ? (
-        <div>
-          <h1>loading...</h1>
+      {userDataLoading || userAdressesLoading || userAdressesLoading ? (
+        <div className="space-y-10">
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
         </div>
       ) : (
         <Form
