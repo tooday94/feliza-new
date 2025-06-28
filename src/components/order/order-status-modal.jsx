@@ -13,6 +13,9 @@ const OrderStatusModal = () => {
   const orderId = Cookies.get("lastOrderId");
   const { data, isSuccess } = useGetById("/api/order/getOrderById/", orderId);
 
+  console.log(data);
+  
+
   useEffect(() => {
     if (data?.paid == true) {
       setModalContent({

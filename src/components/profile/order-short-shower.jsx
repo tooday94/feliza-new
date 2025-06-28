@@ -15,6 +15,7 @@ export const OrderShortShower = () => {
     "/api/order/getAllByCustomerId/",
     userID
   );
+console.log(data);
 
   const rejectedOrders = data?.filter(
     (item) => !["REACHED", "REJECTED"].includes(item.orderStatusType)
