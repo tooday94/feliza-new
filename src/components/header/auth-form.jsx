@@ -5,15 +5,12 @@ import { useCreate } from "../../services/mutations/useCreate";
 import { endpoints } from "../../configs/endpoints";
 import Cookies from "js-cookie";
 import { IoIosArrowBack } from "react-icons/io";
-import { useGetById } from "../../services/query/useGetById";
 import { useNavigate } from "react-router-dom";
 
 const AuthForm = ({ onClose }) => {
-  const userID = Cookies.get("USER-ID");
-  const Token = Cookies.get("FELIZA-TOKEN");
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  //   const [open, setOpen] = useState(false);
   const [isregister, setIsregister] = useState(0);
   const [isForgetPassword, setisForgetPassword] = useState(0);
   const [isLogin, setIsLogin] = useState(false);
@@ -27,11 +24,6 @@ const AuthForm = ({ onClose }) => {
   );
   const { mutate: forgetPassword } = useCreate(endpoints.auth.forgetPassword);
 
-  //   const onClose = () => {
-  //     setOpen(false);
-  //     setIsregister(0);
-  //     setIsLogin(false);
-  //   };
   const width = Grid.useBreakpoint();
   return (
     <div>
@@ -99,6 +91,7 @@ const AuthForm = ({ onClose }) => {
           >
             <Form.Item name="phoneNumber">
               <Input
+                defaultValue={"+998"}
                 required
                 className="h-12"
                 placeholder={t("header.register.phone")}
@@ -253,6 +246,7 @@ const AuthForm = ({ onClose }) => {
             {t("header.login")}
           </h1>
           <Form
+            form={form}
             onFinish={(values) => {
               console.log(values);
               LoginPost(
@@ -286,6 +280,7 @@ const AuthForm = ({ onClose }) => {
           >
             <Form.Item name="phoneNumber">
               <Input
+                defaultValue={"+998"}
                 className="h-12"
                 placeholder={t("header.register.phone")}
                 style={{ borderRadius: 0 }}
