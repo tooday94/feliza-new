@@ -15,7 +15,10 @@ export const SmallSlider = ({ palcement }) => {
     <div>
       <div className="p-2 max-w-[1280px] mx-auto">
         {isLoading ? (
-          <div className="flex justify-between gap-3 overflow-x-scroll overflow-hidden">
+          <div
+            style={{ scrollbarWidth: "none" }}
+            className="flex justify-between gap-3 overflow-x-scroll overflow-hidden"
+          >
             {Array.from({ length: 4 }).map((item, index) => (
               <div key={index} className="space-y-2 w-fit">
                 <Skeleton.Image active className="!w-[284px] !h-[350px]" />
