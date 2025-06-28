@@ -94,66 +94,6 @@ export const HeaderSearch = ({ setShowSearch }) => {
                 />
               </div>
             ))}
-            {history.map((item, idx) => (
-              <div className="flex justify-between items-center gap-5">
-                <div
-                  key={idx}
-                  onClick={() => setSearch(item)}
-                  className="flex justify-between items-center p-2 gap-5 text-accent hover:text-primary text-xl w-full"
-                >
-                  <p>{item}</p>
-                </div>
-                <IoMdClose
-                  size={24}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    const updated = history.filter((h) => h !== item);
-                    setHistory(updated);
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-                  }}
-                />
-              </div>
-            ))}
-            {history.map((item, idx) => (
-              <div className="flex justify-between items-center gap-5">
-                <div
-                  key={idx}
-                  onClick={() => setSearch(item)}
-                  className="flex justify-between items-center p-2 gap-5 text-accent hover:text-primary text-xl w-full"
-                >
-                  <p>{item}</p>
-                </div>
-                <IoMdClose
-                  size={24}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    const updated = history.filter((h) => h !== item);
-                    setHistory(updated);
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-                  }}
-                />
-              </div>
-            ))}
-            {history.map((item, idx) => (
-              <div className="flex justify-between items-center gap-5">
-                <div
-                  key={idx}
-                  onClick={() => setSearch(item)}
-                  className="flex justify-between items-center p-2 gap-5 text-accent hover:text-primary text-xl w-full"
-                >
-                  <p>{item}</p>
-                </div>
-                <IoMdClose
-                  size={24}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    const updated = history.filter((h) => h !== item);
-                    setHistory(updated);
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-                  }}
-                />
-              </div>
-            ))}
           </div>
         </div>
       )}
