@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import Logo from "../assets/images/feliza-logo.png";
+import LogoWhite from "../assets/images/white-logo.png";
 import LanguageSelector from "../components/header/language-selector";
 import { CiSearch } from "react-icons/ci";
 import { Button, Input } from "antd";
@@ -110,9 +111,13 @@ const Header = () => {
         style={{ display: location.pathname == "/" ? "" : "none" }}
         className="relative lg:hidden"
       >
-        <div className="flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-1000 gap-3">
+        <div
+          className={`${
+            scrolled ? "bg-black/10" : ""
+          } flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-700 gap-3`}
+        >
           <div className="w-full flex justify-center text-white px-2">
-            <img className={scrolled ? "scale-75" : ""} src={Logo} />
+            <img className={scrolled ? "scale-75" : ""} src={LogoWhite} />
           </div>
 
           {scrolled ? (
