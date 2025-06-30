@@ -9,13 +9,9 @@ const OrderStatusModal = () => {
   const { i18n } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-
   const orderId = Cookies.get("lastOrderId");
   const { data, isSuccess } = useGetById("/api/order/getOrderById/", orderId);
-
-  console.log(data);
   
-
   useEffect(() => {
     if (data?.paid == true) {
       setModalContent({
@@ -54,7 +50,7 @@ const OrderStatusModal = () => {
           {modalContent.title}
         </h2>
         <div className="flex justify-center mt-5 md:mt-10 mb-5">
-          {!data?.paid ? (
+          {data?.paid ? (
             <BiCheckCircle color="#444" size={64} />
           ) : (
             <BiError color="#444" size={64} />
