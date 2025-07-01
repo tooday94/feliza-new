@@ -118,6 +118,7 @@ export const HeaderSearch = ({ setShowSearch }) => {
               className="p-1 duration-300 cursor-pointer flex items-center gap-3 border-b"
             >
               <img
+                loading="lazy"
                 src={item?.productImages[0]?.url}
                 className="size-14 lg:size-20 object-cover rounded-tr-sm"
                 alt=""
