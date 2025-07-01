@@ -1,7 +1,7 @@
 import { useGetList } from "../../services/query/useGetList";
 import { useNavigate, useParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCart/ProductCard";
-import { Button } from "antd";
+import { Button, Skeleton } from "antd";
 import { IoIosArrowBack } from "react-icons/io";
 import { useTranslation } from "react-i18next";
 
@@ -29,6 +29,7 @@ const LooksDetail = () => {
       <div className="flex  lg:gap-10 w-full max-w-[1440px] overflow-hidden flex-wrap lg:flex-nowrap">
         <div className="">
           <img
+            loading="lazy"
             className="min-w-[524px] w-full lg:h-[660px] object-cover"
             src={data?.images[0]?.url}
             alt=""
@@ -70,24 +71,39 @@ const LooksDetail = () => {
         <h1 className="font-tenor font-normal text-xl text-primary text-center">
           {t("looks.smillar")}
         </h1>
-
-        <div className={`grid w-full gap-1 grid-cols-2 lg:grid-cols-4`}>
-          {Looks?.map((item) => (
-            <div
-              onClick={() => (
-                navigate("/looksDetail/" + item.id),
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              )}
-              className="cursor-pointer hover:scale-95 duration-300"
-            >
-              <img
-                className="max-w-[357px] min-w-full w-full"
-                src={item.images[0].url}
-                alt=""
+        {!isLoading ? (
+          <div
+            className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1`}
+          >
+            {Array.from({ length: 4 }).map((item) => (
+              <Skeleton.Image
+                active
+                className={`max-w-[357px] !w-full !min-h-[302px] md:!min-h-[450px] h-full`}
               />
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className={`grid w-full gap-1 grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
+          >
+            {Looks?.map((item) => (
+              <div
+                onClick={() => (
+                  navigate("/looksDetail/" + item.id),
+                  window.scrollTo({ top: 0, behavior: "smooth" })
+                )}
+                className="cursor-pointer hover:scale-95 duration-300"
+              >
+                <img
+                  loading="lazy"
+                  className="max-w-[357px] min-w-full w-full"
+                  src={item.images[0].url}
+                  alt=""
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

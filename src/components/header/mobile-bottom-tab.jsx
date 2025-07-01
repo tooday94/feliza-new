@@ -1,11 +1,9 @@
-import { Button } from "antd";
 import { BiCategory, BiSolidCategory } from "react-icons/bi";
 import FeIcon from "./fe-icon";
 import { useLocation, useNavigate } from "react-router-dom";
 import FavoritesIcon from "./favorites-icon";
 import CartIcon from "./cart-icon";
 import ProfileIcon from "./profile-icon";
-import UserAuth from "./user-auth";
 
 export const MobileBottomTab = () => {
   const location = useLocation();
@@ -34,7 +32,6 @@ export const MobileBottomTab = () => {
     },
     {
       path: "/profile",
-      // icon: <UserAuth />,
       icon: <ProfileIcon />,
     },
   ];
@@ -53,7 +50,6 @@ export const MobileBottomTab = () => {
                 ? "!text-primary"
                 : "!text-secondary"
             }`}
-            // icon={item.icon}
           >
             {item.icon}
           </button>

@@ -117,7 +117,11 @@ const Header = () => {
           } flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-700 gap-3`}
         >
           <div className="w-full flex justify-center text-white px-2">
-            <img className={scrolled ? "scale-75" : ""} src={LogoWhite} />
+            <img
+              loading="lazy"
+              className={scrolled ? "scale-75" : ""}
+              src={LogoWhite}
+            />
           </div>
 
           {scrolled ? (

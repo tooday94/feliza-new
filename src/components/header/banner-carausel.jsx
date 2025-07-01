@@ -39,6 +39,7 @@ const BannerCarausel = () => {
               key={item.id}
             >
               <img
+                loading="lazy"
                 className="w-full object-cover h-full min-h-[610px] max-h-[610px]"
                 src={
                   width.md ? item?.desktopImage.url : item?.productImages.url

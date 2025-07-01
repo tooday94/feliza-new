@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useGetList } from "../../services/query/useGetList";
 import ProductCard from "../ProductCart/ProductCard";
-import { Button, Carousel, Skeleton } from "antd";
+import { Button, Skeleton } from "antd";
 import { IoArrowForwardSharp } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 
