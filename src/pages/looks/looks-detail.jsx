@@ -71,7 +71,7 @@ const LooksDetail = () => {
         <h1 className="font-tenor font-normal text-xl text-primary text-center">
           {t("looks.smillar")}
         </h1>
-        {!isLoading ? (
+        {isLoading ? (
           <div
             className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1`}
           >
@@ -86,7 +86,11 @@ const LooksDetail = () => {
           <div
             className={`grid w-full gap-1 grid-cols-2 md:grid-cols-3 lg:grid-cols-4`}
           >
-            {Looks?.map((item) => (
+            {Looks?.sort(
+              (a, b) =>
+                new Date(b?.images[0]?.createdAt) -
+                new Date(a?.images[0]?.createdAt)
+            )?.map((item) => (
               <div
                 onClick={() => (
                   navigate("/looksDetail/" + item.id),
@@ -96,7 +100,7 @@ const LooksDetail = () => {
               >
                 <img
                   loading="lazy"
-                  className="max-w-[357px] min-w-full w-full"
+                  className="max-w-[365px] min-w-full w-full"
                   src={item.images[0].url}
                   alt=""
                 />
