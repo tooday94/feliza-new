@@ -51,7 +51,7 @@ const HomeLooks = () => {
               )}
             >
               <img
-                loading="lazy"
+                loading="eager"
                 className="max-w-sm"
                 src={item.images[0].url}
                 alt=""
@@ -84,7 +84,7 @@ const HomeLooks = () => {
                 )}
               >
                 <img
-                  loading="lazy"
+                  loading="eager"
                   className="w-full object-cover"
                   src={item.images[0].url}
                   alt=""
