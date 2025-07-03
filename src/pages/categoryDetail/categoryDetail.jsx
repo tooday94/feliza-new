@@ -68,18 +68,23 @@ function CategoryDetail() {
 
             {hasMore && (
                 <div className="flex justify-center mt-4">
-                    <button
-                        onClick={() => {
-                            loadMoreProducts();
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        className='py-2 px-16 border border-[#5B5B5B] cursor-pointer hover:bg-[#5B5B5B] hover:text-white transition-colors duration-500'
-                        disabled={isFetching}
-                    >
-                        {i18n.language === 'uz' ? 'Yana ko‘proq ko‘rish' :
-                            i18n.language === 'ru' ? 'Показать больше' :
-                                'Show more'}
-                    </button>
+                    {products.length < totalProducts && (
+                        <button
+                            onClick={() => {
+                                loadMoreProducts();
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className='py-2 px-16 border border-[#5B5B5B] cursor-pointer hover:bg-[#5B5B5B] hover:text-white transition-colors duration-500'
+                            disabled={isFetching}
+                        >
+                            {i18n.language === 'uz'
+                                ? 'Yana ko‘proq ko‘rish'
+                                : i18n.language === 'ru'
+                                    ? 'Показать больше'
+                                    : 'Show more'}
+                        </button>
+                    )}
+
                 </div>
             )}
         </div>
