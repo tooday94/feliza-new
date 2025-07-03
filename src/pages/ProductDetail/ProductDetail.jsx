@@ -254,15 +254,15 @@ function ProductDetail() {
                                 {data?.sale > 0 ? (
                                     <div className="flex items-center md:gap-3 gap-1 flex-col">
                                         <p className="text-[#0D0D0D] text-[17px] md:text-xl font-normal">
-                                            {data?.salePrice} so'm
+                                            {data?.salePrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                         </p>
                                         <p className="text-gray-400 line-through text-[17px] md:text-xl">
-                                            {data?.sellPrice} so'm
+                                            {data?.sellPrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                         </p>
                                     </div>
                                 ) : (
                                     <span className="text-[#0D0D0D] text-[17px] md:text-xl font-semibold">
-                                        {data?.sellPrice} so'm
+                                        {data?.sellPrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                     </span>
                                 )}
                             </div>
