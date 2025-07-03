@@ -90,7 +90,7 @@ const Footer = () => {
       <div className="flex sm:flex-row gap-4 items-center justify-center md:pb-0 mb-5 md:pt-7 pt-5">
         {/* Apple Store */}
         <a
-          href="https://apps.apple.com/uz/app/feliza/id6742327578F"
+          href="https://apps.apple.com/uz/app/feliza/id6742327578"
           className="flex items-center gap-3 px-4 py-2 bg-black text-white rounded-sm hover:scale-105 transition-transform shadow-md"
           target='_blank'
         >

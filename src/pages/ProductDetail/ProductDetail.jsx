@@ -254,15 +254,15 @@ function ProductDetail() {
                                 {data?.sale > 0 ? (
                                     <div className="flex items-center md:gap-3 gap-1 flex-col">
                                         <p className="text-[#0D0D0D] text-[17px] md:text-xl font-normal">
-                                            {data?.salePrice} so'm
+                                            {data?.salePrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                         </p>
                                         <p className="text-gray-400 line-through text-[17px] md:text-xl">
-                                            {data?.sellPrice} so'm
+                                            {data?.sellPrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                         </p>
                                     </div>
                                 ) : (
                                     <span className="text-[#0D0D0D] text-[17px] md:text-xl font-semibold">
-                                        {data?.sellPrice} so'm
+                                        {data?.sellPrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                     </span>
                                 )}
                             </div>
@@ -378,7 +378,9 @@ function ProductDetail() {
                                 {!isOpen ? <FaArrowDown /> : <FaArrowUp />}
                             </div>
                             {isOpen && (
-                                <p className='md:mt-6 mt-2 text-gray-700'>{i18n.language === 'uz' ? data?.descriptionUZB : data?.descriptionRUS}</p>
+                                <p className='md:mt-6 mt-2 text-gray-700 whitespace-pre-line break-words'>
+                                    {(i18n.language === 'uz' ? data?.descriptionUZB : data?.descriptionRUS)?.split('/')}
+                                </p>
                             )}
                         </div>
 
@@ -470,7 +472,6 @@ function ProductDetail() {
 
                             </div>
                             {/* sotib olish */}
-
                             {
                                 !selectedSize || selectedColorIndex === -1 ? (
                                     <button
@@ -575,22 +576,27 @@ function ProductDetail() {
 
             {/* O’XSHASH MAHSULOTLAR */}
             <div className="md:mt-20 mt-7">
-                <h2 className="md:text-xl text-base font-semibold px-4" style={{
-                    fontWeight: 400,
-                    fontSize: '24px',
-                    lineHeight: '100%',
-                    letterSpacing: '0px',
-                }}
+                <h2
+                    className="md:text-xl text-base font-semibold px-4"
+                    style={{
+                        fontWeight: 400,
+                        fontSize: '24px',
+                        lineHeight: '100%',
+                        letterSpacing: '0px',
+                    }}
                 >
                     {i18n.language === 'uz' ? 'O’xshash mahsulotlar' : 'Сопутствующие товары'}
                 </h2>
 
-                <div className="overflow-x-auto" style={{
-                    scrollBehavior: 'smooth',
-                    scrollbarWidth: 'none',
-                    msOverflowStyle: 'none',
-                }}>
-                    <div className="grid grid-flow-col auto-cols-[285px] gap-4 pt-10">
+                <div
+                    className="overflow-x-auto scrollbar-hide px-4"
+                    style={{
+                        scrollBehavior: 'smooth',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                    }}
+                >
+                    <div className="grid grid-flow-col auto-cols-[189px] md:auto-cols-[296px] gap-4 pt-10">
                         {similarProducts?.content?.length > 0 ? (
                             similarProducts.content.map(item => (
                                 <ProductCard key={item.id} item={item} />
@@ -604,8 +610,6 @@ function ProductDetail() {
                         )}
                     </div>
                 </div>
-
-
             </div>
 
             {/* buttolar mobile uchun tolov btn */}
