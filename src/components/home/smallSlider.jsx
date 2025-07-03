@@ -63,8 +63,8 @@ export const SmallSlider = ({ palcement }) => {
               currentSlide >= item?.productList?.length - visibleSlides;
             return (
               <div className="" key={item?.placeNumber}>
-                <div className="flex justify-between items-center pb-8 ">
-                  <h1 className="font-tenor font-normal text-2xl">
+                <div className="flex justify-between items-center pb-4 md:pb-8">
+                  <h1 className="font-tenor font-normal text-xl md:text-2xl uppercase">
                     {i18n.language == "uz"
                       ? item.categoryNameUZB
                       : item.categoryNameRUS}
@@ -72,7 +72,7 @@ export const SmallSlider = ({ palcement }) => {
 
                   <Link to={`categoryDetail/${item.categoryId}`}>
                     <Button
-                      className="!font-tenor !font-normal !text-base !border-none !shadow-none"
+                      className="!font-tenor !font-normal !text-sm !md:text-base !border-none !shadow-none"
                       children={t("see-all")}
                       icon={<IoArrowForwardSharp />}
                       iconPosition="end"
@@ -82,11 +82,11 @@ export const SmallSlider = ({ palcement }) => {
 
                 <div
                   style={{ scrollbarWidth: "none" }}
-                  className="flex gap-7 overflow-x-scroll md:hidden"
+                  className="flex gap-2 overflow-x-scroll md:hidden"
                 >
                   {item?.productList.map((item) => (
                     <div className="w-full" key={item.id}>
-                      <div className="min-w-[284px]">
+                      <div className="w-full">
                         <ProductCard key={item.id} item={item} />
                       </div>
                     </div>
@@ -95,7 +95,7 @@ export const SmallSlider = ({ palcement }) => {
 
                 <div className="relative hidden md:block w-full max-w-[1280px] mx-auto overflow-hidden">
                   <button
-                    className={`cursor-pointer absolute left-3 top-1/2 z-50 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
+                    className={`cursor-pointer absolute left-3 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
     ${
       isAtStart ? "opacity-0  pointer-events-none" : "opacity-100 translate-x-0"
     }`}
@@ -105,7 +105,7 @@ export const SmallSlider = ({ palcement }) => {
                   </button>
 
                   <button
-                    className={`cursor-pointer absolute right-3 top-1/2 z-50 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
+                    className={`cursor-pointer absolute right-3 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
     ${
       isAtEnd
         ? "opacity-0 translate-x-8 pointer-events-none"
@@ -117,7 +117,7 @@ export const SmallSlider = ({ palcement }) => {
                   </button>
 
                   <Carousel
-                    className="!m-0 !p-0 !w-full"
+                    // className="!m-0 !p-0 !w-full"
                     ref={carouselRef}
                     dots={false}
                     infinite={false}
@@ -130,7 +130,7 @@ export const SmallSlider = ({ palcement }) => {
                   >
                     {item?.productList.map((item) => (
                       <div className="w-full" key={item.id}>
-                        <div className="min-w-[284px] mr-6">
+                        <div className="">
                           <ProductCard key={item.id} item={item} />
                         </div>
                       </div>
