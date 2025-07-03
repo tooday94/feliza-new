@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "uz.feliza.mobile",
+      "sha256_cert_fingerprints": [
+        "DF:43:76:DB:80:04:2F:4F:B5:E2:20:52:B9:8B:48:3C:F9:62:A9:AD:CA:23:3C:CA:8F:C5:3A:5E:AE:5B:5F:29"
+      ]
+    }
+  }
+]

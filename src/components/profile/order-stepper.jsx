@@ -13,8 +13,9 @@ const steps = [
   { id: 4, defaultLabel: "order.status.reached", status: "REACHED" },
 ];
 
-// Status tartibi — bu muhim!
+// Status tartibi
 const statusPriority = {
+  NEW: 0,
   REJECTED: -1,
   PACK: 1,
   SEND: 2,
@@ -24,13 +25,16 @@ const statusPriority = {
 const OrderStepper = ({ status }) => {
   const currentIndex = statusPriority[status] ?? -2;
   const { t } = useTranslation();
+
   return (
     <div className="flex items-center justify-between max-w-full mx-auto">
       {steps.map((step, index) => {
         const stepIndex = statusPriority[step.status] ?? -2;
 
         const isRejected = status === "REJECTED" && step.id === 1;
-        const isCompleted = !isRejected && index <= currentIndex;
+        const isCompleted =
+          (!isRejected && index <= currentIndex) ||
+          (status === "NEW" && step.id === 1);
 
         const label =
           step.id === 1

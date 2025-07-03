@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Radio } from "antd";
+import { Button, Flex, Form, Input, Radio, Skeleton } from "antd";
 import { useTranslation } from "react-i18next";
 import { useGetById } from "../../services/query/useGetById";
 import Cookies from "js-cookie";
@@ -9,8 +9,8 @@ import CouponCard from "./coupon-card";
 import { useCreate } from "../../services/mutations/useCreate";
 import { CiCircleInfo } from "react-icons/ci";
 import formatPrice from "../../utils/formatPrice";
-import { IoAddOutline } from "react-icons/io5";
 import AddAddress from "./add-address";
+import { endpoints } from "../../configs/endpoints";
 
 export const OrderCard = ({ sum, cart }) => {
   const userID = Cookies.get("USER-ID");
@@ -21,7 +21,7 @@ export const OrderCard = ({ sum, cart }) => {
   const { i18n, t } = useTranslation();
 
   const { data: userAdresses, isLoading: userAdressesLoading } = useGetById(
-    "/api/address/getAddressesByCustomerId/",
+    endpoints.address.getAddressByCustumerId,
     userID
   );
   const { data: userData, isLoading: userDataLoading } = useGetById(
@@ -32,7 +32,7 @@ export const OrderCard = ({ sum, cart }) => {
     "/api/couponCustomer/getCouponsByCustomerId/" + userID
   );
 
-  const { mutate } = useCreate("/api/order/addOrder");
+  const { mutate, isPending } = useCreate("/api/order/addOrder");
   const deliveryDay = 3;
   const todayObj = new Date();
   const today = todayObj.toISOString().split("T")[0];
@@ -68,6 +68,7 @@ export const OrderCard = ({ sum, cart }) => {
           if (res.success) {
             window.location.href = res.object;
           }
+          Cookies.set("lastOrderId", res?.id);
         },
         onError: (err) => {
           console.log(err);
@@ -85,14 +86,16 @@ export const OrderCard = ({ sum, cart }) => {
     }
   }, [valueCoupon, userCoupon]);
 
-  if (userAdressesLoading) {
-    return <>loading</>;
-  }
   return (
     <div className="w-full lg:p-10">
-      {userDataLoading || userAdressesLoading ? (
-        <div>
-          <h1>loading...</h1>
+      {userDataLoading || userAdressesLoading || userAdressesLoading ? (
+        <div className="space-y-10">
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
         </div>
       ) : (
         <Form
@@ -270,6 +273,7 @@ export const OrderCard = ({ sum, cart }) => {
               type="primary"
               htmlType="submit"
               children={t("cart.buy")}
+              loading={isPending}
             />
           </Form.Item>
         </Form>

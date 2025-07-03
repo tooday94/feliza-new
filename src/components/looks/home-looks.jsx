@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetList } from "../../services/query/useGetList";
 import { Button, Carousel, Skeleton } from "antd";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -12,7 +11,6 @@ const HomeLooks = () => {
     "/api/lookCollection/getLookCollection"
   );
 
-  console.log(data);
   const random6 = data?.sort(() => 0.5 - Math?.random())?.slice(0, 6);
 
   return (
@@ -52,7 +50,12 @@ const HomeLooks = () => {
                 window.scrollTo({ top: 0, behavior: "smooth" })
               )}
             >
-              <img className="max-w-sm" src={item.images[0].url} alt="" />
+              <img
+                loading="eager"
+                className="max-w-sm"
+                src={item.images[0].url}
+                alt=""
+              />
             </div>
           ))}
         </div>
@@ -81,6 +84,7 @@ const HomeLooks = () => {
                 )}
               >
                 <img
+                  loading="eager"
                   className="w-full object-cover"
                   src={item.images[0].url}
                   alt=""

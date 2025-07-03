@@ -89,4 +89,8 @@ export const routes = [
     path: "/catalog/:id",
     element: React.lazy(() => import("../pages/catalog/catalog-sub")),
   },
+  {
+    path: "/privacy",
+    element: React.lazy(() => import("../pages/privacy/privacy")),
+  },
 ];

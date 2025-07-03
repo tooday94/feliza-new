@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import Logo from "../assets/images/feliza-logo.png";
+import LogoWhite from "../assets/images/white-logo.png";
 import LanguageSelector from "../components/header/language-selector";
 import { CiSearch } from "react-icons/ci";
 import { Button, Input } from "antd";
@@ -18,6 +19,7 @@ const Header = () => {
   const [showBoard, setShowBoard] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [brandName, setBrandName] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   const handleBoard = (name) => {
     setShowSearch(false);
@@ -29,7 +31,7 @@ const Header = () => {
       setBrandName("");
     }
   };
-  const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -39,12 +41,27 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        !e.target.closest(".brand-name") &&
+        !e.target.closest(".header-board")
+      ) {
+        setShowBoard(false);
+        setBrandName("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div>
       <div className="hidden lg:flex items-center justify-between  max-w-[1280px] px-3 mx-auto py-5">
         <div className="hidden md:flex items-center justify-between gap-12">
           <p
-            className="font-tenor font-normal text-xl pb-2 cursor-pointer"
+            className="brand-name font-tenor font-normal text-xl pb-2 cursor-pointer"
             style={{
               borderBottom: brandName == "Kiyimlar" && "1px solid black",
             }}
@@ -53,7 +70,7 @@ const Header = () => {
             {t("header.catalog")}
           </p>
           <p
-            className="font-tenor font-normal text-xl pb-2 cursor-pointer"
+            className="brand-name font-tenor font-normal text-xl pb-2 cursor-pointer"
             style={{ borderBottom: brandName == "Nessa" && "1px solid black" }}
             onClick={() => handleBoard("Nessa")}
           >
@@ -94,9 +111,17 @@ const Header = () => {
         style={{ display: location.pathname == "/" ? "" : "none" }}
         className="relative lg:hidden"
       >
-        <div className="flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-1000 gap-3">
+        <div
+          className={`${
+            scrolled ? "bg-black/10" : ""
+          } flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-700 gap-3`}
+        >
           <div className="w-full flex justify-center text-white px-2">
-            <img className={scrolled ? "scale-75" : ""} src={Logo} />
+            <img
+              loading="lazy"
+              className={scrolled ? "scale-75" : ""}
+              src={LogoWhite}
+            />
           </div>
 
           {scrolled ? (
@@ -121,11 +146,13 @@ const Header = () => {
       </div>
 
       {showBoard && (
-        <HeaderBoard
-          setShowBoard={setShowBoard}
-          setBrandName={setBrandName}
-          brand={brandName}
-        />
+        <div className="header-board">
+          <HeaderBoard
+            setShowBoard={setShowBoard}
+            setBrandName={setBrandName}
+            brand={brandName}
+          />
+        </div>
       )}
       {showSearch && (
         <HeaderSearch setShowSearch={setShowSearch} brand={brandName} />

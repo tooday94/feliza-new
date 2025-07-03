@@ -12,7 +12,7 @@ const Favorites = () => {
   );
 
   return (
-    <div className="max-w-[1220px] mx-auto px-3 lg:px-0 min-h-screen space-y-20">
+    <div className="max-w-[1220px] mx-auto px-3 lg:px-0 min-h-screen">
       <div className="pt-5 lg:pt-10 pb-[30px] text-center">
         <h1 className="font-tenor font-normal text-2xl text-primary uppercase">
           {t("favorites.title")}

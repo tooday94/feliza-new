@@ -11,6 +11,7 @@ import { PiPlus } from "react-icons/pi";
 import { toast } from "react-toastify";
 import { useCreate } from "../../services/mutations/useCreate";
 import { useDeleteById } from "../../services/mutations/useDeleteById";
+import { endpoints } from "../../configs/endpoints";
 
 const AddressCard = () => {
   const userID = Cookies.get("USER-ID");
@@ -22,7 +23,7 @@ const AddressCard = () => {
   const [selectedSubregion, setselectedSubregion] = useState(null);
   const { i18n, t } = useTranslation();
   const { data, isLoading } = useGetById(
-    "/api/address/getAddressesByCustomerId/",
+    endpoints.address.getAddressByCustumerId,
     userID
   );
   const { data: AllRegions } = useGetList("/api/region/getAllRegions");

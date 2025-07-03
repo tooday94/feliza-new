@@ -23,9 +23,9 @@ const CartIcon = () => {
       onClick={() => navigate("/cart")}
     >
       {location.pathname == "/cart" ? (
-        <RiShoppingBag3Fill size={21} />
+        <RiShoppingBag3Fill size={24} />
       ) : (
-        <LuShoppingBag size={21} />
+        <LuShoppingBag size={24} />
       )}
     </Badge>
   );

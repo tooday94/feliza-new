@@ -6,7 +6,7 @@ const CouponCard = ({ name, credit, date }) => {
   const { t } = useTranslation();
   return (
     <div className="relative">
-      <img src={CouponBg} alt="" />
+      <img loading="lazy" src={CouponBg} alt="" />
       <img
         className="w-[42px] absolute bottom-9 left-2 -rotate-90"
         src={Logo}

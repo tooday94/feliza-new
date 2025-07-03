@@ -21,22 +21,25 @@ export const endpoints = {
   },
   category: {
     categoryBlocks: {
-      getCategoryByBlockTypeMenu_1: "/api/categoryBlock/getAllByCategoryBlockType/MENU_1",
-      getCategoryByBlockTypeMenu_2: "/api/categoryBlock/getAllByCategoryBlockType/MENU_2",
-    }
+      getCategoryByBlockTypeMenu_1:
+        "/api/categoryBlock/getAllByCategoryBlockType/MENU_1",
+      getCategoryByBlockTypeMenu_2:
+        "/api/categoryBlock/getAllByCategoryBlockType/MENU_2",
+    },
+    getSubCategoriesByParent: "/api/categories/getSubCategoriesByParent/",
   },
   products: {
     getProductByCategoryId: "/api/product/getProductByCategoryId/",
-    getProductById: '/api/product/getProductById/',
-    searchProduct: '/api/product/searchProduct/',
+    getProductById: "/api/product/getProductById/",
+    searchProduct: "/api/product/searchProduct/",
   },
   cart: {
     addCartItem: "/api/cartItem/addCartItem",
-    getCart: "/api/cartItem/byCustomerId/"
+    getCart: "/api/cartItem/byCustomerId/",
   },
   favorites: {
     addFavoriteItem: "/api/likedItem/addLikedItem",
     deleteFavriteItem: "/api/likedItem/deleteLikedItem/",
     getFavorites: "/api/likedItem/getByCustomerId/",
-  }
+  },
 };
