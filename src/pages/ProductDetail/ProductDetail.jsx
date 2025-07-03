@@ -379,8 +379,7 @@ function ProductDetail() {
                             </div>
                             {isOpen && (
                                 <p className='md:mt-6 mt-2 text-gray-700 whitespace-pre-line break-words'>
-                                    {(i18n.language === 'uz' ? data?.descriptionUZB : data?.descriptionRUS).split('/')
-                                    }
+                                    {(i18n.language === 'uz' ? data?.descriptionUZB : data?.descriptionRUS)?.split('/')}
                                 </p>
                             )}
                         </div>
