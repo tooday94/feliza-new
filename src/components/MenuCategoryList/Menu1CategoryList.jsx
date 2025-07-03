@@ -36,23 +36,24 @@ function Menu1CategoryList() {
   );
 
   return (
-    <div
-      className="max-w-[1280px] mx-auto md:px-4 py-8 overflow-x-auto scrollbar-hide"
-      style={{
-        scrollbarWidth: "none",
-      }}
-    >
-      <div className="flex gap-2 sm:gap-6 font-tenor w-max">
+    <div className="max-w-[1280px] w-full mx-auto py-8 overflow-x-auto font-tenor scrollbar-hide">
+      <div
+        className="flex gap-2 sm:gap-4 w-max"
+        style={{
+          scrollbarWidth: "none",
+        }}
+      >
         {sortedData?.map((item, index) => (
           <div
-            onClick={() =>
-              navigate(
-                `/categoryDetail/${item.category.id}`,
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              )
-            }
             key={index}
-            className="min-w-[160px] sm:min-w-[240px] relative group overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+            onClick={() => {
+              navigate(`/categoryDetail/${item.category.id}`);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="w-[45vw] sm:w-[240px] sm:h-[240px] relative group overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer scrollbar-hide"
+            style={{
+              scrollbarWidth: "none",
+            }}
           >
             <img
               src={item.category.horizontalImage?.url}
@@ -61,10 +62,10 @@ function Menu1CategoryList() {
                   ? item.category.nameRUS
                   : item.category.nameUZB
               }
-              className="w-full h-[180px] sm:h-[240px] object-cover"
+              className="w-full h-[190px] sm:h-[240px] object-cover"
             />
-            <div className="absolute inset-0 bg-[#0000004D] group-hover:bg-transparent flex items-center group-hover:items-end justify-center transition-all duration-500">
-              <h2 className="text-white group-hover:text-[#0D0D0D] text-base sm:text-lg font-bold text-center group-hover:mb-4 mb-0 px-2">
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent flex items-center group-hover:items-end justify-center transition-all duration-500">
+              <h2 className="text-white group-hover:text-[#0D0D0D] text-sm sm:text-base font-bold text-center group-hover:mb-4 mb-0 px-2">
                 {i18n.language === "uz"
                   ? item.category.nameUZB
                   : item.category.nameRUS}
