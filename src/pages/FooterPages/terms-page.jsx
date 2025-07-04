@@ -155,8 +155,8 @@ const TermsPage = () => {
                     <li> {
                         i18n.language === 'uz' ? `Elektron pochta:` : 'Электронная почта:'
                     }<a
-                        target='_blank'
-                        href="feliz.uz" className="text-blue-600 underline">info@mybazar.uz</a></li>
+                        href="#" className="text-blue-600 underline">
+                            feliz.uz@gmail.com</a></li>
                 </ul>
             </section>
         </div>

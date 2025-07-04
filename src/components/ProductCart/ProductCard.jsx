@@ -414,11 +414,10 @@ const ProductCard = ({ item }) => {
                         setSelectedSize(""); // Rang o‘zgarsa razmerni tozalaymiz
                       }}
                       className={`md:w-[90px] w-[60px] h-[90px] md:h-[120px] object-cover cursor-pointer transition 
-        ${
-          selectedColorIndex === index
-            ? "border-2 border-black shadow-md"
-            : "border-gray-300"
-        }`}
+        ${selectedColorIndex === index
+                          ? "border-2 border-black shadow-md"
+                          : "border-gray-300"
+                        }`}
                       src={item.productImages[0]?.url}
                       alt={`Rasm ${index + 1}`}
                     />
@@ -433,11 +432,10 @@ const ProductCard = ({ item }) => {
                       key={idx}
                       onClick={() => setSelectedSize(variant.size)}
                       className={`px-4 py-2 border uppercase text-sm cursor-pointer
-        ${
-          selectedSize === variant.size
-            ? "bg-black text-white"
-            : "bg-white text-black hover:bg-gray-200"
-        }`}
+        ${selectedSize === variant.size
+                          ? "bg-black text-white"
+                          : "bg-white text-black hover:bg-gray-200"
+                        }`}
                     >
                       {variant.size}
                     </button>
