@@ -86,7 +86,7 @@ export const SmallSlider = ({ palcement }) => {
                 >
                   {item?.productList.map((item) => (
                     <div className="w-full" key={item.id}>
-                      <div className="w-full">
+                      <div className="w-full pb-1">
                         <ProductCard key={item.id} item={item} />
                       </div>
                     </div>
@@ -117,7 +117,6 @@ export const SmallSlider = ({ palcement }) => {
                   </button>
 
                   <Carousel
-                    // className="!m-0 !p-0 !w-full"
                     ref={carouselRef}
                     dots={false}
                     infinite={false}
@@ -130,7 +129,7 @@ export const SmallSlider = ({ palcement }) => {
                   >
                     {item?.productList.map((item) => (
                       <div className="w-full" key={item.id}>
-                        <div className="">
+                        <div className="pb-2">
                           <ProductCard key={item.id} item={item} />
                         </div>
                       </div>
