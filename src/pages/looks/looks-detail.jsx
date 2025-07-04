@@ -52,13 +52,11 @@ const LooksDetail = () => {
             <div className="w-full">
               <div
                 style={{ scrollbarWidth: "none" }}
-                className="flex gap-7 w-full max-w-[955px] overflow-x-scroll pr-40"
+                className="flex md:gap-7 gap-2 w-full max-w-[955px] overflow-x-scroll pr-5 md:pr-30"
               >
                 {data?.productResponseDtos.map((item) => (
-                  <div className="">
-                    <div className="min-w-[240px] max-w-[240px] w-full">
-                      <ProductCard item={item} />
-                    </div>
+                  <div>
+                    <ProductCard item={item} />
                   </div>
                 ))}
               </div>

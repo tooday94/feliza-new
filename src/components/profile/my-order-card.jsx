@@ -278,12 +278,10 @@ export const MyOrderCard = () => {
 
               <div
                 style={{ scrollbarWidth: "none" }}
-                className="flex justify-between gap-4 overflow-x-scroll"
+                className="flex gap-4 overflow-x-scroll"
               >
                 {favorites?.map((item) => (
-                  <div className="min-w-[296px]">
-                    <ProductCard item={item?.product} key={item?.id} />
-                  </div>
+                  <ProductCard item={item?.product} key={item?.id} />
                 ))}
               </div>
             </div>

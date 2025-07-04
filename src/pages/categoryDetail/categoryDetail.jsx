@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetList } from '../../services/query/useGetList';
 import { endpoints } from '../../configs/endpoints';
 import ProductCard from '../../components/ProductCart/ProductCard';
+import { Skeleton } from 'antd';
 
 function CategoryDetail() {
     const { id } = useParams();
@@ -39,9 +40,25 @@ function CategoryDetail() {
 
     if (isLoading && page === 0) {
         return (
-            <div className="text-center py-10 text-gray-500 text-lg font-medium">
-                {i18n.language === 'uz' ? 'Yuklanmoqda...' :
-                    i18n.language === 'ru' ? 'Загрузка...' : ""}
+            <div
+                style={{ scrollbarWidth: "none" }}
+                className="flex justify-between gap-3 overflow-x-scroll overflow-hidden max-w-[1280px] mx-auto"
+            >
+                {Array.from({ length: 4 }).map((item, index) => (
+                    <div key={index} className="space-y-2 w-fit">
+                        <Skeleton.Image active className="!w-[284px] !h-[350px]" />
+                        <div className="">
+                            <Skeleton
+                                active
+                                round
+                                title={false}
+                                paragraph={{ rows: 3 }}
+                                className="!w-[284px]"
+                                rows={2}
+                            />
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     }
