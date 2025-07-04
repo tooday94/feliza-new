@@ -32,7 +32,7 @@ function AboutPage() {
                         ? `Bundan tashqari, bizda Nessa nomli alohida brend ham mavjud. Nessa brendi islomiy kiyinish madaniyatiga hurmat bilan yondashib, hijob kiyadigan ayollarimiz uchun zamonaviy va qulay kiyimlar yaratishga ixtisoslashgan. Bizning maqsadimiz – har bir ayolning e'tiqodiga mos va ayni paytda zamonaviy uslubda kiyinishini ta'minlash.`
                         : `Кроме того, у нас есть отдельный бренд под названием Nessa. Бренд Nessa с уважением относится к культуре исламской одежды и специализируется на создании современной и удобной одежды для наших женщин, носящих хиджаб. Наша цель – обеспечить каждой женщине одежду, соответствующую её вере и в то же время современному стилю.`}
                 </p>
-                <img src={felizaimg3} alt="Feliza fashion 2" className="rounded-lg w-full object-cover shadow-md" />
+                <img src={felizaimg1} alt="Feliza fashion 2" className="rounded-lg w-full object-cover shadow-md" />
             </section>
 
             <section className="space-y-4">
@@ -44,7 +44,7 @@ function AboutPage() {
                         ? `Har bir libosimiz ustida alohida izlanish va ijodiy jarayon olib boruvchi professional dizaynerlar jamoasi ishlaydi. Ularning mahorati va ijodiy ko'rishlari mahsulotlarimizda namoyon bo'ladi, bu esa har bir libosni o'ziga xos va betakror qiladi. Bizning dizaynerlarimiz moda tendensiyalarini kuzatib borish bilan birga, har bir ayolning o'ziga xosligini va shaxsiyatini ta'kidlaydigan uslublarni yaratishga intilishadi.`
                         : `Над каждым нашим нарядом работает команда профессиональных дизайнеров, проводящих исследования и творческий процесс. Их мастерство и творческое видение отражаются в наших продуктах, что делает каждое платье уникальным и неповторимым. Наши дизайнеры не только следят за модными тенденциями, но и стремятся создавать стили, подчеркивающие индивидуальность и личность каждой женщины.`}
                 </p>
-                <img src={felizaimg1} alt="Feliza fashion 3" className="rounded-lg w-full object-cover shadow-md" />
+                <img src={felizaimg3} alt="Feliza fashion 3" className="rounded-lg w-full object-cover shadow-md" />
             </section>
 
             <section className="space-y-4">
