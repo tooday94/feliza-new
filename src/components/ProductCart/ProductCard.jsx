@@ -19,7 +19,6 @@ const ProductCard = ({ item }) => {
   const hasDiscount = item.sale > 0;
   const navigate = useNavigate();
   const userID = Cookies.get("USER-ID");
-  console.log(item);
 
   const { mutate } = useCreate(endpoints.favorites.addFavoriteItem);
   const { mutate: addCart } = useCreate(endpoints.cart.addCartItem);
