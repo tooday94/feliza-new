@@ -8,7 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { useState } from 'react';
 import ProductCard from './../../components/ProductCart/ProductCard';
-import { Button, Carousel, Drawer, message } from 'antd';
+import { Button, Carousel, Drawer, Image, message } from 'antd';
 import Cookies from 'js-cookie';
 import { useCreate } from './../../services/mutations/useCreate';
 import { toast } from 'react-toastify';
@@ -558,7 +558,15 @@ function ProductDetail() {
                                         <div className='flex gap-2'>
                                             {
                                                 review?.images?.map((image, index) => (
-                                                    <img key={index} className='w-[60px] h-[80px] border object-cover mt-2.5' src={image?.url} alt=" " />
+                                                    <Image
+                                                        key={index}
+                                                        className="w-[60px] h-[80px] border object-cover mt-2.5"
+                                                        src={image?.url}
+                                                        alt=" "
+                                                        style={{ width: 60, height: 80 }}
+                                                        preview={true}
+                                                    />
+
                                                 ))
                                             }
                                         </div>
