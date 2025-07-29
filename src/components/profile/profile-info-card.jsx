@@ -15,7 +15,7 @@ import { useUpdateById } from "../../services/mutations/useUpdateById";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import { PiLockKey } from "react-icons/pi";
+import { PiLockKey, PiUser } from "react-icons/pi";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
@@ -81,11 +81,17 @@ export const ProfileInfoCard = () => {
       <div className="h-full text-center">
         <div className="flex flex-col items-center gap-6 justify-center">
           <div className="flex items-end">
-            <img
-              className="size-[90px] object-cover rounded-full"
-              src={userData?.image?.url}
-              alt=""
-            />
+            {userData?.image?.url ? (
+              <img
+                className="size-[90px] object-cover rounded-full border"
+                src={userData?.image?.url}
+                alt=""
+              />
+            ) : (
+              <div className="size-[90px] object-cover rounded-full border flex justify-center items-center">
+                <PiUser size={36} />
+              </div>
+            )}
             <Upload
               onChange={handleChange}
               beforeUpload={() => false}

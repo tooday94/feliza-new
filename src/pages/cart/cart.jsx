@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
-import { Button, Checkbox, Drawer, message, Modal } from "antd";
+import { Button, Checkbox, Drawer, Modal } from "antd";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -13,6 +13,7 @@ import { useUpdateById } from "../../services/mutations/useUpdateById";
 import { OrderCard } from "../../components/cart/order-card";
 import formatPrice from "../../utils/formatPrice";
 import { useDeleteGroup } from "../../services/mutations/useDeleteGroup";
+import { toast } from "react-toastify";
 const Cart = () => {
   const [deletingId, setdeletingId] = useState(null);
   const [isBuying, setisBuying] = useState(false);
@@ -49,10 +50,14 @@ const Cart = () => {
 
   const handleCheckAll = (e) => {
     const checked = e.target.checked;
+
     setCheckAll(checked);
     if (checked) {
-      const allIds = data.map((item) => item.cartItemId);
-      setCart(allIds);
+      const availableIds = data
+        .filter((item) => item.productSizeVariant.quantity > 0)
+        .map((item) => item.cartItemId);
+
+      setCart(availableIds);
     } else {
       setCart([]);
     }
@@ -73,7 +78,14 @@ const Cart = () => {
     setdeletingId(id);
     mutate(id, {
       onSuccess: () => {
-        message.success("Mahsulot SAvatchadan olib tashlandi!");
+        toast.success(
+          i18n.language == "uz"
+            ? "Mahsulot Savatchadan olib tashlandi!"
+            : "Товар удален из корзины!",
+          {
+            position: "top-center",
+          }
+        );
       },
     });
   };
@@ -89,15 +101,6 @@ const Cart = () => {
   );
 
   const handleEdit = () => {
-    console.log({
-      id: selectedEditCartId,
-      data: {
-        customerId: userID,
-        productSizeVariantId: selectedEditProductSize,
-        quantity: quantityEdit,
-      },
-    });
-
     updateCart(
       {
         id: selectedEditCartId,
@@ -117,15 +120,12 @@ const Cart = () => {
       }
     );
   };
-  console.log(sum);
-  console.log(cart);
 
   const { mutate: deleteCartGroup, isPending: deleteGroupLoading } =
     useDeleteGroup(
       "/api/cartItem/deleteCartItemGroup",
       "/api/cartItem/byCustomerId/"
     );
-  console.log(data);
 
   return (
     <>
@@ -224,20 +224,28 @@ const Cart = () => {
                       <h1 className="font-tenor font-normal text-lg lg:text-xl text-primary leading-[150%]">
                         {i18n.language == "uz" ? item.nameUZB : item.nameRUS}
                       </h1>
-                      <Checkbox
-                        style={{
-                          width: "24px",
-                          height: "24px",
-                          transform: "scale(1.5)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                        checked={cart.includes(item.cartItemId)}
-                        onChange={(e) =>
-                          handleCheck(item.cartItemId, e.target.checked)
-                        }
-                      />
+                      {item.productSizeVariant.quantity == 0 ? (
+                        <p className="font-tenor font-normal text-sm text-red-500">
+                          {i18n.language == "uz"
+                            ? "Mahsulot qolmagan"
+                            : "Товаров не осталось."}
+                        </p>
+                      ) : (
+                        <Checkbox
+                          style={{
+                            width: "24px",
+                            height: "24px",
+                            transform: "scale(1.5)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                          checked={cart.includes(item.cartItemId)}
+                          onChange={(e) =>
+                            handleCheck(item.cartItemId, e.target.checked)
+                          }
+                        />
+                      )}
                     </div>
                     <p className="font-tenor font-normal text-base text-primary">
                       {item.salePrice
@@ -312,8 +320,12 @@ const Cart = () => {
                         <Button
                           loading={updateCartLoading}
                           disabled={
-                            item.productSizeVariant.quantity == item?.quantity
+                            item.productSizeVariant.quantity == 0 ||
+                            item.quantity >= item.productSizeVariant.quantity
                           }
+                          // disabled={
+                          //   item.productSizeVariant.quantity == item?.quantity
+                          // }
                           icon={<PiPlus color="#0d0d0d" />}
                           onClick={() => {
                             const newQuantity = item?.quantity + 1;

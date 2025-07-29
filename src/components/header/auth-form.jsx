@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Grid, Input, message, Radio } from "antd";
+import { Button, Flex, Form, Grid, Input, Radio } from "antd";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCreate } from "../../services/mutations/useCreate";
@@ -6,6 +6,7 @@ import { endpoints } from "../../configs/endpoints";
 import Cookies from "js-cookie";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AuthForm = ({ onClose }) => {
   const [form] = Form.useForm();
@@ -132,7 +133,6 @@ const AuthForm = ({ onClose }) => {
                 length={4}
                 className="h-12"
                 placeholder={t("header.register.phone")}
-                style={{ borderRadius: 0, border: "2px solid red" }}
               />
             </Form.Item>
 
@@ -270,7 +270,7 @@ const AuthForm = ({ onClose }) => {
                   },
                   onError: (error) => {
                     console.error("Login failed", error);
-                    message.error("Login failed. Please try again.");
+                    toast.error("Login failed. Please try again.");
                   },
                 }
               );
