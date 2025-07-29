@@ -220,16 +220,26 @@ const Cart = () => {
 
                 <div className="w-full flex flex-col justify-between">
                   <div className="lg:pb-16">
-                    <div className="flex justify-between items-center w-full lg:pb-5 gap-3">
+                    <div
+                      style={{
+                        flexWrap:
+                          item.productSizeVariant.quantity == 0
+                            ? "wrap-reverse"
+                            : "nowrap",
+                      }}
+                      className="flex justify-between items-center w-full lg:pb-5 gap-3"
+                    >
                       <h1 className="font-tenor font-normal text-lg lg:text-xl text-primary leading-[150%]">
                         {i18n.language == "uz" ? item.nameUZB : item.nameRUS}
                       </h1>
                       {item.productSizeVariant.quantity == 0 ? (
-                        <p className="font-tenor font-normal text-sm text-red-500">
-                          {i18n.language == "uz"
-                            ? "Mahsulot qolmagan"
-                            : "Товаров не осталось."}
-                        </p>
+                        <div className="border w-full text-end">
+                          <p className="font-tenor font-normal text-sm text-red-500">
+                            {i18n.language == "uz"
+                              ? "Mahsulot qolmagan"
+                              : "Товаров не осталось."}
+                          </p>
+                        </div>
                       ) : (
                         <Checkbox
                           style={{
