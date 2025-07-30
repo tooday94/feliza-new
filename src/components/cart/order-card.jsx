@@ -41,16 +41,16 @@ export const OrderCard = ({ sum, cart }) => {
   const formattedDate = futureDate.toISOString().split("T")[0];
 
   const onSubmit = (data) => {
-    console.log({
-      ...data,
-      shippingCost: 0,
-      deliveryDays: deliveryDay,
-      deliveryDate: formattedDate,
-      cartItemIds: cart,
-      customerId: userID,
-      orderCost: sum,
-      orderTime: today,
-    });
+    // console.log({
+    //   ...data,
+    //   shippingCost: 0,
+    //   deliveryDays: deliveryDay,
+    //   deliveryDate: formattedDate,
+    //   cartItemIds: cart,
+    //   customerId: userID,
+    //   orderCost: sum,
+    //   orderTime: today,
+    // });
     mutate(
       {
         ...data,
@@ -105,7 +105,7 @@ export const OrderCard = ({ sum, cart }) => {
           initialValues={{
             receiverName: userData?.fullName,
             receiverPhoneNumber: userData?.phoneNumber,
-            addressId: userAdresses[0].id,
+            // addressId: userAdresses[0]?.id || "",
             paymentMethod: "PAYME",
           }}
         >
@@ -133,7 +133,19 @@ export const OrderCard = ({ sum, cart }) => {
             </h1>
           </Flex>
 
-          <Form.Item className="lg:!pl-4" name={"addressId"}>
+          <Form.Item
+            className="lg:!pl-4"
+            name={"addressId"}
+            rules={[
+              {
+                required: true,
+                message:
+                  i18n.language == "ru"
+                    ? "Выберите адрес доставки"
+                    : "Yetkazib berish manzilingizni qo'shing",
+              },
+            ]}
+          >
             <Radio.Group
               value={value}
               onChange={(e) => {
@@ -178,36 +190,48 @@ export const OrderCard = ({ sum, cart }) => {
             </div>
           </Flex>
 
-          <Flex className="!pb-[30px]">
-            <h1 className="font-tenor font-normal text-xl text-primary">
-              {t("order.coupons")}
-            </h1>
-          </Flex>
-
-          <Form.Item className="lg:!pl-4" name={"couponCustomerId"}>
-            <Radio.Group
-              value={valueCoupon}
-              onChange={(e) => {
-                const selectedValue = e.target.value;
-                setValueCoupon((prev) =>
-                  prev === selectedValue ? null : selectedValue
-                );
-              }}
-              className="!space-y-2.5"
-              options={userCoupon?.map((item) => ({
-                label: (
-                  <CouponCard
-                    name={item.coupon.name}
-                    credit={item.coupon.credit}
+          {userCoupon?.length != 0 ||
+            (typeof userCoupon != "string" && (
+              <>
+                <Flex className="!pb-[30px]">
+                  <h1 className="font-tenor font-normal text-xl text-primary">
+                    {t("order.coupons")}
+                  </h1>
+                </Flex>
+                <Form.Item className="lg:!pl-4" name={"couponCustomerId"}>
+                  <Radio.Group
+                    value={valueCoupon}
+                    onChange={(e) => {
+                      const selectedValue = e.target.value;
+                      setValueCoupon((prev) =>
+                        prev === selectedValue ? null : selectedValue
+                      );
+                    }}
+                    className="!space-y-2.5"
+                    options={
+                      userCoupon?.map((item) => ({
+                        label: (
+                          <CouponCard
+                            name={item.coupon.name}
+                            credit={item.coupon.credit}
+                          />
+                        ),
+                        value: item?.id,
+                        className: `!bg-white !w-full !flex !flex-row-reverse ${
+                          value == item.id ? "!text-primary" : "!text-secondary"
+                        }`,
+                      })) || [
+                        {
+                          label: t("order.no-coupons"),
+                          value: null,
+                          className: "!bg-white !w-full !text-secondary",
+                        },
+                      ]
+                    }
                   />
-                ),
-                value: item?.id,
-                className: `!bg-white !w-full !flex !flex-row-reverse ${
-                  value == item.id ? "!text-primary" : "!text-secondary"
-                }`,
-              }))}
-            />
-          </Form.Item>
+                </Form.Item>
+              </>
+            ))}
 
           <Flex vertical gap={30}>
             <h1 className="font-tenor font-normal text-xl text-primary">
@@ -249,8 +273,10 @@ export const OrderCard = ({ sum, cart }) => {
               <div className="flex justify-between">
                 <h1>{t("order.coupons-used")}</h1>
                 <p>
-                  {userCoupon?.filter((coupon) => coupon?.id == valueCoupon)[0]
-                    ?.coupon?.credit || 0}{" "}
+                  {userCoupon ||
+                    [].filter((coupon) => coupon?.id == valueCoupon)[0]?.coupon
+                      ?.credit ||
+                    0}{" "}
                   {t("cart.sum")}
                 </p>
               </div>
