@@ -105,7 +105,7 @@ export const OrderCard = ({ sum, cart }) => {
           initialValues={{
             receiverName: userData?.fullName,
             receiverPhoneNumber: userData?.phoneNumber,
-            // addressId: userAdresses[0]?.id || "",
+            addressId: userAdresses[0]?.id || "",
             paymentMethod: "PAYME",
           }}
         >
@@ -190,7 +190,7 @@ export const OrderCard = ({ sum, cart }) => {
             </div>
           </Flex>
 
-          {userCoupon?.length != 0 ||
+          {userCoupon?.length == 0 ||
             (typeof userCoupon != "string" && (
               <>
                 <Flex className="!pb-[30px]">
@@ -273,8 +273,7 @@ export const OrderCard = ({ sum, cart }) => {
               <div className="flex justify-between">
                 <h1>{t("order.coupons-used")}</h1>
                 <p>
-                  {userCoupon ||
-                    [].filter((coupon) => coupon?.id == valueCoupon)[0]?.coupon
+                  {userCoupon.filter((coupon) => coupon?.id == valueCoupon)[0]?.coupon
                       ?.credit ||
                     0}{" "}
                   {t("cart.sum")}
