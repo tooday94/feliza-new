@@ -45,9 +45,6 @@ const AddressCard = () => {
   const { mutate: deleteAddress } = useDeleteById(
     "/api/address/deleteAddress/"
   );
-  console.log(data);
-  console.log(selectedAddress);
-  console.log(selectedRegion);
 
   if (isLoading) {
     return <></>;
@@ -65,11 +62,16 @@ const AddressCard = () => {
                     ? item.region.nameUZB
                     : item.region.nameRUS}
                 </h1>
-                <p className="text-sm text-primary font-tenor">
-                  {i18n.language == "uz"
-                    ? item.subRegion.nameUZB
-                    : item.subRegion.nameRUS}
-                </p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="text-sm text-primary font-tenor font-semibold">
+                    {i18n.language == "uz"
+                      ? item.subRegion.nameUZB
+                      : item.subRegion.nameRUS}
+                  </p>
+                  <p className="text-sm text-primary font-tenor">
+                    {item.postFilial.postName}
+                  </p>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-4">
