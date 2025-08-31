@@ -31,6 +31,7 @@ export const OrderCard = ({ sum, cart }) => {
   const { data: userCoupon } = useGetList(
     "/api/couponCustomer/getCouponsByCustomerId/" + userID
   );
+  console.log(userCoupon);
 
   const { mutate, isPending } = useCreate("/api/order/addOrder");
   const deliveryDay = 3;
@@ -270,13 +271,13 @@ export const OrderCard = ({ sum, cart }) => {
                 <h1>{t("order.delivery")}</h1>
                 <p>0 {t("cart.sum")}</p>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between font-tenor text-primary">
                 <h1>{t("order.coupons-used")}</h1>
                 <p>
-                  {userCoupon.filter((coupon) => coupon?.id == valueCoupon)[0]?.coupon
-                      ?.credit ||
-                    0}{" "}
-                  {t("cart.sum")}
+                  {Array.isArray(userCoupon)
+                    ? userCoupon.find((coupon) => coupon?.id === valueCoupon)
+                        ?.coupon?.credit || 0
+                    : 0}
                 </p>
               </div>
               <div className="flex justify-between">
