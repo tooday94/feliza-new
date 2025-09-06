@@ -233,7 +233,7 @@ const Cart = () => {
                         {i18n.language == "uz" ? item.nameUZB : item.nameRUS}
                       </h1>
                       {item.productSizeVariant.quantity == 0 ? (
-                        <div className="border w-full text-end">
+                        <div className="w-full text-end">
                           <p className="font-tenor font-normal text-sm text-red-500">
                             {i18n.language == "uz"
                               ? "Mahsulot qolmagan"
