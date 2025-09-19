@@ -74,17 +74,17 @@ function Menu2CategoryList() {
   return (
     <div className="relative max-w-[1280px] mx-auto">
       {/* Chap tugma (faqat desktopda ko‘rinadi) */}
-      {
-        showLeftBtn && (
-          <button
-            className={`cursor-pointer absolute left-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
+      {/* { */}
+      {/* // showLeftBtn && ( */}
+      <button
+        className={`cursor-pointer absolute left-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
           `}
-            onClick={scrollLeft}
-          >
-            <IoArrowBackSharp size={20} />
-          </button>
-        )
-      }
+        onClick={scrollLeft}
+      >
+        <IoArrowBackSharp size={20} />
+      </button>
+      {/* ) */}
+      {/* } */}
 
       {/* Scrollable container */}
       <div
