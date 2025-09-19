@@ -96,9 +96,8 @@ export const SmallSlider = ({ palcement }) => {
                 <div className="relative hidden md:block w-full max-w-[1280px] mx-auto overflow-hidden">
                   <button
                     className={`cursor-pointer absolute left-3 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
-    ${
-      isAtStart ? "opacity-0  pointer-events-none" : "opacity-100 translate-x-0"
-    }`}
+    ${isAtStart ? "opacity-0  pointer-events-none" : "opacity-100 translate-x-0"
+                      }`}
                     onClick={prev}
                   >
                     <IoArrowBackSharp size={20} />
@@ -106,11 +105,10 @@ export const SmallSlider = ({ palcement }) => {
 
                   <button
                     className={`cursor-pointer absolute right-3 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
-    ${
-      isAtEnd
-        ? "opacity-0 translate-x-8 pointer-events-none"
-        : "opacity-100 translate-x-0"
-    }`}
+    ${isAtEnd
+                        ? "opacity-0 translate-x-8 pointer-events-none"
+                        : "opacity-100 translate-x-0"
+                      }`}
                     onClick={next}
                   >
                     <IoArrowForwardSharp size={20} />

@@ -2,15 +2,36 @@ import { useGetList } from "../../services/query/useGetList";
 import { endpoints } from "../../configs/endpoints";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
+import { useEffect } from "react";
 
 function Menu2CategoryList() {
+  const [showLeftBtn, setShowLeftBtn] = useState(false);
   const navigate = useNavigate();
   const { data, isLoading } = useGetList(
     endpoints.category.categoryBlocks.getCategoryByBlockTypeMenu_2,
     {}
   );
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        setShowLeftBtn(containerRef.current.scrollLeft > 0);
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
+
+  }, []);
   const { i18n } = useTranslation();
   const containerRef = useRef(null);
 
@@ -48,16 +69,22 @@ function Menu2CategoryList() {
     }
   };
 
+
+
   return (
     <div className="relative max-w-[1280px] mx-auto">
       {/* Chap tugma (faqat desktopda ko‘rinadi) */}
-      <button
-        onClick={scrollLeft}
-        className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 
-                   bg-white/80 hover:bg-white text-black px-3 py-2 shadow-md z-10"
-      >
-        <AiOutlineLeft size={20} />
-      </button>
+      {
+        showLeftBtn && (
+          <button
+            className={`cursor-pointer absolute left-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
+          `}
+            onClick={scrollLeft}
+          >
+            <IoArrowBackSharp size={20} />
+          </button>
+        )
+      }
 
       {/* Scrollable container */}
       <div
@@ -98,11 +125,11 @@ function Menu2CategoryList() {
 
       {/* O‘ng tugma (faqat desktopda ko‘rinadi) */}
       <button
+        className={`cursor-pointer absolute right-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
+   `}
         onClick={scrollRight}
-        className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 
-                   bg-white/80 hover:bg-white text-black px-3 py-2 shadow-md z-10"
       >
-        <AiOutlineRight size={20} />
+        <IoArrowForwardSharp size={20} />
       </button>
     </div>
   );
