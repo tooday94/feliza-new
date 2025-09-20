@@ -77,7 +77,7 @@ function Menu2CategoryList() {
       {/* { */}
       {/* // showLeftBtn && ( */}
       <button
-        className={`cursor-pointer absolute left-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
+        className={`hidden md:flex cursor-pointer absolute left-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
           `}
         onClick={scrollLeft}
       >
@@ -125,7 +125,7 @@ function Menu2CategoryList() {
 
       {/* O‘ng tugma (faqat desktopda ko‘rinadi) */}
       <button
-        className={`cursor-pointer absolute right-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
+        className={`hidden md:flex cursor-pointer absolute right-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
    `}
         onClick={scrollRight}
       >
