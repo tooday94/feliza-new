@@ -14,6 +14,7 @@ import { useCreate } from './../../services/mutations/useCreate';
 import { toast } from 'react-toastify';
 import { FaPlus } from "react-icons/fa";
 import { OrderCard } from '../../components/cart/order-card';
+import AuthForm from '../../components/header/auth-form';
 
 
 
@@ -36,133 +37,186 @@ function ProductDetail() {
     const [count, setCount] = useState(1);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [cartItemId, setcartItemId] = useState("")
+    const [authOpen, setAuthOpen] = useState(false)
+
     console.log("Cartitemi", cartItemId);
     console.log(" productVariants", data);
 
     // savatga qoshish funktsiyasi
     const addToCart = () => {
+        // Agar foydalanuvchi tizimga kirmagan bo'lsa, auth modal ochiladi
+        if (!userID) {
+            setAuthOpen(true);
+            return;
+        }
+
+        // Tanlangan rang variantini olish
         const selectedColorVariant = productVariants?.[selectedColorIndex];
 
         if (!selectedColorVariant) {
-            toast.error(i18n.language === 'uz' ? "Iltimos, rang tanlang" : "Пожалуйста, выберите цвет", {
-                autoClose: 1000,
-            });
-            return;
-        }
-
-        //  Tanlangan razmerga mos productSizeVariant ni topish
-        const selectedSizeVariant = selectedColorVariant.productSizeVariantList?.find(
-            (variant) => variant.size === selectedSize
-        );
-
-        if (!selectedSizeVariant) {
-            toast.error(i18n.language === 'uz' ? "Iltimos, razmer tanlang" : "Пожалуйста, выберите размер", {
-                autoClose: 1000,
-            });
-            return;
-        }
-        //  Mutate funksiyasini chaqirish
-        mutate({
-            customerId: userID,
-            productSizeVariantId: selectedSizeVariant.id,
-            quantity: count,
-        }, {
-            onSuccess: (data) => {
-                console.log("Savatga qo'shildi:", data);
-                toast.success(i18n.language === 'uz' ? `Mahsulot savatga qo‘shildi` : "Товар добавлен в корзину", {
-                    autoClose: 1000,
-                });
-                setCount(1);
-            },
-            onError: (error) => {
-                console.error("Xatolik korish :", error);
-                toast.error(i18n.language === 'uz' ? "Iltimos,ro'yxatdan o'ting" : "Пожалуйста, войдите в систему", {
-                    autoClose: 1000,
-                });
-            }
-        });
-    };
-
-    // sotib olish funksiyasi
-    const addOrder = () => {
-        if (!userID) {
             toast.error(
-                i18n.language === 'uz' ? "Iltimos, ro'yxatdan o'ting" : "Пожалуйста, войдите в систему",
+                i18n.language === "uz"
+                    ? "Iltimos, rang tanlang"
+                    : "Пожалуйста, выберите цвет",
                 { autoClose: 1000 }
             );
             return;
         }
 
-        const selectedColorVariant = productVariants?.[selectedColorIndex];
-
-        if (!selectedColorVariant) {
-            toast.error(i18n.language === 'uz' ? "Iltimos, rang tanlang" : "Пожалуйста, выберите цвет", {
-                autoClose: 1000,
-            });
-            return;
-        }
-
+        // Tanlangan razmerga mos productSizeVariant ni topish
         const selectedSizeVariant = selectedColorVariant.productSizeVariantList?.find(
             (variant) => variant.size === selectedSize
         );
 
         if (!selectedSizeVariant) {
-            toast.error(i18n.language === 'uz' ? "Iltimos, razmer tanlang" : "Пожалуйста, выберите размер", {
-                autoClose: 1000,
-            });
+            toast.error(
+                i18n.language === "uz"
+                    ? "Iltimos, razmer tanlang"
+                    : "Пожалуйста, выберите размер",
+                { autoClose: 1000 }
+            );
             return;
         }
 
-        mutate({
-            customerId: userID,
-            productSizeVariantId: selectedSizeVariant.id,
-            quantity: count,
-        }, {
-            onSuccess: (data) => {
-                setcartItemId(data.cartItemId);
+        // Mahsulotni savatga qo‘shish uchun mutate chaqirish
+        mutate(
+            {
+                customerId: userID,
+                productSizeVariantId: selectedSizeVariant.id,
+                quantity: count,
             },
-            onError: () => {
-                toast.error(i18n.language === 'uz' ? "Xatolik yuz berdi" : "Произошла ошибка", {
-                    autoClose: 1000,
-                });
+            {
+                onSuccess: (data) => {
+                    console.log("Savatga qo'shildi:", data);
+                    toast.success(
+                        i18n.language === "uz"
+                            ? "Mahsulot savatga qo‘shildi"
+                            : "Товар добавлен в корзину",
+                        { autoClose: 1000 }
+                    );
+                    setCount(1); // count ni reset qilish
+                },
+                onError: (error) => {
+                    console.error("Xatolik:", error);
+
+                    // Agar foydalanuvchi tizimga kirmagan bo'lsa auth modal ochiladi
+                    if (!userID) {
+                        setAuthOpen(true);
+                        return;
+                    }
+
+                    toast.error(
+                        i18n.language === "uz"
+                            ? "Xatolik yuz berdi"
+                            : "Произошла ошибка",
+                        { autoClose: 1000 }
+                    );
+                },
             }
-        });
+        );
+    };
+
+
+    // sotib olish funksiyasi
+    const addOrder = () => {
+        // Foydalanuvchi tizimga kirmagan bo'lsa auth modal ochiladi
+        if (!userID) {
+            setAuthOpen(true);
+            return;
+        }
+
+        // Tanlangan rang variantini olish
+        const selectedColorVariant = productVariants?.[selectedColorIndex];
+        if (!selectedColorVariant) {
+            toast.error(
+                i18n.language === 'uz' ? "Iltimos, rang tanlang" : "Пожалуйста, выберите цвет",
+                { autoClose: 1000 }
+            );
+            return;
+        }
+
+        // Tanlangan razmer variantini olish
+        const selectedSizeVariant = selectedColorVariant.productSizeVariantList?.find(
+            (variant) => variant.size === selectedSize
+        );
+        if (!selectedSizeVariant) {
+            toast.error(
+                i18n.language === 'uz' ? "Iltimos, razmer tanlang" : "Пожалуйста, выберите размер",
+                { autoClose: 1000 }
+            );
+            return;
+        }
+
+        // Buyurtma qo‘shish mutate chaqirish
+        mutate(
+            {
+                customerId: userID,
+                productSizeVariantId: selectedSizeVariant.id,
+                quantity: count,
+            },
+            {
+                onSuccess: (data) => {
+                    console.log("Buyurtma qo'shildi:", data);
+                    setcartItemId(data.cartItemId); // drawer yoki boshqa UI uchun
+                    toast.success(
+                        i18n.language === 'uz' ? "Buyurtma muvaffaqiyatli qo‘shildi" : "Заказ успешно добавлен",
+                        { autoClose: 1000 }
+                    );
+                },
+                onError: (error) => {
+                    console.error("Xatolik:", error);
+                    toast.error(
+                        i18n.language === 'uz' ? "Xatolik yuz berdi" : "Произошла ошибка",
+                        { autoClose: 1000 }
+                    );
+                },
+            }
+        );
     };
 
 
 
     //  sevimlilar qoshish funksiyasi
     const addToFavorites = () => {
-        const selectedColorVariant = productVariants?.[selectedColorIndex];
-
-        if (!selectedColorVariant) {
-            toast.error(i18n.language === 'uz' ? "Iltimos, rang tanlang" : "Пожалуйста, выберите цвет", {
-                autoClose: 1000,
-            });
+        // Foydalanuvchi tizimga kirmagan bo'lsa auth modal ochiladi
+        if (!userID) {
+            setAuthOpen(true);
             return;
         }
 
+        // Tanlangan rang variantini olish
+        const selectedColorVariant = productVariants?.[selectedColorIndex];
+        if (!selectedColorVariant) {
+            toast.error(
+                i18n.language === 'uz' ? "Iltimos, rang tanlang" : "Пожалуйста, выберите цвет",
+                { autoClose: 1000 }
+            );
+            return;
+        }
+
+        // Tanlangan razmer variantini olish
         const selectedSizeVariant = selectedColorVariant.productSizeVariantList?.find(
             (variant) => variant.size === selectedSize
         );
-
         if (!selectedSizeVariant) {
-            toast.error(i18n.language === 'uz' ? "Iltimos, razmer tanlang" : "Пожалуйста, выберите размер", {
-                autoClose: 1000,
-            });
+            toast.error(
+                i18n.language === 'uz' ? "Iltimos, razmer tanlang" : "Пожалуйста, выберите размер",
+                { autoClose: 1000 }
+            );
             return;
         }
 
-        // ✅ Har bir rang varianti - bu alohida product bo'lganligi uchun
+        // Mahsulot ID sini olish (har bir rang variant alohida product)
         const productId = selectedColorVariant?.id;
-
         if (!productId) {
-            toast.error(i18n.language === 'uz' ? "Mahsulot topilmadi" : "Товар не найден", {
-                autoClose: 1000,
-            });
+            toast.error(
+                i18n.language === 'uz' ? "Mahsulot topilmadi" : "Товар не найден",
+                { autoClose: 1000 }
+            );
             return;
         }
 
+        // Sevimlilarga qo‘shish
         addtofavorites(
             {
                 customerId: userID,
@@ -171,19 +225,20 @@ function ProductDetail() {
             {
                 onSuccess: (data) => {
                     console.log("Sevimlilarga qo'shildi:", data);
-                    toast.success(i18n.language === 'uz' ? `Mahsulot sevimlilarga qo‘shildi` : "Товар добавлен в избранное", {
-                        autoClose: 1000,
-                    });
+                    toast.success(
+                        i18n.language === 'uz' ? "Mahsulot sevimlilarga qo‘shildi" : "Товар добавлен в избранное",
+                        { autoClose: 1000 }
+                    );
                 },
                 onError: (error) => {
                     console.error("Xatolik:", error);
-                    toast.error(i18n.language === 'uz' ? "Iltimos,ro'yxatdan o'ting" : "Пожалуйста, войдите в систему", {
-                        autoClose: 1000,
-                    });
-                }
+                    // Xatolik bo'lsa, foydalanuvchi tizimga kirmagan bo'lishi mumkin
+                    setAuthOpen(true);
+                },
             }
         );
     };
+
 
 
     const showDrawer = () => {
@@ -206,6 +261,15 @@ function ProductDetail() {
     return (
         <div className='font-tenor md:px-6 '>
             <div className='font-tenor'>
+                {/* Auth uchun driver */}
+                <Drawer
+                    open={authOpen}
+                    onClose={() => setAuthOpen(false)}
+                    width={500}
+                    title="Kirish / Ro'yxatdan o'tish"
+                >
+                    <AuthForm onClose={() => setAuthOpen(false)} />
+                </Drawer>
                 {/* Product Images */}
                 <div className='flex flex-col md:flex-row justify-between gap-8 mt-10 md:px-0'>
 

@@ -13,12 +13,14 @@ import { useGetList } from "../../services/query/useGetList";
 import { OrderCard } from "../cart/order-card";
 import { Drawer } from "antd";
 import formatPrice from "../../utils/formatPrice";
+import AuthForm from "../header/auth-form";
 
 const ProductCard = ({ item }) => {
   const { i18n, t } = useTranslation();
   const hasDiscount = item.sale > 0;
   const navigate = useNavigate();
   const userID = Cookies.get("USER-ID");
+
 
   const { mutate } = useCreate(endpoints.favorites.addFavoriteItem);
   const { mutate: addCart } = useCreate(endpoints.cart.addCartItem);
@@ -38,7 +40,11 @@ const ProductCard = ({ item }) => {
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [cartItemId, setcartItemId] = useState("");
-  const [drawerOpen, setDrawerOpen] = useState(false); // yon panel
+  const [drawerOpen, setDrawerOpen] = useState(false); // yon panel 
+  const [authOpen, setAuthOpen] = useState(false)
+
+
+
 
   // Foydalanuvchi sevimlilari orasida item mavjudligini tekshirish uchun
   useEffect(() => {
@@ -48,17 +54,11 @@ const ProductCard = ({ item }) => {
     }
   }, [data, item]);
 
+
   // karzina qoshish
   const addToCart = () => {
     if (!userID) {
-      toast.error(
-        i18n.language === "uz"
-          ? "Iltimos,ro'yxatdan o'ting"
-          : "Пожалуйста, войдите в систему",
-        {
-          autoClose: 1000,
-        }
-      );
+      setAuthOpen(true)
       return;
     }
     const selectedColorVariant = productVariants[selectedColorIndex];
@@ -99,6 +99,10 @@ const ProductCard = ({ item }) => {
       },
       {
         onError: () => {
+          // if (userID) {
+          //   setAuthOpen(true)
+          //   return
+          // }
           toast.error(
             i18n.language === "uz"
               ? "Iltimos,ro'yxatdan o'ting"
@@ -148,15 +152,18 @@ const ProductCard = ({ item }) => {
           setDrawerOpen(true); // ✅ Drawer ochiladi
         },
         onError: () => {
+          if (!userID) {  // foydalanuvchi tizimga kirmagan bo‘lsa
+            setAuthOpen(true); // auth modal ochiladi
+            return;
+          }
           toast.error(
             i18n.language === "uz"
-              ? "Iltimos,ro'yxatdan o'ting"
-              : "Пожалуйста, войдите в систему",
-            {
-              autoClose: 1000,
-            }
+              ? "Xatolik yuz berdi"
+              : "Произошла ошибка",
+            { autoClose: 1000 }
           );
         },
+
       }
     );
   };
@@ -165,14 +172,15 @@ const ProductCard = ({ item }) => {
   const addToFavorites = () => {
     // agar foydalanuvchi ro`yhatdan o`tmagan bo`lsa
     if (!userID) {
-      toast.error(
-        i18n.language === "uz"
-          ? "Iltimos,ro'yxatdan o'ting"
-          : "Пожалуйста, войдите в систему",
-        {
-          autoClose: 1000,
-        }
-      );
+      setAuthOpen(true)
+      // toast.error(
+      //   i18n.language === "uz"
+      //     ? `Iltimos,ro'yxatdan o'ting yabn`
+      //     : "Пожалуйста, войдите в систему",
+      //   {
+      //     autoClose: 1000,
+      //   }
+      // );
       return;
     }
     mutate(
@@ -253,291 +261,303 @@ const ProductCard = ({ item }) => {
     return diffInDays <= 10;
   };
   return (
-    <div className="bg-white font-tenor shadow-md overflow-hidden relative hover:shadow-sm transition-shadow duration-300 w-full max-w-[189px] md:max-w-[296px] min-w-[164px] md:min-w-[284px]">
-      <div className="">
-        <button
-          className="absolute top-4 right-4 bg-white rounded-full hover:shadow-lg disabled:opacity-50 size-6 md:size-8 flex justify-center items-center"
-          onClick={() => {
-            const quantity =
-              productVariants[0]?.productSizeVariantList[0]?.quantity;
-            if (quantity > 0) {
-              handleLikeClick();
-            } else {
-              toast.warning(
-                i18n.language === "uz"
-                  ? "Mahsulot qolmagan, sevimlilarga qo‘shib bo‘lmaydi"
-                  : "Товар закончился, нельзя добавить в избранное",
-                {
-                  autoClose: 1000,
-                }
-              );
+    <>
+      <Drawer
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        width={500}
+        title="Kirish / Ro'yxatdan o'tish"
+      >
+        <AuthForm onClose={() => setAuthOpen(false)} />
+      </Drawer>
+      <div className="bg-white font-tenor shadow-md overflow-hidden relative hover:shadow-sm transition-shadow duration-300 w-full max-w-[189px] md:max-w-[296px] min-w-[164px] md:min-w-[284px]">
+        <div className="">
+
+
+          <button
+            className="absolute top-4 right-4 bg-white rounded-full hover:shadow-lg disabled:opacity-50 size-6 md:size-8 flex justify-center items-center"
+            onClick={() => {
+              const quantity =
+                productVariants[0]?.productSizeVariantList[0]?.quantity;
+              if (quantity > 0) {
+                handleLikeClick();
+              } else {
+                toast.warning(
+                  i18n.language === "uz"
+                    ? "Mahsulot qolmagan, sevimlilarga qo‘shib bo‘lmaydi"
+                    : "Товар закончился, нельзя добавить в избранное",
+                  {
+                    autoClose: 1000,
+                  }
+                );
+              }
+            }}
+          >
+            {isLiked ? (
+              <IoIosHeart className="text-[#0D0D0D] size-3.5 md:size-[18px] cursor-pointer" />
+            ) : (
+              <IoIosHeartEmpty className="text-black hover:text-black size-3.5 md:size-[18px] cursor-pointer" />
+            )}
+          </button>
+
+          <div className="absolute top-2.5 md:top-4 left-0 flex flex-col gap-4">
+            {isNewProduct(item?.productSizeVariantList[0]?.createdAt) && (
+              <span className="px-2 md:px-5 py-1 bg-primary text-white text-[10px] md:text-[15px]">
+                {i18n.language == "uz" ? "Yangi" : "Новый"}
+              </span>
+            )}
+
+            {hasDiscount && (
+              <div className="text-center bg-gold text-white text-[10px] md:text-[15px] font-bold px-2 md:px-5 py-1">
+                {item.sale}%
+              </div>
+            )}
+          </div>
+
+          <img
+            onClick={() =>
+              navigate(
+                `/productDetail/${item.id}`,
+                window.scrollTo({ top: 0, behavior: "smooth" })
+              )
             }
-          }}
-        >
-          {isLiked ? (
-            <IoIosHeart className="text-[#0D0D0D] size-3.5 md:size-[18px] cursor-pointer" />
-          ) : (
-            <IoIosHeartEmpty className="text-black hover:text-black size-3.5 md:size-[18px] cursor-pointer" />
-          )}
-        </button>
-
-        <div className="absolute top-2.5 md:top-4 left-0 flex flex-col gap-4">
-          {isNewProduct(item?.productSizeVariantList[0]?.createdAt) && (
-            <span className="px-2 md:px-5 py-1 bg-primary text-white text-[10px] md:text-[15px]">
-              {i18n.language == "uz" ? "Yangi" : "Новый"}
-            </span>
-          )}
-
-          {hasDiscount && (
-            <div className="text-center bg-gold text-white text-[10px] md:text-[15px] font-bold px-2 md:px-5 py-1">
-              {item.sale}%
-            </div>
-          )}
-        </div>
-
-        <img
-          onClick={() =>
-            navigate(
-              `/productDetail/${item.id}`,
-              window.scrollTo({ top: 0, behavior: "smooth" })
-            )
-          }
-          src={item?.productImages?.[0]?.url}
-          alt={i18n.language === "uz" ? item.nameUZB : item.nameRUS}
-          className="w-full max-w-[189px] md:max-w-[296px] md:min-h-[350px] h-[232px] object-cover cursor-pointer"
-        />
-        <div className="flex justify-between max-h-[100px] min-h-[100px] font-tenor">
-          <div className="p-2 md:p-4 space-y-1">
-            <h2 className="text-base text-primary line-clamp-1">
-              {i18n.language === "uz" ? item.nameUZB : item.nameRUS}
-            </h2>
-            <div className="text-[#444] font-normal w-fit">
-              {hasDiscount ? (
-                <>
-                  <span className="">
-                    {formatPrice(item.salePrice)} {t("cart.sum")}
-                  </span>
-                  <br />
-                  <span className="text-xs text-accent line-through">
+            src={item?.productImages?.[0]?.url}
+            alt={i18n.language === "uz" ? item.nameUZB : item.nameRUS}
+            className="w-full max-w-[189px] md:max-w-[296px] md:min-h-[350px] h-[232px] object-cover cursor-pointer"
+          />
+          <div className="flex justify-between max-h-[100px] min-h-[100px] font-tenor">
+            <div className="p-2 md:p-4 space-y-1">
+              <h2 className="text-base text-primary line-clamp-1">
+                {i18n.language === "uz" ? item.nameUZB : item.nameRUS}
+              </h2>
+              <div className="text-[#444] font-normal w-fit">
+                {hasDiscount ? (
+                  <>
+                    <span className="">
+                      {formatPrice(item.salePrice)} {t("cart.sum")}
+                    </span>
+                    <br />
+                    <span className="text-xs text-accent line-through">
+                      {formatPrice(item.sellPrice)} {t("cart.sum")}
+                    </span>
+                  </>
+                ) : (
+                  <span>
                     {formatPrice(item.sellPrice)} {t("cart.sum")}
                   </span>
-                </>
-              ) : (
-                <span>
-                  {formatPrice(item.sellPrice)} {t("cart.sum")}
-                </span>
-              )}
+                )}
+              </div>
             </div>
+            <button
+              className="group absolute bottom-3 right-3 md:bottom-4 md:right-4 w-fit"
+              onClick={handleAddToCart}
+            >
+              <RiShoppingBag4Line
+                size={24}
+                className="cursor-pointer transition duration-300 group-hover:scale-110 group-hover:text-black"
+              />
+            </button>
           </div>
-          <button
-            className="group absolute bottom-3 right-3 md:bottom-4 md:right-4 w-fit"
-            onClick={handleAddToCart}
-          >
-            <RiShoppingBag4Line
-              size={24}
-              className="cursor-pointer transition duration-300 group-hover:scale-110 group-hover:text-black"
-            />
-          </button>
         </div>
-      </div>
-      {/* handleAddToCart bosganida modal paydo bolish uchun bolim */}
-      {isOpen && (
-        <Drawer
-          open={isOpen}
-          onClose={() => setIsOpen(false)}
-          footer={false}
-          maskClosable={false}
-          width={464}
-          className="custom-modal"
-          bodyStyle={{
-            padding: "10px",
-            backgroundColor: "#fff",
-            borderRadius: "1rem",
-          }}
-        >
-          {productVariants.length > 0 && (
-            <div className="space-y-4 font-tenor text-[#0D0D0D]">
-              {/* Umumiy ma'lumotlar */}
-              <div className="space-y-3">
-                {/* Nomi va narxi */}
-                <div className="text-center space-y-2">
-                  <h2 className="md:text-[20px] text-base font-light uppercase tracking-wide">
-                    {i18n.language === "uz"
-                      ? productVariants[0].nameUZB
-                      : productVariants[0].nameRUS}
-                  </h2>
-                  {productVariants[0]?.sale > 0 ? (
-                    <div className="space-y-1">
-                      <p className="md:text-[28px] text-base font-semibold">
-                        {productVariants[0].salePrice}{" "}
-                        {i18n.language === "uz" ? "so'm" : "со'м"}
-                      </p>
-                      <p className="text-gray-400 line-through text-[18px]">
+        {/* handleAddToCart bosganida modal paydo bolish uchun bolim */}
+        {isOpen && (
+          <Drawer
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            footer={false}
+            maskClosable={false}
+            width={464}
+            className="custom-modal"
+            bodyStyle={{
+              padding: "10px",
+              backgroundColor: "#fff",
+              borderRadius: "1rem",
+            }}
+          >
+            {productVariants.length > 0 && (
+              <div className="space-y-4 font-tenor text-[#0D0D0D]">
+                {/* Umumiy ma'lumotlar */}
+                <div className="space-y-3">
+                  {/* Nomi va narxi */}
+                  <div className="text-center space-y-2">
+                    <h2 className="md:text-[20px] text-base font-light uppercase tracking-wide">
+                      {i18n.language === "uz"
+                        ? productVariants[0].nameUZB
+                        : productVariants[0].nameRUS}
+                    </h2>
+                    {productVariants[0]?.sale > 0 ? (
+                      <div className="space-y-1">
+                        <p className="md:text-[28px] text-base font-semibold">
+                          {productVariants[0].salePrice}{" "}
+                          {i18n.language === "uz" ? "so'm" : "со'м"}
+                        </p>
+                        <p className="text-gray-400 line-through text-[18px]">
+                          {productVariants[0].sellPrice}{" "}
+                          {i18n.language === "uz" ? "so'm" : "со'м"}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="md:text-[24px] text-[18px] font-semibold">
                         {productVariants[0].sellPrice}{" "}
                         {i18n.language === "uz" ? "so'm" : "со'м"}
                       </p>
+                    )}
+                  </div>
+
+                  {/* Rang */}
+                  <p
+                    className="text-[16px] font-medium"
+                    onClick={() => setShowColor(true)}
+                  >
+                    {i18n.language === "uz" ? "Rang" : "цвет"}:{" "}
+                    {i18n.language === "uz"
+                      ? productVariants[selectedColorIndex].color.nameUZB
+                      : productVariants[selectedColorIndex].color.nameRUS}
+                  </p>
+
+                  {/* Rasmlar */}
+                  <div
+                    className="flex gap-2 overflow-x-auto"
+                    style={{
+                      scrollBehavior: "smooth",
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
+                  >
+                    {productVariants.map((item, index) => (
+                      <img
+                        key={index}
+                        onClick={() => {
+                          setSelectedColorIndex(index);
+                          setSelectedSize(""); // Rang o‘zgarsa razmerni tozalaymiz
+                        }}
+                        className={`md:w-[90px] w-[60px] h-[90px] md:h-[120px] object-cover cursor-pointer transition 
+        ${selectedColorIndex === index
+                            ? "border-2 border-black shadow-md"
+                            : "border-gray-300"
+                          }`}
+                        src={item.productImages[0]?.url}
+                        alt={`Rasm ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  {/* O‘lcham tanlash tugmalari */}
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {productVariants[
+                      selectedColorIndex
+                    ].productSizeVariantList.map((variant, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedSize(variant.size)}
+                        className={`px-4 py-2 border uppercase text-sm cursor-pointer
+        ${selectedSize === variant.size
+                            ? "bg-black text-white"
+                            : "bg-white text-black hover:bg-gray-200"
+                          }`}
+                      >
+                        {variant.size}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Tanlangan o‘lcham ko‘rsatish */}
+                  {selectedSize && (
+                    <div className="mt-2">
+                      <span className="text-[15px] font-medium">
+                        {i18n.language === "uz" ? "o‘lcham:" : "размер:"}
+                      </span>
+                      <button
+                        className="ml-2 text-sm uppercase"
+                        onClick={() => setShowSize(true)}
+                      >
+                        {selectedSize}
+                      </button>
                     </div>
-                  ) : (
-                    <p className="md:text-[24px] text-[18px] font-semibold">
-                      {productVariants[0].sellPrice}{" "}
-                      {i18n.language === "uz" ? "so'm" : "со'м"}
+                  )}
+
+                  {/* Xato ogohlantirish (faqat kerak bo‘lganda) */}
+                  {!selectedSize && (
+                    <p className="text-red-500 md:mt-2 mt-1 text-base">
+                      ⚠️{" "}
+                      {i18n.language === "uz"
+                        ? "Iltimos, o‘lchamni tanlang!"
+                        : "Пожалуйста, выберите размер!"}
+                    </p>
+                  )}
+
+                  {/* Qoldiq */}
+                  {selectedSize && (
+                    <p className="text-[16px]">
+                      {i18n.language === "uz" ? " Sotuvda bor" : "В наличии"} :{" "}
+                      <span className="text-base">
+                        {productVariants[0].productSizeVariantList[0].quantity}
+                        {i18n.language === "uz" ? " dona" : " шт."}
+                      </span>
                     </p>
                   )}
                 </div>
 
-                {/* Rang */}
-                <p
-                  className="text-[16px] font-medium"
-                  onClick={() => setShowColor(true)}
-                >
-                  {i18n.language === "uz" ? "Rang" : "цвет"}:{" "}
-                  {i18n.language === "uz"
-                    ? productVariants[selectedColorIndex].color.nameUZB
-                    : productVariants[selectedColorIndex].color.nameRUS}
-                </p>
-
-                {/* Rasmlar */}
-                <div
-                  className="flex gap-2 overflow-x-auto"
-                  style={{
-                    scrollBehavior: "smooth",
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none",
-                  }}
-                >
-                  {productVariants.map((item, index) => (
-                    <img
-                      key={index}
-                      onClick={() => {
-                        setSelectedColorIndex(index);
-                        setSelectedSize(""); // Rang o‘zgarsa razmerni tozalaymiz
-                      }}
-                      className={`md:w-[90px] w-[60px] h-[90px] md:h-[120px] object-cover cursor-pointer transition 
-        ${selectedColorIndex === index
-                          ? "border-2 border-black shadow-md"
-                          : "border-gray-300"
-                        }`}
-                      src={item.productImages[0]?.url}
-                      alt={`Rasm ${index + 1}`}
-                    />
-                  ))}
-                </div>
-                {/* O‘lcham tanlash tugmalari */}
-                <div className="flex gap-2 mt-2 flex-wrap">
-                  {productVariants[
-                    selectedColorIndex
-                  ].productSizeVariantList.map((variant, idx) => (
+                {/* Tugmalar */}
+                <div className="flex gap-2">
+                  {productVariants[0].productSizeVariantList[0].quantity === 0 ? (
                     <button
-                      key={idx}
-                      onClick={() => setSelectedSize(variant.size)}
-                      className={`px-4 py-2 border uppercase text-sm cursor-pointer
-        ${selectedSize === variant.size
-                          ? "bg-black text-white"
-                          : "bg-white text-black hover:bg-gray-200"
-                        }`}
+                      disabled
+                      className="flex-1 cursor-not-allowed md:h-12 h-10 border border-gray-300 bg-gray-300 text-gray-500 uppercase"
                     >
-                      {variant.size}
+                      {i18n.language === "uz"
+                        ? "Mahsulot qolmagan"
+                        : "Товар закончился"}
                     </button>
-                  ))}
-                </div>
-
-                {/* Tanlangan o‘lcham ko‘rsatish */}
-                {selectedSize && (
-                  <div className="mt-2">
-                    <span className="text-[15px] font-medium">
-                      {i18n.language === "uz" ? "o‘lcham:" : "размер:"}
-                    </span>
+                  ) : (
                     <button
-                      className="ml-2 text-sm uppercase"
-                      onClick={() => setShowSize(true)}
+                      className="flex-1 cursor-pointer md:h-12 h-10 border border-black hover:bg-black hover:text-white transition uppercase"
+                      onClick={addToCart}
                     >
-                      {selectedSize}
+                      {i18n.language === "uz"
+                        ? "Savatga qo‘shish"
+                        : "Добавить в корзину"}
                     </button>
-                  </div>
-                )}
-
-                {/* Xato ogohlantirish (faqat kerak bo‘lganda) */}
-                {!selectedSize && (
-                  <p className="text-red-500 md:mt-2 mt-1 text-base">
-                    ⚠️{" "}
-                    {i18n.language === "uz"
-                      ? "Iltimos, o‘lchamni tanlang!"
-                      : "Пожалуйста, выберите размер!"}
-                  </p>
-                )}
-
-                {/* Qoldiq */}
-                {selectedSize && (
-                  <p className="text-[16px]">
-                    {i18n.language === "uz" ? " Sotuvda bor" : "В наличии"} :{" "}
-                    <span className="text-base">
-                      {productVariants[0].productSizeVariantList[0].quantity}
-                      {i18n.language === "uz" ? " dona" : " шт."}
-                    </span>
-                  </p>
-                )}
+                  )}
+                  {productVariants[0].productSizeVariantList[0].quantity === 0 ? (
+                    <button
+                      disabled
+                      className="flex-1 cursor-not-allowed md:h-12 h-10 border border-gray-300 bg-gray-300 text-gray-500 uppercase"
+                    >
+                      {i18n.language === "uz"
+                        ? "Mahsulot qolmagan"
+                        : "Товар закончился"}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={addOrders}
+                      className="flex-1 cursor-pointer md:h-12 h-10 bg-black text-white hover:bg-gray-800 transition uppercase"
+                    >
+                      {i18n.language === "uz" ? " Sotib olish" : "Купить"}
+                    </button>
+                  )}
+                </div>
               </div>
-
-              {/* Tugmalar */}
-              <div className="flex gap-2">
-                {productVariants[0].productSizeVariantList[0].quantity === 0 ? (
-                  <button
-                    disabled
-                    className="flex-1 cursor-not-allowed md:h-12 h-10 border border-gray-300 bg-gray-300 text-gray-500 uppercase"
-                  >
-                    {i18n.language === "uz"
-                      ? "Mahsulot qolmagan"
-                      : "Товар закончился"}
-                  </button>
-                ) : (
-                  <button
-                    className="flex-1 cursor-pointer md:h-12 h-10 border border-black hover:bg-black hover:text-white transition uppercase"
-                    onClick={addToCart}
-                  >
-                    {i18n.language === "uz"
-                      ? "Savatga qo‘shish"
-                      : "Добавить в корзину"}
-                  </button>
-                )}
-                {productVariants[0].productSizeVariantList[0].quantity === 0 ? (
-                  <button
-                    disabled
-                    className="flex-1 cursor-not-allowed md:h-12 h-10 border border-gray-300 bg-gray-300 text-gray-500 uppercase"
-                  >
-                    {i18n.language === "uz"
-                      ? "Mahsulot qolmagan"
-                      : "Товар закончился"}
-                  </button>
-                ) : (
-                  <button
-                    onClick={addOrders}
-                    className="flex-1 cursor-pointer md:h-12 h-10 bg-black text-white hover:bg-gray-800 transition uppercase"
-                  >
-                    {i18n.language === "uz" ? " Sotib olish" : "Купить"}
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-          <Drawer
-            open={drawerOpen}
-            onClose={() => setDrawerOpen(false)}
-            placement="right"
-            width={464}
-            title={i18n.language === "uz" ? "Buyurtma" : "Заказ"}
-          >
-            <OrderCard
-              cart={[cartItemId]}
-              sum={
-                productVariants[0]?.sale > 0
-                  ? productVariants[0]?.salePrice
-                  : productVariants[0]?.sellPrice
-              }
-            />
+            )}
+            <Drawer
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+              placement="right"
+              width={464}
+              title={i18n.language === "uz" ? "Buyurtma" : "Заказ"}
+            >
+              <OrderCard
+                cart={[cartItemId]}
+                sum={
+                  productVariants[0]?.sale > 0
+                    ? productVariants[0]?.salePrice
+                    : productVariants[0]?.sellPrice
+                }
+              />
+            </Drawer>
           </Drawer>
-        </Drawer>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
