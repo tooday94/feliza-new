@@ -9,6 +9,7 @@ function Menu1CategoryList() {
     endpoints.category.categoryBlocks.getCategoryByBlockTypeMenu_1,
     {}
   );
+  console.log("MenuCategory1", data);
   const { i18n } = useTranslation();
 
   const skeletonItems = Array.from({ length: 5 });
@@ -56,7 +57,7 @@ function Menu1CategoryList() {
             }}
           >
             <img
-              src={item.category.horizontalImage?.url}
+              src={item.category.verticalImage?.url}
               alt={
                 i18n.language === "uz"
                   ? item.category.nameRUS
