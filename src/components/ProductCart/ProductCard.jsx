@@ -59,6 +59,7 @@ const ProductCard = ({ item }) => {
   const addToCart = () => {
     if (!userID) {
       setAuthOpen(true)
+      setIsOpen(false)
       return;
     }
     const selectedColorVariant = productVariants[selectedColorIndex];
@@ -154,6 +155,7 @@ const ProductCard = ({ item }) => {
         onError: () => {
           if (!userID) {  // foydalanuvchi tizimga kirmagan bo‘lsa
             setAuthOpen(true); // auth modal ochiladi
+            setIsOpen(false)
             return;
           }
           toast.error(
