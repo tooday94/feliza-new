@@ -58,18 +58,30 @@ const AddressCard = () => {
               <CiLocationOn size={24} />
               <div className="flex flex-col">
                 <h1 className="text-xl text-primary">
-                  {i18n.language == "uz"
+                  {/* {i18n.language == "uz"
                     ? item.region.nameUZB
-                    : item.region.nameRUS}
+                    : item.region.nameRUS} */}
+                  {i18n.language == "uz"
+                    ? item?.region?.nameUZB
+                    : item?.region?.nameRUS}
                 </h1>
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="text-sm text-primary font-tenor font-semibold">
-                    {i18n.language == "uz"
+                    {/* {i18n.language == "uz"
                       ? item.subRegion.nameUZB
-                      : item.subRegion.nameRUS}
+                      : item.subRegion.nameRUS} */}
+                    {i18n.language == "uz"
+                      ? item?.subRegion?.nameUZB
+                      : item?.subRegion?.nameRUS}
                   </p>
                   <p className="text-sm text-primary font-tenor">
-                    {item.postFilial.postName}
+                    {/* {item.postFilial.postName} */}
+                    {/* ? shu bolsa hatoni toxtatish maqsad */}
+                    <p className="text-sm text-primary font-tenor">
+                      {item?.postFilial?.postName
+                        ? item.postFilial.postName
+                        : `${item?.street || ""} ${item?.houseNumber || ""}`}
+                    </p>
                   </p>
                 </div>
               </div>
