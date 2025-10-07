@@ -89,7 +89,7 @@ function CategoryDetail() {
                         totalProducts > 0 ? <button
                             onClick={() => {
                                 loadMoreProducts();
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                // window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                             className='py-2 px-16 border border-[#5B5B5B] cursor-pointer hover:bg-[#5B5B5B] hover:text-white transition-colors duration-500'
                             disabled={isFetching}
