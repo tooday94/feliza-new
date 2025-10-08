@@ -39,8 +39,8 @@ function ProductDetail() {
     const [cartItemId, setcartItemId] = useState("")
     const [authOpen, setAuthOpen] = useState(false)
 
-    console.log("Cartitemi", cartItemId);
-    console.log(" productVariants", data);
+    // console.log("Cartitemi", cartItemId);
+    console.log(" data", data);
 
     // savatga qoshish funktsiyasi
     const addToCart = () => {
@@ -239,8 +239,6 @@ function ProductDetail() {
         );
     };
 
-
-
     const showDrawer = () => {
         setDrawerOpen(true);
     };
@@ -291,7 +289,6 @@ function ProductDetail() {
                             ))}
                         </Carousel>
                     </div>
-
                     {/* Rasmlar bloki */}
                     <div className='hidden md:grid md:grid-cols-2 gap-1'>
                         {productVariants[selectedColorIndex]?.productImages?.map((item, index) => (
@@ -362,10 +359,10 @@ function ProductDetail() {
                                                 window.scrollTo({ top: 0, behavior: 'smooth' })
                                             )}
                                             className={`
-                relative w-[78px] overflow-hidden cursor-pointer border 
-                ${isSelected ? 'border-black' : 'border-gray-300'} 
-                ${!isActive ? 'opacity-50 cursor-not-allowed' : 'hover:border-black'}
-            `}
+                    relative w-[78px] overflow-hidden cursor-pointer border 
+                    ${isSelected ? 'border-black' : 'border-gray-300'} 
+                    ${!isActive ? 'opacity-50 cursor-not-allowed' : 'hover:border-black'}
+                `}
                                         >
                                             <img
                                                 src={item?.productImages?.[0]?.url}
@@ -401,7 +398,21 @@ function ProductDetail() {
                             </h2>
 
                             <div className='flex gap-3 flex-wrap'>
-                                {data?.productSizeVariantList?.map((item, index) => (
+                                {/* eski varinati */}
+                                {/* {data?.productSizeVariantList?.map((item, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setSelectedSize(item.size)}
+                                            className={`border md:px-5 md:py-3 px-2 py-1 cursor-pointer
+                    hover:bg-black hover:text-white transition-colors duration-300
+                    ${selectedSize === item.size ? 'bg-black text-white' : 'bg-white text-black'}
+                `}
+                                        >
+                                            {item.size}
+                                        </button>
+                                    ))} */}
+                                {/* Togrilangan varinati */}
+                                {productVariants[selectedColorIndex]?.productSizeVariantList?.map((item, index) => (
                                     <button
                                         key={index}
                                         onClick={() => setSelectedSize(item.size)}
@@ -413,12 +424,21 @@ function ProductDetail() {
                                         {item.size}
                                     </button>
                                 ))}
+
                             </div>
 
+                            {/* {selectedSize && ( eski varinati
+                                    <p className="mt-2">
+                                        {i18n.language === 'uz' ? 'Sotuvda bor' : 'В наличии'} : {
+                                            data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0
+                                        } {i18n.language === 'uz' ? 'ta' : 'шт'}
+                                    </p>
+                                )}  */}
+                            {/* Togrilnagan versiyasi */}
                             {selectedSize && (
                                 <p className="mt-2">
                                     {i18n.language === 'uz' ? 'Sotuvda bor' : 'В наличии'} : {
-                                        data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0
+                                        productVariants[selectedColorIndex]?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0
                                     } {i18n.language === 'uz' ? 'ta' : 'шт'}
                                 </p>
                             )}
@@ -502,7 +522,9 @@ function ProductDetail() {
 
                                     <FaPlus
                                         onClick={() => {
-                                            const maxQty = data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0;
+                                            // const maxQty = data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0; eski varinati
+                                            const maxQty = productVariants[selectedColorIndex]?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0;
+
                                             if (count < maxQty) setCount(count + 1);
                                         }}
                                         className={`cursor-pointer ${count >= (data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0)
