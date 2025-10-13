@@ -40,7 +40,7 @@ function ProductDetail() {
     const [authOpen, setAuthOpen] = useState(false)
 
     // console.log("Cartitemi", cartItemId);
-    console.log(" data", data);
+    console.log(" productVariants", productVariants);
 
     // savatga qoshish funktsiyasi
     const addToCart = () => {
@@ -743,7 +743,8 @@ function ProductDetail() {
                             <span className="font-medium w-6 text-center">{count}</span>
                             <button
                                 onClick={() => {
-                                    const maxQty = data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0;
+                                    // const maxQty = data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quant
+                                    const maxQty = productVariants[selectedColorIndex]?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0;
                                     if (count < maxQty) setCount(count + 1);
                                 }}
                                 disabled={count >= (data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0)}
