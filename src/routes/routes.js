@@ -6,7 +6,7 @@ export const routes = [
     element: React.lazy(() => import("../pages/home/home")),
   },
   {
-    path: "/categoryDetail/:id",
+    path: "/categoryDetail/:id/:name",
     element: React.lazy(() => import("../pages/categoryDetail/categoryDetail")),
   },
   {
@@ -18,11 +18,11 @@ export const routes = [
     element: React.lazy(() => import("../pages/looks/looks-detail")),
   },
   {
-    path: "/productDetail/:id",
+    path: "/productDetail/:id/:name",
     element: React.lazy(() => import("../pages/ProductDetail/ProductDetail")),
   },
   {
-    path: "/searchResult",
+    path: "/searchResul/:name",
     element: React.lazy(() => import("../pages/searchResult/serachResult")),
   },
   {
@@ -54,7 +54,7 @@ export const routes = [
     element: React.lazy(() => import("../pages/FooterPages/contact-page")),
   },
   {
-    path: "/my-profile",
+    path: "/my-profile/:name",
     element: React.lazy(() => import("../pages/profile/my-profile")),
   },
   {

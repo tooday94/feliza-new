@@ -111,7 +111,7 @@ export const HeaderSearch = ({ setShowSearch }) => {
             <div
               key={item.id}
               onClick={() => {
-                navigate("/productDetail/" + item.id);
+                navigate(`/productDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`);
                 saveSearchToHistory(search);
                 setShowSearch(false);
               }}
@@ -125,9 +125,8 @@ export const HeaderSearch = ({ setShowSearch }) => {
                 style={{ opacity: item.active ? "100%" : "50%" }}
               />
               <h1
-                className={`font-tenor font-normal text-base ${
-                  item.active ? "text-primary" : "text-secondary"
-                }`}
+                className={`font-tenor font-normal text-base ${item.active ? "text-primary" : "text-secondary"
+                  }`}
               >
                 {i18n.language === "uz" ? item.nameUZB : item.nameRUS}
               </h1>

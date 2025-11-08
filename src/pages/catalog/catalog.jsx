@@ -59,9 +59,8 @@ const Catalog = () => {
           <button
             key={index}
             onClick={() => setActiveTab(index)}
-            className={`flex-1 py-2 text-center font-medium ${
-              activeTab === index ? "border-b-2 " : "text-secondary"
-            }`}
+            className={`flex-1 py-2 text-center font-medium ${activeTab === index ? "border-b-2 " : "text-secondary"
+              }`}
           >
             {tab.label}
           </button>
