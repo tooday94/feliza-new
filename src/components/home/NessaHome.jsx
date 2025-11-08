@@ -55,7 +55,7 @@ function NessaHome() {
         <button
           onClick={() =>
             navigate(
-              `/categoryDetail/9`,
+              `/categoryDetail/9/nessa`,
               window.scrollTo({ top: 0, behavior: "smooth" })
             )
           }

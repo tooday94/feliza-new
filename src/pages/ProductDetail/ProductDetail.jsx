@@ -40,7 +40,7 @@ function ProductDetail() {
     const [authOpen, setAuthOpen] = useState(false)
 
     // console.log("Cartitemi", cartItemId);
-    console.log(" productVariants", productVariants);
+    console.log(" Data Comment", data);
 
     // savatga qoshish funktsiyasi
     const addToCart = () => {

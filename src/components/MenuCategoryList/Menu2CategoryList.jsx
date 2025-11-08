@@ -96,7 +96,7 @@ function Menu2CategoryList() {
           <div
             onClick={() =>
               navigate(
-                `/categoryDetail/${item.category.id}`,
+                `/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`,
                 window.scrollTo({ top: 0, behavior: "smooth" })
               )
             }

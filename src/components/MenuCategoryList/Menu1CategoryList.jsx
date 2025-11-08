@@ -48,7 +48,7 @@ function Menu1CategoryList() {
           <div
             key={index}
             onClick={() => {
-              navigate(`/categoryDetail/${item.category.id}`);
+              navigate(`/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             className="w-[45vw] sm:w-[240px] sm:h-[240px] relative group overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer scrollbar-hide"

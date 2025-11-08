@@ -264,9 +264,8 @@ const Cart = () => {
                       {t("cart.sum")}
                     </p>
                     <p
-                      className={`${
-                        item.sale > 0 && "line-through"
-                      } font-tenor font-normal text-xs text-secondary`}
+                      className={`${item.sale > 0 && "line-through"
+                        } font-tenor font-normal text-xs text-secondary`}
                     >
                       {item.salePrice && formatPrice(item.sellPrice)}
                     </p>
@@ -539,9 +538,8 @@ const Cart = () => {
                     {t("cart.sum")}
                   </p>
                   <p
-                    className={`${
-                      item.sale > 0 && "line-through"
-                    } font-tenor font-normal text-xs text-secondary`}
+                    className={`${item.sale > 0 && "line-through"
+                      } font-tenor font-normal text-xs text-secondary`}
                   >
                     {item.salePrice && formatPrice(item.sellPrice)}
                   </p>
@@ -561,9 +559,8 @@ const Cart = () => {
               {cartItem?.map((item) => (
                 <div className="">
                   <img
-                    className={`w-12 ${
-                      selectedEditProductId == item.id ? "border-2" : ""
-                    } ${item?.active ? "opacity-100" : "opacity-50"}`}
+                    className={`w-12 ${selectedEditProductId == item.id ? "border-2" : ""
+                      } ${item?.active ? "opacity-100" : "opacity-50"}`}
                     src={item.productImages[0]?.url}
                     alt=""
                     onClick={() => setselectedEditProductId(item.id)}
@@ -585,11 +582,10 @@ const Cart = () => {
               {filteredProduct[0]?.productSizeVariantList?.map((item) => (
                 <div>
                   <Button
-                    className={`w-fit !rounded-none !border !border-primary !font-tenor !font-normal !text-sm ${
-                      item.id == selectedEditProductSize
+                    className={`w-fit !rounded-none !border !border-primary !font-tenor !font-normal !text-sm ${item.id == selectedEditProductSize
                         ? "!bg-primary !text-white"
                         : "!bg-white !text-primary"
-                    } ${item.quantity == 0 ? "opacity-50" : "opacity-100"}`}
+                      } ${item.quantity == 0 ? "opacity-50" : "opacity-100"}`}
                     disabled={item.quantity == 0 ? true : false}
                     onClick={() => setselectedEditProductSize(item.id)}
                   >

@@ -35,6 +35,16 @@ const ProductCard = ({ item }) => {
   const { data: productVariants, isLoading: loadvar } = useGetList(
     endpoints.products.searchProduct + item?.referenceNumber
   );
+  const { data: reviewsData } = useGetList(
+    endpoints.reviews.addreviews + item.id
+  )
+  console.log("reviewsData", reviewsData);
+  const { data: reviewsRating } = useGetList(
+    endpoints.reviews.addreviewsrating + item.id
+  )
+  console.log("reviewsRating", reviewsRating);
+
+
   const [isLiked, setIsLiked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
@@ -42,9 +52,6 @@ const ProductCard = ({ item }) => {
   const [cartItemId, setcartItemId] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false); // yon panel 
   const [authOpen, setAuthOpen] = useState(false)
-
-
-
 
   // Foydalanuvchi sevimlilari orasida item mavjudligini tekshirish uchun
   useEffect(() => {
@@ -274,8 +281,6 @@ const ProductCard = ({ item }) => {
       </Drawer>
       <div className="bg-white font-tenor shadow-md overflow-hidden relative hover:shadow-sm transition-shadow duration-300 w-full max-w-[189px] md:max-w-[296px] min-w-[164px] md:min-w-[284px]">
         <div className="">
-
-
           <button
             className="absolute top-4 right-4 bg-white rounded-full hover:shadow-lg disabled:opacity-50 size-6 md:size-8 flex justify-center items-center"
             onClick={() => {
@@ -319,7 +324,7 @@ const ProductCard = ({ item }) => {
           <img
             onClick={() =>
               navigate(
-                `/productDetail/${item.id}`,
+                `/productDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`,
                 window.scrollTo({ top: 0, behavior: "smooth" })
               )
             }
@@ -328,7 +333,7 @@ const ProductCard = ({ item }) => {
             className="w-full max-w-[189px] md:max-w-[296px] md:min-h-[350px] h-[232px] object-cover cursor-pointer"
           />
           <div className="flex justify-between max-h-[100px] min-h-[100px] font-tenor">
-            <div className="p-2 md:p-4 space-y-1">
+            <div className="p-2 md:p-4 space-y-[2px]">
               <h2 className="text-base text-primary line-clamp-1">
                 {i18n.language === "uz" ? item.nameUZB : item.nameRUS}
               </h2>
@@ -348,6 +353,12 @@ const ProductCard = ({ item }) => {
                     {formatPrice(item.sellPrice)} {t("cart.sum")}
                   </span>
                 )}
+                {/* hullas shu yerdan comment qismi chiqadi */}
+                {/*  */}
+
+
+
+
               </div>
             </div>
             <button

@@ -42,4 +42,8 @@ export const endpoints = {
     deleteFavriteItem: "/api/likedItem/deleteLikedItem/",
     getFavorites: "/api/likedItem/getByCustomerId/",
   },
+  reviews: {
+    addreviews: "/api/review/getReviewsByProductId/",
+    addreviewsrating: "/api/review/getAverageRating/"
+  }
 };

@@ -11,11 +11,12 @@ export const HeaderBoard = ({ brand, setShowBoard, setBrandName }) => {
     endpoints.category.getSubCategoriesByParent + brand
   );
 
-  const handleNavigate = (id) => {
+  const handleNavigate = (id, name) => {
     setShowBoard(false);
     setBrandName("");
-    navigate(`categoryDetail/${id}`);
+    navigate(`categoryDetail/${id}/${name.replace(/\s+/g, "-")}`);
   };
+  console.log("header board data", data);
 
   return (
     <div className="min-h-[430px] h-fit absolute bg-white w-full">
@@ -41,7 +42,7 @@ export const HeaderBoard = ({ brand, setShowBoard, setBrandName }) => {
               key={index}
               className="break-inside-avoid p-2 h-full border-r pl-10"
             >
-              <button onClick={() => handleNavigate(item.id)}>
+              <button onClick={() => handleNavigate(item.id, i18n.language == "uz" ? item.nameUZB : item.nameRUS)}>
                 <p className="font-tenor font-normal text-base text-secondary hover:text-primary cursor-pointer">
                   {i18n.language == "uz" ? item.nameUZB : item.nameRUS}
                 </p>

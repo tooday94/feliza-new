@@ -70,7 +70,7 @@ export const SmallSlider = ({ palcement }) => {
                       : item.categoryNameRUS}
                   </h1>
 
-                  <Link to={`categoryDetail/${item.categoryId}`}>
+                  <Link to={`categoryDetail/${item.categoryId}/${i18n.language === "uz" ? item.categoryNameUZB : item.categoryNameRUS}`}>
                     <Button
                       className="!font-tenor !font-normal !text-sm !md:text-base !border-none !shadow-none"
                       children={t("see-all")}

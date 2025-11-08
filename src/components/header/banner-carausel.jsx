@@ -19,8 +19,8 @@ const BannerCarausel = () => {
           lazyLoad="progressive"
           draggable
           style={{ height: 610 }}
-          // easing="linear"
-          // effect="fade"
+        // easing="linear"
+        // effect="fade"
         >
           {data?.map((item) => (
             <div
@@ -28,12 +28,12 @@ const BannerCarausel = () => {
               onClick={() =>
                 navigate(
                   item.karuselType === "category_id"
-                    ? `/categoryDetail/${item.parameterId}`
+                    ? `/categoryDetail/${item.parameterId}/banner`
                     : item.karuselType === "look_id"
-                    ? `/looksDetail/${item.parameterId}`
-                    : item.karuselType === "product_id"
-                    ? `/productDetail/${item.parameterId}`
-                    : "/"
+                      ? `/looksDetail/${item.parameterId}`
+                      : item.karuselType === "product_id"
+                        ? `/productDetail/${item.parameterId}/banner`
+                        : "/"
                 )
               }
               key={item.id}
