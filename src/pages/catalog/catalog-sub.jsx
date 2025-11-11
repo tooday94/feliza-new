@@ -9,6 +9,7 @@ const CatalogSub = () => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const { data } = useGetById("/api/categories/getSubCategoriesByParent/", id);
+  console.log("catalog sub data", data);
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -25,7 +26,7 @@ const CatalogSub = () => {
           <div className="space-y-4">
             {data?.map((item, idx) => (
               <div
-                onClick={() => navigate(`/categoryDetail/${item.id}`)}
+                onClick={() => navigate(`/categoryDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`)}
                 className="shadow-md flex gap-5 items-center font-tenor font-normal text-primary"
               >
                 {item?.horizontalImage?.url ? (

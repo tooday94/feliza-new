@@ -333,7 +333,7 @@ const ProductCard = ({ item }) => {
             className="w-full max-w-[189px] md:max-w-[296px] md:min-h-[350px] h-[232px] object-cover cursor-pointer"
           />
           <div className="flex justify-between max-h-[100px] min-h-[100px] font-tenor">
-            <div className="p-2 md:p-4 space-y-[2px]">
+            <div className="p-2 md:p-2 space-y-[2px]">
               <h2 className="text-base text-primary line-clamp-1">
                 {i18n.language === "uz" ? item.nameUZB : item.nameRUS}
               </h2>
@@ -354,7 +354,7 @@ const ProductCard = ({ item }) => {
                   </span>
                 )}
                 {/* hullas shu yerdan comment qismi chiqadi */}
-                {/*  */}
+
 
 
 

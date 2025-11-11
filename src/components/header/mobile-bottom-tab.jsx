@@ -45,11 +45,10 @@ export const MobileBottomTab = () => {
               window.scrollTo({ top: 0, behavior: "smooth" })
             )}
             key={item.path}
-            className={`size-7 !pb-0 ${
-              location.pathname == item.path
+            className={`size-7 !pb-0 ${location.pathname == item.path
                 ? "!text-primary"
                 : "!text-secondary"
-            }`}
+              }`}
           >
             {item.icon}
           </button>
