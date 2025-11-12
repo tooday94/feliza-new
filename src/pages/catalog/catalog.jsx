@@ -37,15 +37,29 @@ const Catalog = () => {
     touchEndX.current = e.targetTouches[0].clientX;
   };
 
+  // const handleTouchEnd = () => {
+  //   const distance = touchStartX.current - touchEndX.current;
+  //   const threshold = 50;
+
+  //   if (distance > threshold && activeTab < tabData.length - 1) {
+  //     // swipe left
+  //     setActiveTab((prev) => prev + 1);
+  //   } else if (distance < -threshold && activeTab > 0) {
+  //     // swipe right
+  //     setActiveTab((prev) => prev - 1);
+  //   }
+  // };
+
   const handleTouchEnd = () => {
     const distance = touchStartX.current - touchEndX.current;
     const threshold = 50;
 
+    // oddiy bosish bo'lsa hech narsa qilinmaydi
+    if (Math.abs(distance) < threshold) return;
+
     if (distance > threshold && activeTab < tabData.length - 1) {
-      // swipe left
       setActiveTab((prev) => prev + 1);
     } else if (distance < -threshold && activeTab > 0) {
-      // swipe right
       setActiveTab((prev) => prev - 1);
     }
   };
