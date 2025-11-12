@@ -9,7 +9,7 @@ const CatalogSub = () => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const { data } = useGetById("/api/categories/getSubCategoriesByParent/", id);
-  console.log("catalog sub data", data);
+  // console.log("catalog sub data", data);
 
   return (
     <div className="max-w-5xl mx-auto">

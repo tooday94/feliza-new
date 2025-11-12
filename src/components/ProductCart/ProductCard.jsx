@@ -354,7 +354,35 @@ const ProductCard = ({ item }) => {
                   </span>
                 )}
                 {/* hullas shu yerdan comment qismi chiqadi */}
+                {/* <div className="flex items-center mb-2 text-xs text-gray-600 group">
+                  {(() => {
+                    // O‘rtacha reytingni hisoblash
+                    const averageRating = reviewsData?.length
+                      ? reviewsData.reduce((sum, item) => sum + (item.rating || 0), 0) / reviewsData.length
+                      : 0;
 
+                    return (
+                      <>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="#FFD700"
+                          className="w-3 h-3 transition-transform duration-300 group-hover:scale-125 group-hover:drop-shadow-[0_0_5px_#FFD700]"
+                        >
+                          <path d="M12 .587l3.668 7.425L24 9.75l-6 5.84L19.335 24 12 20.02 4.665 24 6 15.59 0 9.75l8.332-1.738z" />
+                        </svg>
+
+                        <span className="ml-1 text-gray-700">
+                          {averageRating.toFixed(1)}{" "}
+                          <span className="text-gray-500">
+                            ({reviewsData?.length || 0}{" "}
+                            {i18n.language === "uz" ? "sharh" : "отзыв"})
+                          </span>
+                        </span>
+                      </>
+                    );
+                  })()}
+                </div> */}
 
 
 

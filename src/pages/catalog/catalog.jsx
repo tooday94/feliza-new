@@ -10,8 +10,10 @@ const Catalog = () => {
   const { data: nessa } = useGetList(
     "/api/categories/getSubCategoriesByParent/Nessa"
   );
+
   const { data: feliza } = useGetList("/api/categories/getParentCategories");
   const filterFeliza = feliza?.filter((item) => item.id !== 9);
+  console.log("Feliza data", feliza);
 
   const tabData = [
     {
@@ -77,7 +79,8 @@ const Catalog = () => {
         <div className="space-y-4">
           {tabData[activeTab]?.catalogs?.map((item, idx) => (
             <div
-              onClick={() => navigate(`/catalog/${item.nameUZB}`)}
+              // onClick={() => navigate(`/catalog/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`)}
+              onClick={() => navigate(`/catalog/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`)}
               className="shadow-md flex gap-5 items-center font-tenor font-normal text-primary"
             >
               {item?.horizontalImage?.url ? (
