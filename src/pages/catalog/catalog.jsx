@@ -13,7 +13,7 @@ const Catalog = () => {
 
   const { data: feliza } = useGetList("/api/categories/getParentCategories");
   const filterFeliza = feliza?.filter((item) => item.id !== 9);
-  console.log("Feliza data", feliza);
+  // console.log("Feliza data", feliza);
 
   const tabData = [
     {

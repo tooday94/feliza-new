@@ -354,7 +354,7 @@ const ProductCard = ({ item }) => {
                   </span>
                 )}
                 {/* hullas shu yerdan comment qismi chiqadi */}
-                {/* <div className="flex items-center mb-2 text-xs text-gray-600 group">
+                <div className="flex items-center mb-2 text-xs text-gray-600 group">
                   {(() => {
                     // O‘rtacha reytingni hisoblash
                     const averageRating = reviewsData?.length
@@ -382,7 +382,7 @@ const ProductCard = ({ item }) => {
                       </>
                     );
                   })()}
-                </div> */}
+                </div>
 
 
 

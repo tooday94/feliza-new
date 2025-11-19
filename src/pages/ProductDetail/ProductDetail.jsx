@@ -42,43 +42,64 @@ function ProductDetail() {
     // console.log("Cartitemi", cartItemId);
     console.log(" Data Comment", data);
 
-    // savatga qoshish funktsiyasi
+    // Savatga qo'shish funksiyasi
     const addToCart = () => {
-        // Agar foydalanuvchi tizimga kirmagan bo'lsa, auth modal ochiladi
+        // 1. Foydalanuvchi tizimga kirmagan bo'lsa, auth modal ochiladi
         if (!userID) {
             setAuthOpen(true);
             return;
         }
 
-        // Tanlangan rang variantini olish
+        // 2. Tanlangan rang variantini olish
         const selectedColorVariant = productVariants?.[selectedColorIndex];
-
         if (!selectedColorVariant) {
             toast.error(
-                i18n.language === "uz"
-                    ? "Iltimos, rang tanlang"
-                    : "Пожалуйста, выберите цвет",
+                i18n.language === "uz" ? "Iltimos, rang tanlang" : "Пожалуйста, выберите цвет",
                 { autoClose: 1000 }
             );
             return;
         }
 
-        // Tanlangan razmerga mos productSizeVariant ni topish
+        // 3. Tanlangan razmer variantini olish
         const selectedSizeVariant = selectedColorVariant.productSizeVariantList?.find(
             (variant) => variant.size === selectedSize
         );
-
         if (!selectedSizeVariant) {
             toast.error(
-                i18n.language === "uz"
-                    ? "Iltimos, razmer tanlang"
-                    : "Пожалуйста, выберите размер",
+                i18n.language === "uz" ? "Iltimos, razmer tanlang" : "Пожалуйста, выберите размер",
                 { autoClose: 1000 }
             );
             return;
         }
 
-        // Mahsulotni savatga qo‘shish uchun mutate chaqirish
+        // 4. LocalStorage orqali savatda mavjudligini tekshirish
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingItemIndex = cart.findIndex(
+            (item) =>
+                item.id === data?.id &&
+                item.colorIndex === selectedColorIndex &&
+                item.size === selectedSize
+        );
+
+        if (existingItemIndex !== -1) {
+            // Mahsulot allaqachon savatda
+            toast.info(
+                i18n.language === "uz" ? "Mahsulot savatda mavjud" : "Товар уже в корзине",
+                { autoClose: 1000 }
+            );
+            return;
+        }
+
+        // 5. Mahsulotni localStorage ga qo'shish
+        cart.push({
+            id: data?.id,
+            colorIndex: selectedColorIndex,
+            size: selectedSize,
+            quantity: count,
+        });
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // 6. Backendga savatga qo'shish
         mutate(
             {
                 customerId: userID,
@@ -86,8 +107,8 @@ function ProductDetail() {
                 quantity: count,
             },
             {
-                onSuccess: (data) => {
-                    console.log("Savatga qo'shildi:", data);
+                onSuccess: (res) => {
+                    console.log("Savatga qo'shildi:", res);
                     toast.success(
                         i18n.language === "uz"
                             ? "Mahsulot savatga qo‘shildi"
@@ -96,25 +117,22 @@ function ProductDetail() {
                     );
                     setCount(1); // count ni reset qilish
                 },
-                onError: (error) => {
-                    console.error("Xatolik:", error);
-
+                onError: (err) => {
+                    console.error("Xatolik:", err);
                     // Agar foydalanuvchi tizimga kirmagan bo'lsa auth modal ochiladi
                     if (!userID) {
                         setAuthOpen(true);
                         return;
                     }
-
                     toast.error(
-                        i18n.language === "uz"
-                            ? "Xatolik yuz berdi"
-                            : "Произошла ошибка",
+                        i18n.language === "uz" ? "Xatolik yuz berdi" : "Произошла ошибка",
                         { autoClose: 1000 }
                     );
                 },
             }
         );
     };
+
 
 
     // sotib olish funksiyasi
@@ -821,4 +839,4 @@ function ProductDetail() {
     )
 }
 
-export default ProductDetail  
+export default ProductDetail   
