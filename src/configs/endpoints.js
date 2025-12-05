@@ -32,6 +32,7 @@ export const endpoints = {
     getProductByCategoryId: "/api/product/getProductByCategoryId/",
     getProductById: "/api/product/getProductById/",
     searchProduct: "/api/product/searchProduct/",
+    getAll: "/api/product/getAllProducts",
   },
   cart: {
     addCartItem: "/api/cartItem/addCartItem",
