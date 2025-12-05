@@ -112,9 +112,8 @@ const Header = () => {
         className="relative lg:hidden"
       >
         <div
-          className={`${
-            scrolled ? "bg-black/10" : ""
-          } flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-700 gap-3`}
+          className={`${scrolled ? "bg-black/10" : ""
+            } flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-700 gap-3`}
         >
           <div className="w-full flex justify-center text-white px-2">
             <img

@@ -14,6 +14,17 @@ import { OrderCard } from "../../components/cart/order-card";
 import formatPrice from "../../utils/formatPrice";
 import { useDeleteGroup } from "../../services/mutations/useDeleteGroup";
 import { toast } from "react-toastify";
+import { useGetList } from "../../services/query/useGetList";
+import { endpoints } from "../../configs/endpoints";
+import ProductCard from "../../components/ProductCart/ProductCard";
+import { Link } from "react-router-dom";
+import { FiShoppingCart } from "react-icons/fi"; // minimalist va chiroyli
+// import { BsCartX } from "react-icons/bs";       // bo‘sh savatcha uchun ajoyib
+// import { MdRemoveShoppingCart } from "react-icons/md"; // katta va diqqat tortadi
+// import { MdShoppingCart } from "react-icons/md";
+import { BsBagHeartFill } from "react-icons/bs";
+
+
 const Cart = () => {
   const [deletingId, setdeletingId] = useState(null);
   const [isBuying, setisBuying] = useState(false);
@@ -30,7 +41,10 @@ const Cart = () => {
     "/api/product/searchProduct/",
     selectedEditCart
   );
-
+  const { data: newOnSiteProducts } = useGetList(
+    endpoints.products.getAll,
+  )
+  console.log("newOnSiteProducts", newOnSiteProducts);
   const [cart, setCart] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
 
@@ -130,31 +144,42 @@ const Cart = () => {
   return (
     <>
       {!userID || data?.length == 0 || isLoading ? (
-        <div className="flex flex-col  items-center h-full min-h-screen gap-40 pt-10">
-          <h1 className="font-tenor font-normal  text-2xl">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6 gap-10">
+          {/* Sarlavha */}
+          <h1 className="text-3xl md:text-4xl font-tenor text-gray-800">
             {t("cart.title")}
           </h1>
 
-          <div className="flex flex-col justify-center items-center space-y-10">
-            <CartInfoIcon />
+          {/* Bo‘sh savatcha rasm va info */}
+          <div className="flex flex-col items-center gap-6">
+            <BsBagHeartFill className="w-26 h-26 text-black" />
 
-            <div className="text-center font-tenor font-normal space-y-5">
-              <h1 className="text-primary text-xl">
+            <div className="text-center space-y-3">
+              <h2 className="text-xl md:text-2xl font-tenor text-gray-700">
                 {t("cart.empty-cart-info.title")}
-              </h1>
-              <p className="text-sm text-secondary">
+              </h2>
+              <p className="text-sm md:text-base font-tenor text-gray-500">
                 {t("cart.empty-cart-info.desc")}
               </p>
             </div>
+
+            {/* Tugma bosh sahifaga */}
+            <Link
+              to="/"
+              className="mt-4 px-6 py-3 bg-black text-white font-tenor rounded-md hover:bg-black transition-all duration-300"
+            >
+              {i18n.language === "uz" ? "Bosh sahifaga qaytish" : "На главную"}
+            </Link>
           </div>
         </div>
+
       ) : (
         <div className="flex relative">
           <div className="bg-background w-full p-3 lg:p-10 lg:pl-28">
             <div className="flex flex-col items-center gap-3 justify-between pb-8">
               <div className=""></div>
               <div className="flex gap-2.5">
-                <h1 className="font-tenor font-normal  text-2xl">
+                <h1 className="font-tenor  text-2xl">
                   {t("cart.title")}
                 </h1>
                 <span className="text-secondary text-xl ">
@@ -583,8 +608,8 @@ const Cart = () => {
                 <div>
                   <Button
                     className={`w-fit !rounded-none !border !border-primary !font-tenor !font-normal !text-sm ${item.id == selectedEditProductSize
-                        ? "!bg-primary !text-white"
-                        : "!bg-white !text-primary"
+                      ? "!bg-primary !text-white"
+                      : "!bg-white !text-primary"
                       } ${item.quantity == 0 ? "opacity-50" : "opacity-100"}`}
                     disabled={item.quantity == 0 ? true : false}
                     onClick={() => setselectedEditProductSize(item.id)}
@@ -649,8 +674,28 @@ const Cart = () => {
       >
         <OrderCard sum={sum} cart={cart} />
       </Drawer>
+
+      {/* Bu yerdan saytda yangi maxsulotlar kornib turadi oke */}
+      <div className="mt-6">
+        <h3 className="text-lg md:text-xl font-semibold mb-3 text-gray-900">
+          {i18n.language === 'uz' ? 'Yangiliklar' : 'Новинки'}
+        </h3>
+        <div className="relative">
+          <div className="flex overflow-x-auto gap-3 scroll-smooth no-scrollbar pb-2">
+            {newOnSiteProducts?.content?.map((item) => (
+              <div key={item.id}>
+                <ProductCard item={item} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+
     </>
   );
 };
 
 export default Cart;
+
+

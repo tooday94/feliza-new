@@ -11,5 +11,27 @@
 }
 
 .custom-rate .ant-rate-star-zero svg {
-  color: #bbb !important; /* tanlanmagan yulduzcha rangi */
+  color: #bbb !important;
+  /* tanlanmagan yulduzcha rangi */
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+/* // 1 Feliz parent categoryni togrilash yani parentlar kategoriyalarni
+// 2 Shu bilan birga mobile versiyasida Tab name togrilash Felizani bosganida nessa tamon otib ketishini
+// 4 Admin panelda Cahegirma qismiga edit va deletilar va qogan yana 1 2 funksiyalarni qoshish
+// 6 Admin panelda sharhlarni qaytdan tejshirish rasim nega ochilmayotkanini
+// @tooday_b */
+
+/* // Bogan ishlar royhati
+// 3 Agarda savatcha bosh bolsa sotib ol degan va tagidan saytda yangi cartlarni korsatib turish
+// 5 Va saytda izohlar qismida barchasini korish button bosganida oyna ochilish
+// 7 va——— cheksiz  planlar uyogi */

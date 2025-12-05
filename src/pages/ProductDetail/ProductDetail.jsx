@@ -8,7 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { useState } from 'react';
 import ProductCard from './../../components/ProductCart/ProductCard';
-import { Button, Carousel, Drawer, Image, message } from 'antd';
+import { Button, Carousel, Drawer, Image, Modal, message } from 'antd';
 import Cookies from 'js-cookie';
 import { useCreate } from './../../services/mutations/useCreate';
 import { toast } from 'react-toastify';
@@ -38,6 +38,8 @@ function ProductDetail() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [cartItemId, setcartItemId] = useState("")
     const [authOpen, setAuthOpen] = useState(false)
+    const [openReviewModal, setOpenReviewModal] = useState(false);
+
 
     // console.log("Cartitemi", cartItemId);
     console.log(" Data Comment", data);
@@ -191,8 +193,6 @@ function ProductDetail() {
             }
         );
     };
-
-
 
     //  sevimlilar qoshish funksiyasi
     const addToFavorites = () => {
@@ -637,53 +637,105 @@ function ProductDetail() {
 
             {/* Comnetariya bolimi uchun  */}
             <div className="md:mt-12 mt-5 px-4">
-                <h2 className="text-lg font-semibold mb-2">
-                    {i18n.language === 'uz' ? 'Foydalanuvchi izohlari' : 'Отзывы пользователей'}
-                </h2>
-                {
-                    data?.reviewList?.length > 0 ? (
-                        <div className="space-y-2">
-                            <button className="text-[#5B5B5B] cursor-pointer mb-2 font-bold hover:text-black">
-                                {i18n.language === 'uz' ? 'Barchasini ko‘rish' : 'Посмотреть все'} ({data?.reviewList?.length || 0})
-                            </button>
-                            {
-                                data?.reviewList?.map((review, index) => (
-                                    <div key={index} className="border-b py-2">
-                                        <div className="flex gap-4">
-                                            <p className="font-medium">{review?.customerName}</p>
-                                            <div className="flex items-center gap-1 text-[#0D0D0D]">
-                                                {[...Array(review?.rating)].map((_, i) => (
-                                                    <FaStar key={i} />
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <p className="text-sm text-gray-600 mt-2.5">{review?.createdAt?.slice(0, 10)}</p>
-                                        {/* <img className='w-[60px] h-[80px] border object-cover mt-2.5' src={review?.images[0]?.url} alt=" " /> */}
-                                        <div className='flex gap-2'>
-                                            {
-                                                review?.images?.map((image, index) => (
-                                                    <Image
-                                                        key={index}
-                                                        className="w-[60px] h-[80px] border object-cover mt-2.5"
-                                                        src={image?.url}
-                                                        alt=" "
-                                                        style={{ width: 60, height: 80 }}
-                                                        preview={true}
-                                                    />
+                {/* Header */}
+                <div className="flex justify-between items-center mb-3">
+                    <h2 className="text-lg font-semibold">
+                        {i18n.language === "uz" ? "Foydalanuvchi izohlari" : "Отзывы пользователей"}
+                    </h2>
 
-                                                ))
-                                            }
-                                        </div>
-                                        <p className="text-sm text-gray-600 md:mt-4 mt-2.5 md:mb-12 mb-4">{review.content}</p>
+                    {data?.reviewList?.length > 1 && (
+                        <button
+                            onClick={() => setOpenReviewModal(true)}
+                            className="text-[#5B5B5B] hover:text-black md:text-lg text-sm font-semibold transition cursor-pointer"
+                        >
+                            {i18n.language === "uz" ? "Barchasini ko‘rish" : "Посмотреть все"} ({data?.reviewList.length})
+                        </button>
+                    )}
+                </div>
+
+                {/* Show first 2 reviews */}
+                {data?.reviewList?.length > 0 ? (
+                    <div className="space-y-4">
+                        {data.reviewList.slice(0, 2).map((review, index) => (
+                            <div
+                                key={index}
+                                className=" rounded-lg p-4 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:shadow-md transition"
+                            >
+                                <div className="flex items-center gap-10 mb-1">
+                                    <p className="font-medium text-gray-900">{review.customerName}</p>
+                                    <div className="flex gap-1 text-yellow-500">
+                                        {[...Array(review.rating)].map((_, i) => <FaStar key={i} />)}
                                     </div>
-                                ))
-                            }
-                        </div>
-                    ) : (
-                        <p className="text-gray-500">  {i18n.language === 'uz' ? 'Hozircha izohlar mavjud emas.' : 'Пока что отзывов нет.'}
-                        </p>
-                    )
-                }
+                                </div>
+
+                                <p className="text-xs text-gray-500 mb-2">{review.createdAt?.slice(0, 10)}</p>
+
+                                {/* Images Preview */}
+                                {review.images?.length > 0 && (
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                        {review.images.map((img, i) => (
+                                            <Image
+                                                key={i}
+                                                src={img.url}
+                                                width={60}
+                                                height={80}
+                                                className="rounded-md object-cover border cursor-pointer"
+                                                preview={true}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+
+                                <p className="text-sm text-gray-700">{review.content}</p>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-gray-500 text-sm">
+                        {i18n.language === "uz" ? "Hozircha izohlar mavjud emas." : "Пока отзывов нет."}
+                    </p>
+                )}
+
+                {/* Modal */}
+                <Modal
+                    title={i18n.language === "uz" ? "Barcha izohlar" : "Все отзывы"}
+                    open={openReviewModal}
+                    onCancel={() => setOpenReviewModal(false)}
+                    footer={null}
+                    className='!w-full'
+                >
+                    <div className="max-h-[420px] overflow-y-auto pr-2 space-y-4">
+                        {data?.reviewList?.map((review, index) => (
+                            <div key={index} className="border rounded-lg p-4 bg-gray-50">
+                                <div className="flex justify-between mb-1">
+                                    <p className="font-medium">{review.customerName}</p>
+                                    <div className="flex gap-1 text-yellow-500">
+                                        {[...Array(review.rating)].map((_, i) => <FaStar key={i} />)}
+                                    </div>
+                                </div>
+
+                                <p className="text-xs text-gray-500 mb-2">{review.createdAt?.slice(0, 10)}</p>
+
+                                {review.images?.length > 0 && (
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                        {review.images.map((img, i) => (
+                                            <Image
+                                                key={i}
+                                                src={img.url}
+                                                width={70}
+                                                height={90}
+                                                className="rounded-lg border object-cover cursor-pointer"
+                                                preview={true}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+
+                                <p className="text-sm text-gray-700">{review.content}</p>
+                            </div>
+                        ))}
+                    </div>
+                </Modal>
             </div>
 
             {/* O’XSHASH MAHSULOTLAR */}
