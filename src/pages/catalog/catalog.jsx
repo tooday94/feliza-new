@@ -81,17 +81,6 @@ const Catalog = () => {
             //   className="shadow-md flex gap-5 items-center font-tenor font-normal text-primary"
             // >
             <div
-              onClick={() => {
-                if (item.id === 6) {
-                  navigate(`/looks`);
-                  setShowBoard(false);
-                } else if (item.id === 7) {
-                  navigate(`/categoryDetail/7/Sale`);
-                  setShowBoard(false);
-                } else {
-                  navigate(`/catalog/${item.nameUZB}`);
-                }
-              }}
               className="shadow-md flex gap-5 items-center font-tenor font-normal text-primary"
             >
 
@@ -106,9 +95,37 @@ const Catalog = () => {
                   <MdOutlineImageNotSupported size={24} />
                 </div>
               )}
-              <h1 key={idx} className="font-tenor">
+              <h1
+                onClick={(e) => {
+                  e.stopPropagation();
+
+                  if (item.id === 6) {
+                    navigate(`/looks`);
+                    setShowBoard(false);
+                  } else if (item.id === 7) {
+                    navigate(`/categoryDetail/7/Sale`);
+                    setShowBoard(false);
+                  } else {
+                    navigate(`/catalog/${item.nameUZB}`);
+                  }
+                }}
+                key={idx}
+                className="
+  font-tenor
+  text-primary
+  text-lg
+  cursor-pointer
+  transition-all
+  duration-300
+  hover:scale-[1.02]
+  hover:opacity-80
+  hover:underline
+"
+
+              >
                 {i18n.language == "uz" ? item?.nameUZB : item.nameRUS}
               </h1>
+
             </div>
           ))}
         </div>
