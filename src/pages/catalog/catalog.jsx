@@ -96,7 +96,9 @@ const Catalog = () => {
                 </div>
               )}
               <h1
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
+
                   if (item.id === 6) {
                     navigate(`/looks`);
                     setShowBoard(false);
@@ -117,6 +119,7 @@ const Catalog = () => {
   duration-300
   hover:scale-[1.02]
   hover:opacity-80
+  hover:underline
 "
 
               >
