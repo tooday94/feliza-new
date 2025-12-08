@@ -36,17 +36,32 @@ const Catalog = () => {
   };
 
   const handleTouchEnd = () => {
-    const distance = touchStartX.current - touchEndX.current;
-    const threshold = 50;
+    if (touchStartX.current === null || touchEndX.current === null) return;
 
-    if (distance > threshold && activeTab < tabData.length - 1) {
-      // swipe left
-      setActiveTab((prev) => prev + 1);
-    } else if (distance < -threshold && activeTab > 0) {
-      // swipe right
-      setActiveTab((prev) => prev - 1);
+    const distance = touchStartX.current - touchEndX.current;
+    const threshold = 50; // swipe bo‘lishi uchun minimal masofa
+
+    // Masofa 50px dan kichik bo‘lsa — bu SWIPE EMAS → hech narsa qilmaymiz
+    if (Math.abs(distance) < threshold) {
+      touchStartX.current = null;
+      touchEndX.current = null;
+      return;
     }
+
+    // Swipe left
+    if (distance > threshold && activeTab < tabData.length - 1) {
+      setActiveTab(prev => prev + 1);
+    }
+
+    // Swipe right
+    if (distance < -threshold && activeTab > 0) {
+      setActiveTab(prev => prev - 1);
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
   };
+
 
   return (
     <div className="max-w-5xl mx-auto mt-5 font-tenor font-normal text-primary">
@@ -82,6 +97,19 @@ const Catalog = () => {
             // >
             <div
               className="shadow-md flex gap-5 items-center font-tenor font-normal text-primary"
+              onClick={(e) => {
+                e.stopPropagation();
+
+                if (item.id === 6) {
+                  navigate(`/looks`);
+                  setShowBoard(false);
+                } else if (item.id === 7) {
+                  navigate(`/categoryDetail/7/Sale`);
+                  setShowBoard(false);
+                } else {
+                  navigate(`/catalog/${item.nameUZB}`);
+                }
+              }}
             >
 
               {item?.horizontalImage?.url ? (
@@ -96,32 +124,7 @@ const Catalog = () => {
                 </div>
               )}
               <h1
-                onClick={(e) => {
-                  e.stopPropagation();
-
-                  if (item.id === 6) {
-                    navigate(`/looks`);
-                    setShowBoard(false);
-                  } else if (item.id === 7) {
-                    navigate(`/categoryDetail/7/Sale`);
-                    setShowBoard(false);
-                  } else {
-                    navigate(`/catalog/${item.nameUZB}`);
-                  }
-                }}
                 key={idx}
-                className="
-  font-tenor
-  text-primary
-  text-lg
-  cursor-pointer
-  transition-all
-  duration-300
-  hover:scale-[1.02]
-  hover:opacity-80
-  hover:underline
-"
-
               >
                 {i18n.language == "uz" ? item?.nameUZB : item.nameRUS}
               </h1>
