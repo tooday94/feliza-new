@@ -1,6 +1,9 @@
 import { useTranslation } from "react-i18next";
-import Logo from "../assets/images/feliza-logo.png";
+// import Logo from "../assets/images/feliza-logo.png";
+import Logo from "../assets/images/FelizaNewYerLogo2026.svg";
+
 import LogoWhite from "../assets/images/white-logo.png";
+// import LogoWhite from '../assets/images/FelizaNewYer2026White.svg';
 import LanguageSelector from "../components/header/language-selector";
 import { CiSearch } from "react-icons/ci";
 import { Button, Input } from "antd";
@@ -87,7 +90,7 @@ const Header = () => {
           </p>
         </div>
         <div
-          className="cursor-pointer"
+          className="cursor-pointer w-[110px] h-[37px] "
           onClick={() => (
             navigate("/"),
             setShowBoard(false),
