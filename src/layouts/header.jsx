@@ -2,8 +2,8 @@ import { useTranslation } from "react-i18next";
 // import Logo from "../assets/images/feliza-logo.png";
 import Logo from "../assets/images/FelizaNewYerLogo2026.svg";
 
-import LogoWhite from "../assets/images/white-logo.png";
-// import LogoWhite from '../assets/images/FelizaNewYer2026White.svg';
+// import LogoWhite from "../assets/images/white-logo.png";
+import LogoWhite from '../assets/images/FelizaMobileIconWhite.svg';
 import LanguageSelector from "../components/header/language-selector";
 import { CiSearch } from "react-icons/ci";
 import { Button, Input } from "antd";
@@ -118,7 +118,7 @@ const Header = () => {
           className={`${scrolled ? "bg-black/10" : ""
             } flex flex-col justify-center absolute text-center w-full align-middle transition-all duration-700 gap-3`}
         >
-          <div className="w-full flex justify-center text-white px-2">
+          <div className="w-full flex h-[50px] justify-center text-white px-2">
             <img
               loading="lazy"
               className={scrolled ? "scale-75" : ""}
