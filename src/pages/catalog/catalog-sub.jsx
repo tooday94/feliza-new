@@ -3,6 +3,7 @@ import { useGetById } from "../../services/query/useGetById";
 import { MdArrowBackIos, MdOutlineImageNotSupported } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { Button } from "antd";
+import { transliterate as tr } from 'transliteration';
 
 const CatalogSub = () => {
   const { id } = useParams();
@@ -26,7 +27,16 @@ const CatalogSub = () => {
           <div className="space-y-4">
             {data?.map((item, idx) => (
               <div
-                onClick={() => navigate(`/categoryDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`)}
+                onClick={() => {
+                  // Ruscha nom bo‘lsa transliterate qilish, o‘zbekcha bo‘lsa faqat bo‘sh joyni "-"
+                  const name = i18n.language === "uz" ? item.nameUZB : item.nameRUS;
+                  const slug = i18n.language === "uz"
+                    ? name.replace(/\s+/g, "-")
+                    : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                  navigate(`/categoryDetail/${item.id}/${slug}`);
+
+                }}
+                // onClick={() => navigate(`/categoryDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`)}
                 className="shadow-md flex gap-5 items-center font-tenor font-normal text-primary"
               >
                 {item?.horizontalImage?.url ? (

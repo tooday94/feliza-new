@@ -4,6 +4,7 @@ import { useGetList } from "../../services/query/useGetList";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "antd";
 import { FiAlertCircle } from "react-icons/fi"; // yoki istalgan icon
+import { transliterate as tr } from 'transliteration';
 
 
 export const HeaderBoard = ({ setShowBoard, setBrandName, brand }) => {
@@ -34,14 +35,22 @@ export const HeaderBoard = ({ setShowBoard, setBrandName, brand }) => {
 
   const handleParentClick = (item) => {
     setActiveParent(item.id);
-    setParentName(i18n.language === "uz" ? item.nameUZB : item.nameRUS);
+    setParentName(item.nameUZB);  // ← yangi to‘g‘ri variant
   };
+
 
   const handleNavigate = (id, name) => {
     setShowBoard(false);
     setBrandName("");
-    navigate(`/categoryDetail/${id}/${name.replace(/\s+/g, "-")}`);
+
+    // Ruscha nom bo‘lsa transliterate qilish, o‘zbekcha bo‘lsa faqat bo‘sh joyni "-"
+    const slug = i18n.language === "uz"
+      ? name.replace(/\s+/g, "-")              // o‘zbekcha bo‘lsa faqat bo‘sh joyni "-"
+      : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""); // ruscha → lotin
+
+    navigate(`/categoryDetail/${id}/${slug}`);
   };
+
 
   return (
     <div className="absolute bg-white w-full min-h-[400px] shadow-sm p-6 flex">
@@ -105,12 +114,6 @@ export const HeaderBoard = ({ setShowBoard, setBrandName, brand }) => {
             {/* Pulsating circle */}
             <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-primary"></div>
 
-            {/* Optional: subtle dots animation */}
-            <div className="flex space-x-2">
-              <span className="animate-bounce inline-block h-2 w-2 bg-primary rounded-full"></span>
-              <span className="animate-bounce animation-delay-150 inline-block h-2 w-2 bg-primary rounded-full"></span>
-              <span className="animate-bounce animation-delay-300 inline-block h-2 w-2 bg-primary rounded-full"></span>
-            </div>
           </div>
 
 

@@ -2,6 +2,17 @@ import { useGetList } from "./../../services/query/useGetList";
 import { endpoints } from "./../../configs/endpoints";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { transliterate as tr } from 'transliteration';
+
+
+const handleNavigate = (id, name, lang) => {
+  // Agar o'zbekcha nom bo'lsa, faqat bo'sh joyni "-" bilan almashtiramiz
+  const slug = lang === "uz"
+    ? name.replace(/\s+/g, "-")
+    : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+  navigate(`/categoryDetail/${id}/${slug}`);
+};
 
 function Menu1CategoryList() {
   const navigate = useNavigate();
@@ -47,8 +58,18 @@ function Menu1CategoryList() {
         {sortedData?.map((item, index) => (
           <div
             key={index}
+            // onClick={() => {
+            //   navigate(`/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`);
+            //   window.scrollTo({ top: 0, behavior: "smooth" });
+            // }}
             onClick={() => {
-              navigate(`/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`);
+              // Ruscha nom bo‘lsa transliterate qilish
+              const name = i18n.language === "uz" ? item.category.nameUZB : item.category.nameRUS;
+              const slug = i18n.language === "uz"
+                ? name.replace(/\s+/g, "-")
+                : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+              navigate(`/categoryDetail/${item.category.id}/${slug}`);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             className="w-[45vw] sm:w-[240px] sm:h-[240px] relative group overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer scrollbar-hide"

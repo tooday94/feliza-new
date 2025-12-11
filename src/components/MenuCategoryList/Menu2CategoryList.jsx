@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
 import { useEffect } from "react";
+import { transliterate as tr } from 'transliteration';
 
 function Menu2CategoryList() {
   const [showLeftBtn, setShowLeftBtn] = useState(false);
@@ -94,12 +95,22 @@ function Menu2CategoryList() {
       >
         {sortedData?.map((item, indx) => (
           <div
-            onClick={() =>
-              navigate(
-                `/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`,
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              )
-            }
+            // onClick={() =>
+            //   navigate(
+            //     `/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`,
+            //     window.scrollTo({ top: 0, behavior: "smooth" })
+            //   )
+            // }
+            onClick={() => {
+              // Ruscha nom bo‘lsa transliterate qilish
+              const name = i18n.language === "uz" ? item.category.nameUZB : item.category.nameRUS;
+              const slug = i18n.language === "uz"
+                ? name.replace(/\s+/g, "-")
+                : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+              navigate(`/categoryDetail/${item.category.id}/${slug}`);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+
+            }}
             key={indx}
             className="flex-shrink-0 md:w-[360px] w-[240px] cursor-pointer group relative mr-2"
           >
