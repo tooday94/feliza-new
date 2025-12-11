@@ -20,7 +20,7 @@ const Looks = () => {
       <div className="py-5 lg:py-10 space-y-4 bg-white">
         <div className="flex justify-between lg:justify-center">
           <h1 className="font-tenor font-normal text-2xl text-primary text-center">
-            {t("looks.title")}
+            Look
           </h1>
 
           <div className="flex lg:hidden items-center gap-5">
@@ -87,17 +87,15 @@ const Looks = () => {
           {Array.from({ length: grid }).map((item) => (
             <Skeleton.Image
               active
-              className={`max-w-[357px] !w-full ${
-                grid == 4 ? "!min-h-[450px]" : "!min-h-[302px]"
-              } h-full`}
+              className={`max-w-[357px] !w-full ${grid == 4 ? "!min-h-[450px]" : "!min-h-[302px]"
+                } h-full`}
             />
           ))}
         </div>
       ) : (
         <div
-          className={`grid w-full gap-1 grid-cols-${gridMobile} ${
-            grid == 6 ? "lg:grid-cols-6" : "lg:grid-cols-4"
-          }`}
+          className={`grid w-full gap-1 grid-cols-${gridMobile} ${grid == 6 ? "lg:grid-cols-6" : "lg:grid-cols-4"
+            }`}
         >
           {data?.map((item) => (
             <div

@@ -5,6 +5,7 @@ import { IoArrowForwardOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../ProductCart/ProductCard";
 import { Carousel } from "antd";
+import { transliterate as tr } from 'transliteration';
 
 function NessaHome() {
   const { i18n } = useTranslation();
@@ -53,12 +54,21 @@ function NessaHome() {
             : "Сначала посмотрите на новинки от Nessa."}
         </p>
         <button
-          onClick={() =>
-            navigate(
-              `/categoryDetail/9/nessa`,
-              window.scrollTo({ top: 0, behavior: "smooth" })
-            )
-          }
+          // onClick={() =>
+          //   navigate(
+          //     `/categoryDetail/9/nessa`,
+          //     window.scrollTo({ top: 0, behavior: "smooth" })
+          //   )
+          // }
+          onClick={() => {
+            const name = i18n.language === "uz" ? categoryData?.object?.nameUZB : categoryData?.object?.nameRUS;
+            const slug = i18n.language === "uz"
+              ? name.replace(/\s+/g, "-")
+              : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+            navigate(`/categoryDetail/9/${slug}`);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           className="flex md:mt-20 mt-5 cursor-pointer items-center gap-2 py-2 px-6 border border-primary hover:bg-primary hover:text-white transition duration-300"
         >
           {i18n.language === "uz" ? "Nessa katalog" : "Каталог Nessa"}{" "}

@@ -14,6 +14,7 @@ import { OrderCard } from "../cart/order-card";
 import { Drawer } from "antd";
 import formatPrice from "../../utils/formatPrice";
 import AuthForm from "../header/auth-form";
+import { transliterate as tr } from 'transliteration';
 
 const ProductCard = ({ item }) => {
   const { i18n, t } = useTranslation();
@@ -322,12 +323,21 @@ const ProductCard = ({ item }) => {
           </div>
 
           <img
-            onClick={() =>
-              navigate(
-                `/productDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`,
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              )
-            }
+            // onClick={() =>
+            //   navigate(
+            //     `/productDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`,
+            //     window.scrollTo({ top: 0, behavior: "smooth" })
+            //   )
+            // }
+            onClick={() => {
+              // Ruscha nom bo‘lsa transliterate qilish
+              const name = i18n.language === "uz" ? item.nameUZB : item.nameRUS;
+              const slug = i18n.language === "uz"
+                ? name.replace(/\s+/g, "-")
+                : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+              navigate(`/productDetail/${item.id}/${slug}`);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             src={item?.productImages?.[0]?.url}
             alt={i18n.language === "uz" ? item.nameUZB : item.nameRUS}
             className="w-full max-w-[189px] md:max-w-[296px] md:min-h-[350px] h-[232px] object-cover cursor-pointer"
