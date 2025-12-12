@@ -3,111 +3,135 @@ import { useGetList } from "../../services/query/useGetList";
 import { PiSquaresFour } from "react-icons/pi";
 import { LiaGripVerticalSolid } from "react-icons/lia";
 import { Button, Skeleton } from "antd";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { CiGrid2H } from "react-icons/ci";
 import { useTranslation } from "react-i18next";
 
 const Looks = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data, isLoading } = useGetList(
-    "/api/lookCollection/getLookCollection"
-  );
+
+  const { data, isLoading } = useGetList("/api/lookCollection/getLookCollection");
+
   const [grid, setGrid] = useState(4);
   const [gridMobile, setGridMobile] = useState(2);
+
+  // SAFE data
+  const safeData = data || [];
+
+  // SORT ONLY ONCE  (performance optimized)
+  const sortedData = useMemo(() => {
+    return [...safeData].sort((a, b) => {
+      const lastA =
+        a.images?.length > 0
+          ? Math.max(...a.images.map(img => new Date(img.createdAt)))
+          : 0;
+
+      const lastB =
+        b.images?.length > 0
+          ? Math.max(...b.images.map(img => new Date(img.createdAt)))
+          : 0;
+
+      return lastB - lastA;
+    });
+  }, [safeData]);
+
   return (
     <div className="p-1 bg-background">
+      {/* Header */}
       <div className="py-5 lg:py-10 space-y-4 bg-white">
         <div className="flex justify-between lg:justify-center">
-          <h1 className="font-tenor font-normal text-2xl text-primary text-center">
-            Look
-          </h1>
+          <h1 className="font-tenor text-2xl text-primary text-center">Look</h1>
 
+          {/* Mobile grid switch */}
           <div className="flex lg:hidden items-center gap-5">
             <Button
               className="!border-none !shadow-none !bg-transparent"
               icon={
                 <CiGrid2H
-                  color={gridMobile == 1 ? "#0d0d0d" : "#bbb"}
                   size={24}
+                  color={gridMobile === 1 ? "#0d0d0d" : "#bbb"}
                   onClick={() => setGridMobile(1)}
                 />
               }
             />
             <Button
               className="!border-none !shadow-none !bg-transparent"
-              onClick={() => setGridMobile(2)}
               icon={
                 <LiaGripVerticalSolid
-                  color={gridMobile == 2 ? "#0d0d0d" : "#bbb"}
                   size={24}
+                  color={gridMobile === 2 ? "#0d0d0d" : "#bbb"}
                 />
               }
+              onClick={() => setGridMobile(2)}
             />
           </div>
         </div>
 
         <div className="flex justify-between items-center px-28">
-          <p className="font-tenor font-normal text-base text-primary  leading-[180%] hidden lg:block">
+          <p className="font-tenor text-base text-primary hidden lg:block">
             {t("looks.desc")}
           </p>
 
+          {/* Desktop grid switch */}
           <div className="hidden lg:flex gap-2.5 items-center">
-            <p className="font-tenor font-normal text-sm text-secondary">
-              {t("looks.see")}
-            </p>
+            <p className="font-tenor text-sm text-secondary">{t("looks.see")}</p>
             <div className="flex items-center gap-5">
               <Button
                 className="!border-none !shadow-none !bg-transparent"
                 icon={
                   <PiSquaresFour
-                    color={grid == 4 ? "#0d0d0d" : "#bbb"}
                     size={24}
-                    onClick={() => setGrid(4)}
+                    color={grid === 4 ? "#0d0d0d" : "#bbb"}
                   />
                 }
+                onClick={() => setGrid(4)}
               />
               <Button
                 className="!border-none !shadow-none !bg-transparent"
-                onClick={() => setGrid(6)}
                 icon={
                   <LiaGripVerticalSolid
-                    color={grid == 6 ? "#0d0d0d" : "#bbb"}
                     size={24}
+                    color={grid === 6 ? "#0d0d0d" : "#bbb"}
                   />
                 }
+                onClick={() => setGrid(6)}
               />
             </div>
           </div>
         </div>
       </div>
 
+      {/* LOADING */}
       {isLoading ? (
-        <div className={`grid lg:grid-cols-${grid} gap-1`}>
-          {Array.from({ length: grid }).map((item) => (
+        <div className={`grid gap-1 lg:grid-cols-${grid}`}>
+          {[...Array(grid)].map((_, i) => (
             <Skeleton.Image
+              key={i}
               active
-              className={`max-w-[357px] !w-full ${grid == 4 ? "!min-h-[450px]" : "!min-h-[302px]"
-                } h-full`}
+              className={`max-w-[357px] w-full ${grid === 4 ? "!min-h-[450px]" : "!min-h-[302px]"
+                }`}
             />
           ))}
         </div>
       ) : (
+        /* RENDER IMAGES */
         <div
-          className={`grid w-full gap-1 grid-cols-${gridMobile} ${grid == 6 ? "lg:grid-cols-6" : "lg:grid-cols-4"
-            }`}
+          className={`grid gap-1 w-full ${gridMobile === 1 ? "grid-cols-1" : "grid-cols-2"
+            } ${grid === 6 ? "lg:grid-cols-6" : "lg:grid-cols-4"}`}
         >
-          {data?.map((item) => (
+          {sortedData.map((item) => (
             <div
-              onClick={() => (
-                navigate("/looksDetail/" + item.id),
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              )}
+              key={item.id}
+              onClick={() => {
+                navigate("/looksDetail/" + item.id);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
               className="cursor-pointer hover:scale-95 duration-300"
             >
               <img
-                className="max-w-[357px] min-w-full w-full"
-                src={item.images[0].url}
+                className="max-w-[357px] w-full"
+                src={item.images?.[0]?.url || "/no-image.jpg"}
                 alt=""
               />
             </div>
