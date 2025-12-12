@@ -11,7 +11,12 @@ const HomeLooks = () => {
     "/api/lookCollection/getLookCollection"
   );
 
-  const random6 = data?.sort(() => 0.5 - Math?.random())?.slice(0, 6);
+  // const random6 = data?.sort(() => 0.5 - Math?.random())?.slice(0, 6);
+  // sort funksiya qoshiladi oxirgi qoshgan rasim birinchi kornib turadi
+  const random6 = data?.sort((a, b) => {
+    new Date(b.images?.[0]?.createdAt) - new Date(a.images?.[0]?.createdAt)
+  }
+  )?.slice(0, 7);
 
   return (
     <div className="max-w-[1280px] mx-auto py-4 lg:py-16">
