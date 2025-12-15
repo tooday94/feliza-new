@@ -8,7 +8,7 @@ import HomeLooks from "../../components/looks/home-looks";
 const Home = () => {
   return (
     <div>
-      {/* <BannerCarausel />
+      <BannerCarausel />
       <Menu1CategoryList />
       <SmallSlider palcement={1} />
       <Menu2CategoryList />
@@ -20,7 +20,7 @@ const Home = () => {
       <SmallSlider palcement={5} />
       <SmallSlider palcement={6} />
       <SmallSlider palcement={7} />
-      <SmallSlider palcement={8} /> */}
+      <SmallSlider palcement={8} />
     </div>
   );
 };
