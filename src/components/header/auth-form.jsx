@@ -98,8 +98,16 @@ const AuthForm = ({ onClose }) => {
                 ? "Ro'yxatdan o'tish | Kirish"
                 : "Регистрация | Вход"}
             </Button>
-
           </Flex>
+          <p className="text-center text-sm text-secondary">
+            {i18n.language === "uz" ? (
+              <>Agar ro‘yxatdan o‘ta olmasangiz, <a href="https://t.me/tooday_b" target="_blank" className="text-primary underline">@tooday_b</a> ga murojaat qiling</>
+            ) : (
+              <>Если не можете зарегистрироваться, обратитесь к <a href="https://t.me/tooday_b" target="_blank" className="text-primary underline">@tooday_b</a></>
+            )}
+          </p>
+
+
         </Flex>
       )}
 
@@ -321,9 +329,10 @@ const AuthForm = ({ onClose }) => {
               <Form.Item name="fullName" rules={[{ required: true, message: t("header.register.name-required") }]}>
                 <Input
                   className="h-12"
-                  placeholder={t("header.register.name")}
                   style={{ borderRadius: 0 }}
-                />
+                  placeholder={i18n.language === "uz"
+                    ? "Ismingizni uzunligi 2 dan kam bo'lmagan holda kiriting"
+                    : "Введите имя длиной не менее 2 символов"} />
               </Form.Item>
               <Form.Item name="phoneNumber">
                 {/* Disabled input uchun value yoki defaultValue to'g'ri berilishi kerak */}
