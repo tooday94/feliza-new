@@ -625,9 +625,17 @@ function ProductDetail() {
                                 onClose={onClose}
                                 placement="right"
                             >
-                                <OrderCard cart={[cartItemId]} sum={data?.sale > 0
-                                    ? data?.salePrice
-                                    : data?.sellPrice} />
+                                <OrderCard
+                                    cart={[cartItemId]}
+                                    sum={
+                                        data
+                                            ? data.sale > 0
+                                                ? data.salePrice
+                                                : data.sellPrice
+                                            : 0
+                                    }
+                                />
+
                             </Drawer>
                         </div>
 
@@ -875,7 +883,18 @@ function ProductDetail() {
                     ) : (
                         <button
                             onClick={() => {
+                                if (!userID) {
+                                    toast.error(
+                                        i18n.language === 'uz'
+                                            ? "Iltimos, ro‘yxatdan o‘ting"
+                                            : "Пожалуйста, войдите в систему",
+                                        { autoClose: 1000 }
+                                    );
+                                    return;
+                                }
+
                                 setDrawerOpen(true);
+                                addOrder();
                             }}
                             className="w-full h-12 border border-black hover:bg-black cursor-pointer hover:text-white flex items-center justify-center gap-2 transition duration-300"
                         >
@@ -883,6 +902,7 @@ function ProductDetail() {
                                 {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
                             </span>
                         </button>
+
                     )
                 }
             </div>
