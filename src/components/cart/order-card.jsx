@@ -106,7 +106,8 @@ export const OrderCard = ({ sum, cart }) => {
           initialValues={{
             receiverName: userData?.fullName,
             receiverPhoneNumber: userData?.phoneNumber,
-            addressId: userAdresses[0]?.id || "",
+            // addressId: userAdresses[0]?.id || "",
+            addressId: userAdresses?.length ? userAdresses[0].id : "",
             paymentMethod: "PAYME",
           }}
         >
@@ -153,24 +154,41 @@ export const OrderCard = ({ sum, cart }) => {
                 setValue(e.target.value);
               }}
               className="!space-y-2.5"
-              options={userAdresses?.map((addr) => ({
-                label: (
-                  <div className="flex items-center gap-2">
-                    <SlLocationPin size={18} />
-                    <span className="font-tenor font-normal text-sm">
-                      {i18n.language == "ru"
-                        ? `${addr?.subRegion.region.nameRUS}, ${addr.subRegion.nameRUS}`
-                        : `${addr?.subRegion.region.nameUZB}, ${addr.subRegion.nameUZB}`}
-                    </span>
-                  </div>
-                ),
-                value: addr?.id,
-                className: `!space-x-5 !bg-background !w-full !p-5 !border-2 ${
-                  value == addr.id
-                    ? "!border-primary !text-primary"
-                    : "!border-[#d3d3d3] !text-secondary"
-                }`,
-              }))}
+              // options={userAdresses?.map((addr) => ({
+              //   label: (
+              //     <div className="flex items-center gap-2">
+              //       <SlLocationPin size={18} />
+              //       <span className="font-tenor font-normal text-sm">
+              //         {i18n.language == "ru"
+              //           ? `${addr?.subRegion.region.nameRUS}, ${addr.subRegion.nameRUS}`
+              //           : `${addr?.subRegion.region.nameUZB}, ${addr.subRegion.nameUZB}`}
+              //       </span>
+              //     </div>
+              //   ),
+              //   value: addr?.id,
+              //   className: `!space-x-5 !bg-background !w-full !p-5 !border-2 ${value == addr.id
+              //       ? "!border-primary !text-primary"
+              //       : "!border-[#d3d3d3] !text-secondary"
+              //     }`,
+              // }))}
+              options={
+                Array.isArray(userAdresses)
+                  ? userAdresses.map((addr) => ({
+                    label: (
+                      <div className="flex items-center gap-2">
+                        <SlLocationPin size={18} />
+                        <span>
+                          {i18n.language == "ru"
+                            ? `${addr?.subRegion?.region?.nameRUS}, ${addr?.subRegion?.nameRUS}`
+                            : `${addr?.subRegion?.region?.nameUZB}, ${addr?.subRegion?.nameUZB}`}
+                        </span>
+                      </div>
+                    ),
+                    value: addr?.id,
+                  }))
+                  : []
+              }
+
             />
           </Form.Item>
 
@@ -191,48 +209,42 @@ export const OrderCard = ({ sum, cart }) => {
             </div>
           </Flex>
 
-          {userCoupon?.length == 0 ||
-            (typeof userCoupon != "string" && (
-              <>
-                <Flex className="!pb-[30px]">
-                  <h1 className="font-tenor font-normal text-xl text-primary">
-                    {t("order.coupons")}
-                  </h1>
-                </Flex>
-                <Form.Item className="lg:!pl-4" name={"couponCustomerId"}>
-                  <Radio.Group
-                    value={valueCoupon}
-                    onChange={(e) => {
-                      const selectedValue = e.target.value;
-                      setValueCoupon((prev) =>
-                        prev === selectedValue ? null : selectedValue
-                      );
-                    }}
-                    className="!space-y-2.5"
-                    options={
-                      userCoupon?.map((item) => ({
-                        label: (
-                          <CouponCard
-                            name={item.coupon.name}
-                            credit={item.coupon.credit}
-                          />
-                        ),
-                        value: item?.id,
-                        className: `!bg-white !w-full !flex !flex-row-reverse ${
-                          value == item.id ? "!text-primary" : "!text-secondary"
-                        }`,
-                      })) || [
-                        {
-                          label: t("order.no-coupons"),
-                          value: null,
-                          className: "!bg-white !w-full !text-secondary",
-                        },
-                      ]
-                    }
-                  />
-                </Form.Item>
-              </>
-            ))}
+          {Array.isArray(userCoupon) && userCoupon.length > 0 && (
+            <>
+              <Flex className="!pb-[30px]">
+                <h1 className="font-tenor font-normal text-xl text-primary">
+                  {t("order.coupons")}
+                </h1>
+              </Flex>
+
+              <Form.Item className="lg:!pl-4" name={"couponCustomerId"}>
+                <Radio.Group
+                  value={valueCoupon}
+                  onChange={(e) => {
+                    const selectedValue = e.target.value;
+                    setValueCoupon((prev) =>
+                      prev === selectedValue ? null : selectedValue
+                    );
+                  }}
+                  className="!space-y-2.5"
+                  options={userCoupon.map((item) => ({
+                    label: (
+                      <CouponCard
+                        name={item?.coupon?.name}
+                        credit={item?.coupon?.credit}
+                      />
+                    ),
+                    value: item?.id,
+                    className: `!bg-white !w-full !flex !flex-row-reverse ${valueCoupon == item?.id
+                      ? "!text-primary"
+                      : "!text-secondary"
+                      }`,
+                  }))}
+                />
+              </Form.Item>
+            </>
+          )}
+
 
           <Flex vertical gap={30}>
             <h1 className="font-tenor font-normal text-xl text-primary">
@@ -276,7 +288,7 @@ export const OrderCard = ({ sum, cart }) => {
                 <p>
                   {Array.isArray(userCoupon)
                     ? userCoupon.find((coupon) => coupon?.id === valueCoupon)
-                        ?.coupon?.credit || 0
+                      ?.coupon?.credit || 0
                     : 0}
                 </p>
               </div>
@@ -285,7 +297,7 @@ export const OrderCard = ({ sum, cart }) => {
                   {t("order.total-price")}
                 </h1>
                 <p>
-                  {formatPrice(sum - (userCouponUsed?.coupon?.credit || 0))}{" "}
+                  {formatPrice((sum || 0) - (userCouponUsed?.coupon?.credit || 0))}{" "}
                   {t("cart.sum")}
                 </p>
               </div>
