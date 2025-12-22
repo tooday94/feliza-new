@@ -595,26 +595,32 @@ function ProductDetail() {
                                         disabled
                                         className="w-full h-12 border border-black bg-gray-200 text-gray-500 cursor-not-allowed"
                                     >
-                                        {i18n.language === 'uz' ? "MahsuFlot qolmagan" : "Нет в наличии"}
+                                        {i18n.language === 'uz' ? "Mahsulot qolmagan" : "Нет в наличии"}
                                     </button>
                                 ) : (
                                     <button
                                         onClick={() => {
                                             if (!userID) {
                                                 toast.error(
-                                                    i18n.language === 'uz' ? "Iltimos, ro'yxatdan o'ting" : "Пожалуйста, войдите в систему",
+                                                    i18n.language === 'uz'
+                                                        ? "Iltimos, avval ro‘yxatdan o‘ting"
+                                                        : "Пожалуйста, сначала войдите в систему",
                                                     { autoClose: 1000 }
                                                 );
+                                                setAuthOpen(true);
                                                 return;
                                             }
+
                                             setDrawerOpen(true);
                                             addOrder();
                                         }}
-
                                         className="w-full h-12 border border-black hover:bg-black cursor-pointer hover:text-white flex items-center justify-center gap-2 transition duration-300"
                                     >
-                                        {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
+                                        <span>
+                                            {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
+                                        </span>
                                     </button>
+
                                 )
                             }
 
@@ -886,10 +892,11 @@ function ProductDetail() {
                                 if (!userID) {
                                     toast.error(
                                         i18n.language === 'uz'
-                                            ? "Iltimos, ro‘yxatdan o‘ting"
-                                            : "Пожалуйста, войдите в систему",
+                                            ? "Iltimos, avval ro‘yxatdan o‘ting"
+                                            : "Пожалуйста, сначала войдите в систему",
                                         { autoClose: 1000 }
                                     );
+                                    setAuthOpen(true);
                                     return;
                                 }
 
@@ -902,6 +909,7 @@ function ProductDetail() {
                                 {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
                             </span>
                         </button>
+
 
                     )
                 }
