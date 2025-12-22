@@ -1,11 +1,36 @@
 import { useGetList } from "../../services/query/useGetList";
 import { Carousel, Grid, Skeleton } from "antd";
 import { useNavigate } from "react-router-dom";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+
 
 const BannerCarausel = () => {
   const { data, isLoading } = useGetList("/api/karusel/getAllKarusels");
   const navigate = useNavigate();
   const width = Grid.useBreakpoint();
+
+  const PrevArrow = ({ onClick }) => {
+    return (
+      <div
+        onClick={onClick}
+        className="w-14 h-14 hover:text-black  cursor-pointer text-white flex items-center justify-center absolute left-2 top-1/2 -translate-y-1/2 z-20"
+      >
+        <LeftOutlined className="text-white text-xl" />
+      </div>
+    );
+  };
+
+  const NextArrow = ({ onClick }) => {
+    return (
+      <div
+        onClick={onClick}
+        className="w-14 h-14 hover:text-black  cursor-pointer text-white flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2 z-20"
+
+      >
+        <RightOutlined className="text-white text-xl" />
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -13,15 +38,17 @@ const BannerCarausel = () => {
         <Skeleton.Image active className="!w-full min-h-[610px]" />
       ) : (
         <Carousel
+          arrows
+          prevArrow={<PrevArrow />}
+          nextArrow={<NextArrow />}
           autoplay={{ dotDuration: true }}
           autoplaySpeed={4000}
           pauseOnHover={false}
           lazyLoad="progressive"
           draggable
           style={{ height: 610 }}
-        // easing="linear"
-        // effect="fade"
         >
+
           {data?.map((item) => (
             <div
               className="max-h-[610px]"
