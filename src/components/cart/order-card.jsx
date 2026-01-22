@@ -267,6 +267,10 @@ export const OrderCard = ({ sum, cart }) => {
                   label: "Payme",
                   value: "PAYME",
                 },
+                {
+                  label: "Click",
+                  value: "CLICK",
+                }
               ]}
             />
           </Form.Item>
