@@ -1,3 +1,6 @@
+[images]
+  remote_images = ["https://feliza-images.s3.ap-southeast-1.amazonaws.com/.*"]
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
