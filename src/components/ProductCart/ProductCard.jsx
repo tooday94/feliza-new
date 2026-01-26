@@ -323,25 +323,21 @@ const ProductCard = ({ item }) => {
             )}
           </div>
 
-         <img
-            onClick={() => {
-              const name = i18n.language === "uz" ? item.nameUZB : item.nameRUS;
-              const slug = i18n.language === "uz"
-                ? name.replace(/\s+/g, "-")
-                : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-              navigate(`/productDetail/${item.id}/${slug}`);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-       
-            src={getOptimizedImageUrl(item?.productImages?.[0]?.url, 400)}
-            
-            alt={i18n.language === "uz" ? item.nameUZB : item.nameRUS}
-            className="w-full max-w-[189px] md:max-w-[296px] md:min-h-[350px] h-[232px] object-cover cursor-pointer"
-            
- 
-            loading="lazy" 
-            decoding="async"
-          />
+        <img
+  onClick={() => {
+    const name = i18n.language === "uz" ? item.nameUZB : item.nameRUS;
+    const slug = i18n.language === "uz"
+      ? name.replace(/\s+/g, "-")
+      : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    navigate(`/productDetail/${item.id}/${slug}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }}
+  src={getOptimizedImageUrl(item?.productImages?.[0]?.url, 400)}
+  alt={i18n.language === "uz" ? item.nameUZB : item.nameRUS}
+  className="w-full max-w-[189px] md:max-w-[296px] aspect-[3/4] object-cover object-top bg-[#f6f6f6] cursor-pointer"
+  loading="lazy"
+  decoding="async"
+/>
           <div className="flex justify-between max-h-[100px] min-h-[100px] font-tenor">
             <div className="p-2 md:p-2 space-y-[2px]">
               <h2 className="text-base text-primary line-clamp-1">
