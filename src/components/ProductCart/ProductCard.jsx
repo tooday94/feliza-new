@@ -13,6 +13,7 @@ import { useGetList } from "../../services/query/useGetList";
 import { OrderCard } from "../cart/order-card";
 import { Drawer } from "antd";
 import formatPrice from "../../utils/formatPrice";
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 import AuthForm from "../header/auth-form";
 import { transliterate as tr } from 'transliteration';
 
@@ -322,15 +323,8 @@ const ProductCard = ({ item }) => {
             )}
           </div>
 
-          <img
-            // onClick={() =>
-            //   navigate(
-            //     `/productDetail/${item.id}/${i18n.language === "uz" ? item.nameUZB.replace(/\s+/g, "-") : item.nameRUS.replace(/\s+/g, "-")}`,
-            //     window.scrollTo({ top: 0, behavior: "smooth" })
-            //   )
-            // }
+         <img
             onClick={() => {
-              // Ruscha nom bo‘lsa transliterate qilish
               const name = i18n.language === "uz" ? item.nameUZB : item.nameRUS;
               const slug = i18n.language === "uz"
                 ? name.replace(/\s+/g, "-")
@@ -338,9 +332,15 @@ const ProductCard = ({ item }) => {
               navigate(`/productDetail/${item.id}/${slug}`);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            src={item?.productImages?.[0]?.url}
+       
+            src={getOptimizedImageUrl(item?.productImages?.[0]?.url, 400)}
+            
             alt={i18n.language === "uz" ? item.nameUZB : item.nameRUS}
             className="w-full max-w-[189px] md:max-w-[296px] md:min-h-[350px] h-[232px] object-cover cursor-pointer"
+            
+ 
+            loading="lazy" 
+            decoding="async"
           />
           <div className="flex justify-between max-h-[100px] min-h-[100px] font-tenor">
             <div className="p-2 md:p-2 space-y-[2px]">
@@ -487,7 +487,7 @@ const ProductCard = ({ item }) => {
                             ? "border-2 border-black shadow-md"
                             : "border-gray-300"
                           }`}
-                        src={item.productImages[0]?.url}
+                        src={getOptimizedImageUrl(item.productImages[0]?.url, 150)}
                         alt={`Rasm ${index + 1}`}
                       />
                     ))}
