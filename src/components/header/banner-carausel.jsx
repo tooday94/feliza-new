@@ -2,7 +2,7 @@ import { useGetList } from "../../services/query/useGetList";
 import { Carousel, Grid, Skeleton } from "antd";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { getOptimizedImageUrl } from "../../utils/imageOptimizer"; 
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 
 const BannerCarausel = () => {
   const { data, isLoading } = useGetList("/api/karusel/getAllKarusels");
@@ -46,13 +46,15 @@ const BannerCarausel = () => {
           draggable
           style={{ height: 610 }}
         >
-          {/* Добавляем index, чтобы определить первый слайд */}
           {data?.map((item, index) => {
-             // 1. Определяем, какую картинку брать (десктоп или мобилка)
-             const rawUrl = width.md ? item?.desktopImage?.url : item?.productImages?.url;
-             
-             // 2. Задаем ширину для оптимизации: 1500px для ПК, 800px для телефона
-             const targetWidth = width.md ? 1500 : 800;
+            // 1. Выбираем картинку
+            const rawUrl = width.md ? item?.desktopImage?.url : item?.productImages?.url;
+
+            // 2. 🔥 ЗАДАЕМ РАЗМЕРЫ (Ширина и Высота)
+            // Если десктоп (md): 1440 x 610
+            // Если мобилка: 430 x 610
+            const targetWidth = width.md ? 1440 : 430;
+            const targetHeight = 610; 
 
             return (
               <div
@@ -71,11 +73,10 @@ const BannerCarausel = () => {
                 key={item.id}
               >
                 <img
-                  // 3. ПРИМЕНЯЕМ ОПТИМИЗАЦИЮ
-                  src={getOptimizedImageUrl(rawUrl, targetWidth)}
+                  // Передаем и ширину, и высоту!
+                  src={getOptimizedImageUrl(rawUrl, targetWidth, targetHeight)}
                   
-                  // 4. УСКОРЕНИЕ LCP (Первый экран)
-                  // Если это первая картинка (index 0) - грузим сразу и с высоким приоритетом
+                  // Первый слайд грузим сразу (LCP), остальные лениво
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchPriority={index === 0 ? "high" : "auto"}
                   
