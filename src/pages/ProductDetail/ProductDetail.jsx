@@ -8,20 +8,22 @@ import { FaRegHeart } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { useState } from 'react';
 import ProductCard from './../../components/ProductCart/ProductCard';
-import { Button, Carousel, Drawer, Image, Modal, message } from 'antd';
+import { Button, Carousel, Drawer, Image, Modal, message, Grid } from 'antd'; // 1. Добавил Grid
 import Cookies from 'js-cookie';
 import { useCreate } from './../../services/mutations/useCreate';
 import { toast } from 'react-toastify';
 import { FaPlus } from "react-icons/fa";
 import { OrderCard } from '../../components/cart/order-card';
 import AuthForm from '../../components/header/auth-form';
-
-
+import { getOptimizedImageUrl } from '../../utils/imageOptimizer';
 
 function ProductDetail() {
     const { id } = useParams()
     const { i18n } = useTranslation()
     const userID = Cookies.get("USER-ID");
+    // 3. Хук для определения размера экрана
+    const screens = Grid.useBreakpoint();
+
     const { data, isLoading, isFetching } = useGetList(endpoints.products.getProductById + id, {})
     const { data: productVariants, isLoading: loadvar } = useGetList(endpoints.products.searchProduct + data?.referenceNumber)
     const { data: similarProducts, isLoading: loadingSimilar } = useGetList(endpoints.products.getProductByCategoryId + data?.category[0]?.id, {
@@ -40,9 +42,8 @@ function ProductDetail() {
     const [authOpen, setAuthOpen] = useState(false)
     const [openReviewModal, setOpenReviewModal] = useState(false);
 
-
     // console.log("Cartitemi", cartItemId);
-    console.log(" Data Comment", data);
+    // console.log(" Data Comment", data);
 
     // Savatga qo'shish funksiyasi
     const addToCart = () => {
@@ -134,8 +135,6 @@ function ProductDetail() {
             }
         );
     };
-
-
 
     // sotib olish funksiyasi
     const addOrder = () => {
@@ -300,19 +299,23 @@ function ProductDetail() {
                             {productVariants[selectedColorIndex]?.productImages?.map((item, index) => (
                                 <img
                                     key={item?.id || index}
-                                    src={item?.url}
+                                 
+                                    src={getOptimizedImageUrl(item?.url, 450, 600)}
+                                    loading={index === 0 ? "eager" : "lazy"} // Первая картинка грузится сразу
                                     alt={i18n.language === 'uz' ? data?.nameUZB : data?.nameRUS}
                                     className="w-full h-auto object-cover"
                                 />
                             ))}
                         </Carousel>
                     </div>
-                    {/* Rasmlar bloki */}
+                    {/* Rasmlar bloki (DESKTOP) */}
                     <div className='hidden md:grid md:grid-cols-2 gap-1'>
                         {productVariants[selectedColorIndex]?.productImages?.map((item, index) => (
                             <img
                                 key={item?.id || index}
-                                src={item?.url}
+                                // 🔥 ОПТИМИЗАЦИЯ Desktop: Ширина 466px, Высота 645px
+                                src={getOptimizedImageUrl(item?.url, 466, 645)}
+                                loading={index === 0 ? "eager" : "lazy"} // LCP Оптимизация
                                 alt={i18n.language === 'uz' ? data?.nameUZB : data?.nameRUS}
                                 className="w-full max-w-[466px] h-auto sm:h-[645px] object-cover shadow-md hover:scale-105 transition-transform duration-300"
                             />
@@ -377,13 +380,15 @@ function ProductDetail() {
                                                 window.scrollTo({ top: 0, behavior: 'smooth' })
                                             )}
                                             className={`
-                    relative w-[78px] overflow-hidden cursor-pointer border 
-                    ${isSelected ? 'border-black' : 'border-gray-300'} 
-                    ${!isActive ? 'opacity-50 cursor-not-allowed' : 'hover:border-black'}
-                `}
+                                                relative w-[78px] overflow-hidden cursor-pointer border 
+                                                ${isSelected ? 'border-black' : 'border-gray-300'} 
+                                                ${!isActive ? 'opacity-50 cursor-not-allowed' : 'hover:border-black'}
+                                            `}
                                         >
                                             <img
-                                                src={item?.productImages?.[0]?.url}
+                                                // 🔥 ОПТИМИЗАЦИЯ Миниатюры: 80x110
+                                                src={getOptimizedImageUrl(item?.productImages?.[0]?.url, 80, 110)}
+                                                loading="lazy"
                                                 alt="Product"
                                                 className="w-[78px] md:h-[108px] h-auto object-cover"
                                             />
@@ -416,20 +421,6 @@ function ProductDetail() {
                             </h2>
 
                             <div className='flex gap-3 flex-wrap'>
-                                {/* eski varinati */}
-                                {/* {data?.productSizeVariantList?.map((item, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setSelectedSize(item.size)}
-                                            className={`border md:px-5 md:py-3 px-2 py-1 cursor-pointer
-                    hover:bg-black hover:text-white transition-colors duration-300
-                    ${selectedSize === item.size ? 'bg-black text-white' : 'bg-white text-black'}
-                `}
-                                        >
-                                            {item.size}
-                                        </button>
-                                    ))} */}
-                                {/* Togrilangan varinati */}
                                 {productVariants[selectedColorIndex]?.productSizeVariantList?.map((item, index) => (
                                     <button
                                         key={index}
@@ -445,13 +436,6 @@ function ProductDetail() {
 
                             </div>
 
-                            {/* {selectedSize && ( eski varinati
-                                    <p className="mt-2">
-                                        {i18n.language === 'uz' ? 'Sotuvda bor' : 'В наличии'} : {
-                                            data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0
-                                        } {i18n.language === 'uz' ? 'ta' : 'шт'}
-                                    </p>
-                                )}  */}
                             {/* Togrilnagan versiyasi */}
                             {selectedSize && (
                                 <p className="mt-2">
@@ -540,7 +524,6 @@ function ProductDetail() {
 
                                     <FaPlus
                                         onClick={() => {
-                                            // const maxQty = data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0; eski varinati
                                             const maxQty = productVariants[selectedColorIndex]?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0;
 
                                             if (count < maxQty) setCount(count + 1);
@@ -552,7 +535,7 @@ function ProductDetail() {
                                     />
                                 </div>
 
-                                {/* savatga qoshish tugmasi,  agar quantity 0 dan kichik bolsa maxsulot qolmaganligini bildiradi */}
+                                {/* savatga qoshish tugmasi */}
                                 {data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity === 0 ? (
                                     <button
                                         disabled
@@ -620,6 +603,7 @@ function ProductDetail() {
                                             {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
                                         </span>
                                     </button>
+
 
                                 )
                             }
@@ -690,7 +674,8 @@ function ProductDetail() {
                                         {review.images.map((img, i) => (
                                             <Image
                                                 key={i}
-                                                src={img.url}
+                                                // 🔥 ОПТИМИЗАЦИЯ Отзывы: 70x90 (чуть с запасом для зума)
+                                                src={getOptimizedImageUrl(img.url, 100, 100)}
                                                 width={60}
                                                 height={80}
                                                 className="rounded-md object-cover border cursor-pointer"
@@ -735,7 +720,7 @@ function ProductDetail() {
                                         {review.images.map((img, i) => (
                                             <Image
                                                 key={i}
-                                                src={img.url}
+                                                src={getOptimizedImageUrl(img.url, 150, 200)} // Чуть больше для модалки
                                                 width={70}
                                                 height={90}
                                                 className="rounded-lg border object-cover cursor-pointer"
@@ -777,6 +762,7 @@ function ProductDetail() {
                     <div className="grid grid-flow-col auto-cols-[189px] md:auto-cols-[296px] gap-4 pt-10">
                         {similarProducts?.content?.length > 0 ? (
                             similarProducts.content.map(item => (
+                                // ProductCard уже оптимизирован, ничего менять не нужно
                                 <ProductCard key={item.id} item={item} />
                             ))
                         ) : (
@@ -827,7 +813,6 @@ function ProductDetail() {
                             <span className="font-medium w-6 text-center">{count}</span>
                             <button
                                 onClick={() => {
-                                    // const maxQty = data?.productSizeVariantList?.find(item => item.size === selectedSize)?.quant
                                     const maxQty = productVariants[selectedColorIndex]?.productSizeVariantList?.find(item => item.size === selectedSize)?.quantity ?? 0;
                                     if (count < maxQty) setCount(count + 1);
                                 }}
@@ -875,7 +860,7 @@ function ProductDetail() {
                                         : "Пожалуйста, выберите цвет и размер"
                                 );
                             }}
-                            className="w-full h-12 b     border-black bg-gray-200 text-gray-500 cursor-not-allowed"
+                            className="w-full h-12 b      border-black bg-gray-200 text-gray-500 cursor-not-allowed"
                         >
                             {i18n.language === 'uz' ? "Rang yoki razmer tanlang" : "Выберите цвет и размер"}
                         </button>
@@ -919,4 +904,4 @@ function ProductDetail() {
     )
 }
 
-export default ProductDetail   
+export default ProductDetail

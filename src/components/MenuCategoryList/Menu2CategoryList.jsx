@@ -2,18 +2,26 @@ import { useGetList } from "../../services/query/useGetList";
 import { endpoints } from "../../configs/endpoints";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
-import { useEffect } from "react";
 import { transliterate as tr } from 'transliteration';
+import { Grid } from "antd"; // 1. Импортируем Grid для определения размера экрана
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer"; // 2. Импортируем оптимизатор
 
 function Menu2CategoryList() {
   const [showLeftBtn, setShowLeftBtn] = useState(false);
   const navigate = useNavigate();
+  // 3. Хук для проверки ширины экрана (md = desktop)
+  const screens = Grid.useBreakpoint();
+
   const { data, isLoading } = useGetList(
     endpoints.category.categoryBlocks.getCategoryByBlockTypeMenu_2,
     {}
   );
+  
+  const containerRef = useRef(null);
+  const { i18n } = useTranslation();
+
   useEffect(() => {
     const handleScroll = () => {
       if (containerRef.current) {
@@ -33,8 +41,6 @@ function Menu2CategoryList() {
     };
 
   }, []);
-  const { i18n } = useTranslation();
-  const containerRef = useRef(null);
 
   const skeletonItems = Array.from({ length: 4 });
 
@@ -48,7 +54,7 @@ function Menu2CategoryList() {
           {skeletonItems.map((_, index) => (
             <div
               key={index}
-              className="w-[360px] h-[564px] bg-gray-200 animate-pulse flex-shrink-0"
+              className="w-[240px] md:w-[360px] h-[400px] md:h-[564px] bg-gray-200 animate-pulse flex-shrink-0"
             />
           ))}
         </div>
@@ -70,22 +76,15 @@ function Menu2CategoryList() {
     }
   };
 
-
-
   return (
     <div className="relative max-w-[1280px] mx-auto">
       {/* Chap tugma (faqat desktopda ko‘rinadi) */}
-      {/* { */}
-      {/* // showLeftBtn && ( */}
       <button
-        className={`hidden md:flex cursor-pointer absolute left-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
-          `}
+        className={`hidden md:flex cursor-pointer absolute left-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out`}
         onClick={scrollLeft}
       >
         <IoArrowBackSharp size={20} />
       </button>
-      {/* ) */}
-      {/* } */}
 
       {/* Scrollable container */}
       <div
@@ -93,51 +92,56 @@ function Menu2CategoryList() {
         className="flex overflow-x-auto scrollbar-hide py-6 font-tenor scroll-smooth"
         style={{ scrollbarWidth: "none" }}
       >
-        {sortedData?.map((item, indx) => (
-          <div
-            // onClick={() =>
-            //   navigate(
-            //     `/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`,
-            //     window.scrollTo({ top: 0, behavior: "smooth" })
-            //   )
-            // }
-            onClick={() => {
-              // Ruscha nom bo‘lsa transliterate qilish
-              const name = i18n.language === "uz" ? item.category.nameUZB : item.category.nameRUS;
-              const slug = i18n.language === "uz"
-                ? name.replace(/\s+/g, "-")
-                : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-              navigate(`/categoryDetail/${item.category.id}/${slug}`);
-              window.scrollTo({ top: 0, behavior: "smooth" });
+        {sortedData?.map((item, indx) => {
+           // 4. Логика выбора размера:
+           // Если экран md (планшет/пк) -> берем 360x565
+           // Если экран меньше -> берем 240x400
+           const imgWidth = screens.md ? 360 : 240;
+           const imgHeight = screens.md ? 565 : 400;
 
-            }}
-            key={indx}
-            className="flex-shrink-0 md:w-[360px] w-[240px] cursor-pointer group relative mr-2"
-          >
-            <img
-              src={item.category.verticalImage?.url}
-              alt={
-                i18n.language === "uz"
-                  ? item.category.nameUZB
-                  : item.category.nameRUS
-              }
-              className="w-full h-[400px] md:h-[564px] object-cover"
-            />
-            <div className="absolute inset-0 bg-[#0000004D] group-hover:bg-transparent flex items-center group-hover:items-end justify-center transition-all duration-500">
-              <h2 className="text-white group-hover:text-[#0D0D0D] text-2xl w-[100px] font-bold text-center group-hover:mb-4 mb-0 px-2">
-                {i18n.language === "uz"
-                  ? item.category.nameUZB
-                  : item.category.nameRUS}
-              </h2>
+           return (
+            <div
+              onClick={() => {
+                // Ruscha nom bo‘lsa transliterate qilish
+                const name = i18n.language === "uz" ? item.category.nameUZB : item.category.nameRUS;
+                const slug = i18n.language === "uz"
+                  ? name.replace(/\s+/g, "-")
+                  : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+                navigate(`/categoryDetail/${item.category.id}/${slug}`);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              key={indx}
+              className="flex-shrink-0 md:w-[360px] w-[240px] cursor-pointer group relative mr-2"
+            >
+              <img
+                // 5. Вызываем оптимизатор с точными размерами
+                src={getOptimizedImageUrl(item.category.verticalImage?.url, imgWidth, imgHeight)}
+                
+                // Ленивая загрузка
+                loading="lazy"
+                
+                alt={
+                  i18n.language === "uz"
+                    ? item.category.nameUZB
+                    : item.category.nameRUS
+                }
+                className="w-full h-[400px] md:h-[564px] object-cover"
+              />
+              <div className="absolute inset-0 bg-[#0000004D] group-hover:bg-transparent flex items-center group-hover:items-end justify-center transition-all duration-500">
+                <h2 className="text-white group-hover:text-[#0D0D0D] text-2xl w-[100px] font-bold text-center group-hover:mb-4 mb-0 px-2">
+                  {i18n.language === "uz"
+                    ? item.category.nameUZB
+                    : item.category.nameRUS}
+                </h2>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* O‘ng tugma (faqat desktopda ko‘rinadi) */}
       <button
-        className={`hidden md:flex cursor-pointer absolute right-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out 
-   `}
+        className={`hidden md:flex cursor-pointer absolute right-0 top-1/2 z-20 bg-white p-2.5 shadow-lg transition-all duration-300 ease-in-out`}
         onClick={scrollRight}
       >
         <IoArrowForwardSharp size={20} />

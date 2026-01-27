@@ -3,16 +3,8 @@ import { endpoints } from "./../../configs/endpoints";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { transliterate as tr } from 'transliteration';
-
-
-const handleNavigate = (id, name, lang) => {
-  // Agar o'zbekcha nom bo'lsa, faqat bo'sh joyni "-" bilan almashtiramiz
-  const slug = lang === "uz"
-    ? name.replace(/\s+/g, "-")
-    : tr(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-
-  navigate(`/categoryDetail/${id}/${slug}`);
-};
+// Импортируем оптимизатор
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 
 function Menu1CategoryList() {
   const navigate = useNavigate();
@@ -20,7 +12,6 @@ function Menu1CategoryList() {
     endpoints.category.categoryBlocks.getCategoryByBlockTypeMenu_1,
     {}
   );
-  console.log("MenuCategory1", data);
   const { i18n } = useTranslation();
 
   const skeletonItems = Array.from({ length: 5 });
@@ -58,10 +49,6 @@ function Menu1CategoryList() {
         {sortedData?.map((item, index) => (
           <div
             key={index}
-            // onClick={() => {
-            //   navigate(`/categoryDetail/${item.category.id}/${i18n.language === "uz" ? item.category.nameUZB.replace(/\s+/g, "-") : item.category.nameRUS.replace(/\s+/g, "-")}`);
-            //   window.scrollTo({ top: 0, behavior: "smooth" });
-            // }}
             onClick={() => {
               // Ruscha nom bo‘lsa transliterate qilish
               const name = i18n.language === "uz" ? item.category.nameUZB : item.category.nameRUS;
@@ -78,7 +65,13 @@ function Menu1CategoryList() {
             }}
           >
             <img
-              src={item.category.verticalImage?.url}
+              // 🔥 ОПТИМИЗАЦИЯ:
+              // Запрашиваем квадрат 240x240. Netlify сам обрежет лишнее.
+              src={getOptimizedImageUrl(item.category.verticalImage?.url, 240, 240)}
+              
+              // Ленивая загрузка
+              loading="lazy"
+              
               alt={
                 i18n.language === "uz"
                   ? item.category.nameRUS
