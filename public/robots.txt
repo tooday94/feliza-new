@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# --- Закрываем личные кабинеты и корзину ---
+Disallow: /cart
+Disallow: /profile
+Disallow: /my-profile/*
+Disallow: /my-orders
+Disallow: /my-comments
+Disallow: /my-address
+Disallow: /my-notifications
+Disallow: /my-status
+Disallow: /my-coupons
+Disallow: /favorites
+
+# --- Закрываем результаты поиска (SEO стандарт) ---
+Disallow: /searchResult/*
+
+# --- Ссылка на карту сайта ---
+Sitemap: https://feliza.uz/sitemap.xml
