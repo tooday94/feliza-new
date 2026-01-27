@@ -2,14 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { useGetList } from "../../services/query/useGetList";
 import { PiSquaresFour } from "react-icons/pi";
 import { LiaGripVerticalSolid } from "react-icons/lia";
-import { Button, Skeleton } from "antd";
+import { Button, Skeleton, Grid } from "antd"; // 1. Добавил Grid
 import { useState, useMemo } from "react";
 import { CiGrid2H } from "react-icons/ci";
 import { useTranslation } from "react-i18next";
+// 2. Импорт оптимизатора
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 
 const Looks = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  // 3. Хук для проверки размера экрана (md - это планшет/пк)
+  const screens = Grid.useBreakpoint();
 
   const { data, isLoading } = useGetList("/api/lookCollection/getLookCollection");
 
@@ -19,7 +23,7 @@ const Looks = () => {
   // SAFE data
   const safeData = data || [];
 
-  // SORT ONLY ONCE  (performance optimized)
+  // SORT ONLY ONCE (performance optimized)
   const sortedData = useMemo(() => {
     return [...safeData].sort((a, b) => {
       const lastA =
@@ -61,6 +65,7 @@ const Looks = () => {
                 <LiaGripVerticalSolid
                   size={24}
                   color={gridMobile === 2 ? "#0d0d0d" : "#bbb"}
+                  onClick={() => setGridMobile(2)}
                 />
               }
               onClick={() => setGridMobile(2)}
@@ -131,7 +136,13 @@ const Looks = () => {
             >
               <img
                 className="max-w-[357px] w-full"
-                src={item.images?.[0]?.url || "/no-image.jpg"}
+            
+                src={getOptimizedImageUrl(
+                  item.images?.[0]?.url,
+                  screens.md ? 355 : 210,
+                  screens.md ? 530 : 310
+                ) || "/no-image.jpg"}
+                loading="lazy"
                 alt=""
               />
             </div>
