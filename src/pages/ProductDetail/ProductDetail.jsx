@@ -16,7 +16,7 @@ import { FaPlus } from "react-icons/fa";
 import { OrderCard } from '../../components/cart/order-card';
 import AuthForm from '../../components/header/auth-form';
 import { getOptimizedImageUrl } from '../../utils/imageOptimizer';
-// 🔥 1. Импортируем Helmet для SEO
+// 🔥 1. Импорт SEO
 import { Helmet } from 'react-helmet-async';
 
 function ProductDetail() {
@@ -44,9 +44,6 @@ function ProductDetail() {
     const [authOpen, setAuthOpen] = useState(false)
     const [openReviewModal, setOpenReviewModal] = useState(false);
 
-    // console.log("Cartitemi", cartItemId);
-    // console.log(" Data Comment", data);
-
     // --- 🔥 НАЧАЛО SEO ЛОГИКИ ---
     const isUz = i18n.language === 'uz';
     
@@ -54,13 +51,13 @@ function ProductDetail() {
     const productName = isUz ? data?.nameUZB : data?.nameRUS;
     const seoTitle = productName ? `${productName} — Feliza.uz` : 'Feliza — Ayollar kiyimlari';
 
-    // Формируем описание (Обрезаем до 160 символов для Google)
+    // Формируем описание
     const rawDescription = isUz ? data?.descriptionUZB : data?.descriptionRUS;
     const seoDescription = rawDescription 
         ? rawDescription.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 160) + "..." 
         : "Feliza — zamonaviy ayollar kiyimlari online do'koni.";
 
-    // Картинка для соцсетей
+    // Картинка
     const seoImage = productVariants?.[0]?.productImages?.[0]?.url || "https://feliza.uz/logo.png";
     const currentUrl = window.location.href;
     // --- 🔥 КОНЕЦ SEO ЛОГИКИ ---
@@ -295,15 +292,10 @@ function ProductDetail() {
     }
     return (
         <div className='font-tenor md:px-6 '>
-            {/* 🔥 2. ВСТАВЛЯЕМ SEO БЛОК ЗДЕСЬ (ДИНАМИЧЕСКИЕ МЕТА-ТЕГИ) */}
+            {/* 🔥 2. ВСТАВЛЯЕМ SEO БЛОК ЗДЕСЬ */}
             <Helmet>
-                {/* Заголовок вкладки */}
                 <title>{seoTitle}</title>
-                
-                {/* Описание для Google */}
                 <meta name="description" content={seoDescription} />
-                
-                {/* Open Graph (Instagram, Telegram, Facebook) */}
                 <meta property="og:type" content="product" />
                 <meta property="og:title" content={seoTitle} />
                 <meta property="og:description" content={seoDescription} />
@@ -312,8 +304,6 @@ function ProductDetail() {
                 <meta property="og:site_name" content="Feliza.uz" />
                 <meta property="og:price:amount" content={data?.sale > 0 ? data?.salePrice : data?.sellPrice} />
                 <meta property="og:price:currency" content="UZS" />
-
-                {/* Twitter Cards */}
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content={seoTitle} />
                 <meta name="twitter:description" content={seoDescription} />
@@ -677,7 +667,7 @@ function ProductDetail() {
 
                 </div>
             </div>
-        </div>
+        
 
             {/* Comnetariya bolimi uchun  */}
             <div className="md:mt-12 mt-5 px-4">
@@ -948,4 +938,4 @@ function ProductDetail() {
     )
 }
 
-export default ProductDetail
+export default ProductDetail;
