@@ -16,6 +16,8 @@ import { FaPlus } from "react-icons/fa";
 import { OrderCard } from '../../components/cart/order-card';
 import AuthForm from '../../components/header/auth-form';
 import { getOptimizedImageUrl } from '../../utils/imageOptimizer';
+// 🔥 1. Импортируем Helmet для SEO
+import { Helmet } from 'react-helmet-async';
 
 function ProductDetail() {
     const { id } = useParams()
@@ -44,6 +46,24 @@ function ProductDetail() {
 
     // console.log("Cartitemi", cartItemId);
     // console.log(" Data Comment", data);
+
+    // --- 🔥 НАЧАЛО SEO ЛОГИКИ ---
+    const isUz = i18n.language === 'uz';
+    
+    // Формируем заголовок (Название товара | Feliza)
+    const productName = isUz ? data?.nameUZB : data?.nameRUS;
+    const seoTitle = productName ? `${productName} — Feliza.uz` : 'Feliza — Ayollar kiyimlari';
+
+    // Формируем описание (Обрезаем до 160 символов для Google)
+    const rawDescription = isUz ? data?.descriptionUZB : data?.descriptionRUS;
+    const seoDescription = rawDescription 
+        ? rawDescription.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 160) + "..." 
+        : "Feliza — zamonaviy ayollar kiyimlari online do'koni.";
+
+    // Картинка для соцсетей
+    const seoImage = productVariants?.[0]?.productImages?.[0]?.url || "https://feliza.uz/logo.png";
+    const currentUrl = window.location.href;
+    // --- 🔥 КОНЕЦ SEO ЛОГИКИ ---
 
     // Savatga qo'shish funksiyasi
     const addToCart = () => {
@@ -275,6 +295,31 @@ function ProductDetail() {
     }
     return (
         <div className='font-tenor md:px-6 '>
+            {/* 🔥 2. ВСТАВЛЯЕМ SEO БЛОК ЗДЕСЬ (ДИНАМИЧЕСКИЕ МЕТА-ТЕГИ) */}
+            <Helmet>
+                {/* Заголовок вкладки */}
+                <title>{seoTitle}</title>
+                
+                {/* Описание для Google */}
+                <meta name="description" content={seoDescription} />
+                
+                {/* Open Graph (Instagram, Telegram, Facebook) */}
+                <meta property="og:type" content="product" />
+                <meta property="og:title" content={seoTitle} />
+                <meta property="og:description" content={seoDescription} />
+                <meta property="og:image" content={seoImage} />
+                <meta property="og:url" content={currentUrl} />
+                <meta property="og:site_name" content="Feliza.uz" />
+                <meta property="og:price:amount" content={data?.sale > 0 ? data?.salePrice : data?.sellPrice} />
+                <meta property="og:price:currency" content="UZS" />
+
+                {/* Twitter Cards */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={seoTitle} />
+                <meta name="twitter:description" content={seoDescription} />
+                <meta name="twitter:image" content={seoImage} />
+            </Helmet>
+
             <div className='font-tenor'>
                 {/* Auth uchun driver */}
                 <Drawer
@@ -299,7 +344,7 @@ function ProductDetail() {
                             {productVariants[selectedColorIndex]?.productImages?.map((item, index) => (
                                 <img
                                     key={item?.id || index}
-                                 
+                                    
                                     src={getOptimizedImageUrl(item?.url, 450, 600)}
                                     loading={index === 0 ? "eager" : "lazy"} // Первая картинка грузится сразу
                                     alt={i18n.language === 'uz' ? data?.nameUZB : data?.nameRUS}
@@ -569,7 +614,7 @@ function ProductDetail() {
                                                     : "Пожалуйста, выберите цвет и размер"
                                             );
                                         }}
-                                        className="w-full h-12 border border-black bg-gray-200 text-gray-500 cursor-not-allowed"
+                                        className="w-full h-12 b       border-black bg-gray-200 text-gray-500 cursor-not-allowed"
                                     >
                                         {i18n.language === 'uz' ? "Rang yoki razmer tanlang" : "Выберите цвет и размер"}
                                     </button>
@@ -607,31 +652,32 @@ function ProductDetail() {
 
                                 )
                             }
-
-                            {/* Drawer */}
-                            <Drawer
-                                width={464}
-                                open={drawerOpen}
-                                onClose={onClose}
-                                placement="right"
-                            >
-                                <OrderCard
-                                    cart={[cartItemId]}
-                                    sum={
-                                        data
-                                            ? data.sale > 0
-                                                ? data.salePrice
-                                                : data.sellPrice
-                                            : 0
-                                    }
-                                />
-
-                            </Drawer>
                         </div>
 
+                        {/* Drawer */}
+                        <Drawer
+                            width={464}
+                            open={drawerOpen}
+                            onClose={onClose}
+                            placement="right"
+                        >
+                            <OrderCard
+                                cart={[cartItemId]}
+                                sum={
+                                    data
+                                        ? data.sale > 0
+                                            ? data.salePrice
+                                            : data.sellPrice
+                                        : 0
+                                }
+                            />
+
+                        </Drawer>
                     </div>
+
                 </div>
             </div>
+        </div>
 
             {/* Comnetariya bolimi uchun  */}
             <div className="md:mt-12 mt-5 px-4">
@@ -860,7 +906,7 @@ function ProductDetail() {
                                         : "Пожалуйста, выберите цвет и размер"
                                 );
                             }}
-                            className="w-full h-12 b      border-black bg-gray-200 text-gray-500 cursor-not-allowed"
+                            className="w-full h-12 b       border-black bg-gray-200 text-gray-500 cursor-not-allowed"
                         >
                             {i18n.language === 'uz' ? "Rang yoki razmer tanlang" : "Выберите цвет и размер"}
                         </button>
@@ -894,8 +940,6 @@ function ProductDetail() {
                                 {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
                             </span>
                         </button>
-
-
                     )
                 }
             </div>
