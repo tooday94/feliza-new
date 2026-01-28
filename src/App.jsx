@@ -7,10 +7,20 @@ import NotFound from "./components/not-found/not-found";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
+import { Helmet } from "react-helmet-async";
 
 function App() {
   return (
     <>
+      {/* 🔥 2. Глобальный SEO заголовок (Работает на Главной и там, где нет своего заголовка) */}
+      <Helmet>
+        <title>Feliza — Ayollar kiyimlari online do‘koni</title>
+        <meta 
+          name="description" 
+          content="Feliza — O‘zbekistondagi eng zamonaviy ayollar kiyimlari do‘koni. Liboslar, ko‘ylaklar va aksessuarlar. Tez yetkazib berish xizmati." 
+        />
+      </Helmet>
+
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="*" element={<NotFound />} />
