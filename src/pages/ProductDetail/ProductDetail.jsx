@@ -46,15 +46,15 @@ function ProductDetail() {
 
     // --- 🔥 НАЧАЛО SEO ЛОГИКИ ---
     const isUz = i18n.language === 'uz';
-    
+
     // Формируем заголовок (Название товара | Feliza)
     const productName = isUz ? data?.nameUZB : data?.nameRUS;
     const seoTitle = productName ? `${productName} — Feliza.uz` : 'Feliza — Ayollar kiyimlari';
 
     // Формируем описание
     const rawDescription = isUz ? data?.descriptionUZB : data?.descriptionRUS;
-    const seoDescription = rawDescription 
-        ? rawDescription.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 160) + "..." 
+    const seoDescription = rawDescription
+        ? rawDescription.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 160) + "..."
         : "Feliza — zamonaviy ayollar kiyimlari online do'koni.";
 
     // Картинка
@@ -334,7 +334,7 @@ function ProductDetail() {
                             {productVariants[selectedColorIndex]?.productImages?.map((item, index) => (
                                 <img
                                     key={item?.id || index}
-                                    
+
                                     src={getOptimizedImageUrl(item?.url, 450, 600)}
                                     loading={index === 0 ? "eager" : "lazy"} // Первая картинка грузится сразу
                                     alt={i18n.language === 'uz' ? data?.nameUZB : data?.nameRUS}
@@ -369,16 +369,16 @@ function ProductDetail() {
                             {/* Narx */}
                             <div>
                                 {data?.sale > 0 ? (
-                                    <div className="flex items-center md:gap-3 gap-1 flex-col">
-                                        <p className="text-[#0D0D0D] text-[17px] md:text-xl font-normal">
+                                    <div className="flex items-center md:gap-3 gap-1 flex-col ">
+                                        <p className="text-[#FFA94D] text-[17px] md:text-xl font-tenor font-bold ">
                                             {data?.salePrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                         </p>
-                                        <p className="text-gray-400 line-through text-[17px] md:text-xl">
+                                        <p className="text-gray-400 line-through text-[17px] md:text-xl font-tenor font-bold">
                                             {data?.sellPrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                         </p>
                                     </div>
                                 ) : (
-                                    <span className="text-[#0D0D0D] text-[17px] md:text-xl font-semibold">
+                                    <span className="text-[#0D0D0D] text-[19px] md:text-xl font-tenor font-extrabold">
                                         {data?.sellPrice} {i18n.language === 'uz' ? 'so\'m' : 'со\'м'}
                                     </span>
                                 )}
@@ -581,10 +581,10 @@ function ProductDetail() {
                                 ) : (
                                     <button
                                         onClick={addToCart}
-                                        className="w-full cursor-pointer h-12 border border-black hover:bg-black hover:text-white flex items-center justify-center gap-2 transition duration-300"
+                                        className="w-full cursor-pointer h-12 border bg-black border-black hover:bg-stone-900 hover:text-white flex items-center justify-center gap-2 transition duration-300"
                                     >
-                                        <HiOutlineShoppingBag className="text-xl" />
-                                        <span>
+                                        <HiOutlineShoppingBag className="text-xl text-white" />
+                                        <span className='text-white'>
                                             {i18n.language === 'uz' ? "Savatchaga qo’shish" : "В корзину"}
                                         </span>
                                     </button>
@@ -634,7 +634,7 @@ function ProductDetail() {
                                         }}
                                         className="w-full h-12 border border-black hover:bg-black cursor-pointer hover:text-white flex items-center justify-center gap-2 transition duration-300"
                                     >
-                                        <span>
+                                        <span className=' font-tenor font-bold text-orange-600'>
                                             {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
                                         </span>
                                     </button>
@@ -667,7 +667,7 @@ function ProductDetail() {
 
                 </div>
             </div>
-        
+
 
             {/* Comnetariya bolimi uchun  */}
             <div className="md:mt-12 mt-5 px-4">
