@@ -873,10 +873,10 @@ function ProductDetail() {
                     ) : (
                         <button
                             onClick={addToCart}
-                            className="w-full h-12  border border-black hover:bg-black hover:text-white flex items-center justify-center gap-2 transition duration-300"
+                            className="w-full h-12  border bg-black border-black hover:bg-stone-900 hover:text-white flex items-center justify-center gap-2 transition duration-300"
                         >
-                            <HiOutlineShoppingBag className="text-xl" />
-                            <span>
+                            <HiOutlineShoppingBag className="text-xl text-white" />
+                            <span className='text-white'>
                                 {i18n.language === 'uz' ? "Savatchaga qo’shish" : "В корзину"}
                             </span>
                         </button>
@@ -926,7 +926,7 @@ function ProductDetail() {
                             }}
                             className="w-full h-12 border border-black hover:bg-black cursor-pointer hover:text-white flex items-center justify-center gap-2 transition duration-300"
                         >
-                            <span>
+                            <span className='text-orange-600 font-tenor font-bold'>
                                 {i18n.language === 'uz' ? "Sotib olish" : "Купить"}
                             </span>
                         </button>
