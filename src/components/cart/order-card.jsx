@@ -202,7 +202,7 @@ export const OrderCard = ({ sum, cart }) => {
               <CiCircleInfo size={24} />
               <div className="space-y-2.5 font-tenor font-normal text-sm text-secondary">
                 {/* <p>{t("order.shipp-info.1")}</p> */}
-                <p>{t("order.shipp-info.2")}</p>
+                {/* <p>{t("order.shipp-info.2")}</p> */}
                 <p>{t("order.shipp-info.3")}</p>
                 <p>{t("order.shipp-info.4")}</p>
               </div>
