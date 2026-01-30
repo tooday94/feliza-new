@@ -201,7 +201,7 @@ export const OrderCard = ({ sum, cart }) => {
             <div className="flex gap-3 pl-4 pb-[30px]">
               <CiCircleInfo size={24} />
               <div className="space-y-2.5 font-tenor font-normal text-sm text-secondary">
-                <p>{t("order.shipp-info.1")}</p>
+                {/* <p>{t("order.shipp-info.1")}</p> */}
                 <p>{t("order.shipp-info.2")}</p>
                 <p>{t("order.shipp-info.3")}</p>
                 <p>{t("order.shipp-info.4")}</p>
