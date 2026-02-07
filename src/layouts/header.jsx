@@ -2,8 +2,8 @@ import { useTranslation } from "react-i18next";
 import Logo from "../assets/images/feliza-logo.png";
 // import Logo from "../assets/images/FelizaNewYerLogo2026.svg";
 
-// import LogoWhite from "../assets/images/white-logo.png";
-import LogoWhite from '../assets/images/FelizaMobileIconWhite.svg';
+import LogoWhite from "../assets/images/white-logo.png";
+// import LogoWhite from '../assets/images/FelizaMobileIconWhite.svg';
 import LanguageSelector from "../components/header/language-selector";
 import { CiSearch } from "react-icons/ci";
 import { Button, Input } from "antd";
