@@ -54,7 +54,7 @@ const BannerCarausel = () => {
             // Если десктоп (md): 1440 x 610
             // Если мобилка: 430 x 610
             const targetWidth = width.md ? 1440 : 430;
-            const targetHeight = 610; 
+            const targetHeight = 610;
 
             return (
               <div
@@ -64,10 +64,10 @@ const BannerCarausel = () => {
                     item.karuselType === "category_id"
                       ? `/categoryDetail/${item.parameterId}/banner`
                       : item.karuselType === "look_id"
-                      ? `/looksDetail/${item.parameterId}`
-                      : item.karuselType === "product_id"
-                      ? `/productDetail/${item.parameterId}/banner`
-                      : "/"
+                        ? `/looksDetail/${item.parameterId}`
+                        : item.karuselType === "product_id"
+                          ? `/productDetail/${item.parameterId}/banner`
+                          : "/"
                   )
                 }
                 key={item.id}
@@ -75,11 +75,11 @@ const BannerCarausel = () => {
                 <img
                   // Передаем и ширину, и высоту!
                   src={getOptimizedImageUrl(rawUrl, targetWidth, targetHeight)}
-                  
+
                   // Первый слайд грузим сразу (LCP), остальные лениво
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchPriority={index === 0 ? "high" : "auto"}
-                  
+
                   className="w-full object-cover h-full min-h-[610px] max-h-[610px]"
                   alt="Banner"
                 />
