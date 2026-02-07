@@ -7,7 +7,7 @@ import ProductCard from "../ProductCart/ProductCard";
 import { Carousel, Grid } from "antd"; // 1. Добавляем Grid
 import { transliterate as tr } from 'transliteration';
 // 2. Импортируем оптимизатор
-import { getOptimizedImageUrl } from "../../utils/imageOptimizer"; 
+import { getOptimizedImageUrl } from "../../utils/imageOptimizer";
 
 function NessaHome() {
   const { i18n } = useTranslation();
@@ -36,33 +36,33 @@ function NessaHome() {
   return (
     <div className="flex flex-col md:flex-row gap-4 md:gap-10 items-start font-tenor p-2 md:p-10">
       <h2 className="text-xl font-normal text-[#0D0D0D] md:hidden">NESSA</h2>
-      
+
       {/* Left image div (Большая карусель) */}
       <div className="md:w-1/2 w-full">
         <Carousel autoplay autoplaySpeed={4000} draggable>
           {/* Первая картинка */}
           <img
-            
+
             src={getOptimizedImageUrl(
-              categoryData?.object?.verticalImage?.url, 
-              carouselWidth, 
+              categoryData?.object?.verticalImage?.url,
+              carouselWidth,
               carouselHeight
             )}
-            
+
             loading="lazy"
             alt={categoryData?.object?.nameUZB || "NESSA"}
             className="w-full object-cover h-[488px] md:h-[690px]"
           />
-          
+
           {/* Вторая картинка */}
           <img
             // 🔥 ОПТИМИЗАЦИЯ
             src={getOptimizedImageUrl(
-              categoryData?.object?.horizontalImage?.url, 
-              carouselWidth, 
+              categoryData?.object?.horizontalImage?.url,
+              carouselWidth,
               carouselHeight
             )}
-            
+
             loading="lazy"
             alt={categoryData?.object?.nameUZB || "NESSA"}
             className="w-full object-cover h-[488px] md:h-[690px]"

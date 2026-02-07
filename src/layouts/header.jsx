@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-// import Logo from "../assets/images/feliza-logo.png";
-import Logo from "../assets/images/FelizaNewYerLogo2026.svg";
+import Logo from "../assets/images/feliza-logo.png";
+// import Logo from "../assets/images/FelizaNewYerLogo2026.svg";
 
 // import LogoWhite from "../assets/images/white-logo.png";
 import LogoWhite from '../assets/images/FelizaMobileIconWhite.svg';
